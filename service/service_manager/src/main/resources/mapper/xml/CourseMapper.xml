@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.likailing.cloud.service.manager.mapper.CourseMapper">
+
+    <select id="selectYTStuCourses" parameterType="xyz.likailing.cloud.service.manager.entity.vo.CourseQueryVO"
+            resultType="xyz.likailing.cloud.service.manager.entity.vo.CourseVO">
+        SElECT
+            c.id AS courseId,
+            c.name AS courseName,
+            t.name AS teacherName,
+            cl.name AS className,
+            c.begin_week AS beginWeek,
+            c.end_week AS endWeek
+        FROM
+            manager_course c,
+            manager_student s,
+            manager_class cl,
+            manager_teacher t,
+            manager_class_course cc,
+            manager_teacher_course tc
+        WHERE
+            {#id} = s.id
+            AND s.class_id = cl.id
+            AND cl.id = cc.class_id
+            AND c.id = cc.course_id
+            AND {#year}= c.year
+            AND {#term} = c.term
+            AND c.id = tc.course_id
+            AND t.id = tc.teacher_id
+    </select>
+
+    <select id="selectYTTeaCourses" parameterType="xyz.likailing.cloud.service.manager.entity.vo.CourseQueryVO"
+            resultType="xyz.likailing.cloud.service.manager.entity.vo.CourseVO">
+        SElECT
+            c.id AS courseId,
+            c.name AS courseName,
+            t.name AS teacherName,
+            cl.name AS className,
+            c.begin_week AS beginWeek,
+            c.end_week AS endWeek
+        FROM
+            manager_course c,
+            manager_class cl,
+            manager_teacher t,
+            manager_class_course cc,
+            manager_teacher_course tc
+        WHERE
+            {#id} = t.id
+            AND t.id = tc.teacher_id
+            AND c.id = tc.course_id
+            AND {#year}= c.year
+            AND {#term} = c.term
+            AND c.id = cc.course_id
+            AND cl.id = cc.class_id
+    </select>
+
+    <select id="selectAllCourses" resultType="xyz.likailing.cloud.service.manager.entity.vo.AdminCourseVO">
+        SElECT
+            c.id AS courseId,
+            c.name AS courseName,
+            c.credit_hour AS creditHour,
+            c.credit_num AS creditNum,
+            c.type AS type,
+            c.year AS year,
+            c.term AS term,
+            c.begin_week AS beginWeek,
+            c.end_week AS endWeek,
+            c.department AS department,
+            t.name AS teacherName,
+            cl.name AS className,
+            c.cover_url AS coverUrl
+        FROM
+            manager_course c,
+            manager_teacher t,
+            manager_teacher_course tc,
+            manager_class cl,
+            manager_class_course clc
+        WHERE
+            c.id = tc.course_id
+            AND t.id = tc.teacher_id
+            AND c.id = clc.course_id
+            AND cl.id = clc.class_id
+    </select>
+
+    <select id="selectPageCourses" resultType="xyz.likailing.cloud.service.manager.entity.vo.AdminCourseVO">
+        SElECT
+            c.id AS courseId,
+            c.name AS courseName,
+            c.credit_hour AS creditHour,
+            c.credit_num AS creditNum,
+            c.type AS type,
+            c.year AS year,
+            c.term AS term,
+            c.begin_week AS beginWeek,
+            c.end_week AS endWeek,
+            c.department AS department,
+            t.name AS teacherName,
+            cl.name AS className,
+            c.cover_url AS coverUrl
+        FROM
+            manager_course c,
+            manager_teacher t,
+            manager_teacher_course tc,
+            manager_class cl,
+            manager_class_course clc
+        WHERE
+            c.id = tc.course_id
+          AND t.id = tc.teacher_id
+          AND c.id = clc.course_id
+          AND cl.id = clc.class_id
+        ${ew.customSqlSegment}
+    </select>
+
+</mapper>

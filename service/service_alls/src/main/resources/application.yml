@@ -1,0 +1,50 @@
+aliyun:
+  oss:
+    file:
+      bucketname: cloud-file-230201-1
+      endpoint: oss-cn-hangzhou.aliyuncs.com
+      keyid: LTAI5t9GrWMJPCUubphnsLm7
+      keysecret: MjwsBRT3mgarKthAGWou2gzJ3a4Xpq
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+server:
+  port: 9090
+spring:
+  application:
+    name: service-alls
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: cloud233
+    url: jdbc:mysql://123.60.178.255:3307/space?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&useSSL=true
+    username: root
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  profiles:
+    active: dev
+  redis:
+    database: 0
+    host: 123.60.178.255
+    lettuce:
+      pool:
+        max-active: 20
+        max-idle: 5
+        max-wait: -1
+        min-idle: 0
+    port: 6379
+    timeout: 1800000
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 123.60.178.255:8844
+    sentinel:
+      transport:
+        port: 8082  # 跟控制台交流的端口，随便指定一个未使用的即可
+        dashboard: localhost:8080 # dashboard端口
+swagger:
+  enable: true

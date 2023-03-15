@@ -1,0 +1,59 @@
+server:
+  port: 8130 # 服务端口
+
+spring:
+  profiles:
+    active: dev # 环境设置
+  application:
+    name: service-manager # 服务名
+  datasource: # mysql数据库连接
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://123.60.178.255:3307/cloud_manager?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: cloud233
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 123.60.178.255:8844
+    sentinel:
+      transport:
+        port: 8081  # 跟控制台交流的端口，随便指定一个未使用的即可
+        dashboard: localhost:8080 # dashboard端口
+  http:
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true
+  #spring:
+  jackson: #返回json的全局时间格式
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  redis:
+    host: 123.60.178.255
+
+#mybatis日志
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  #扫描resources下的配置文件
+  mapper-locations: classpath*:/mapper/*.xml
+
+swagger:
+  enable: true
+# 设置日志级别
+#logging:
+#  level:
+#    root: INFO
+
+#service-oss:
+#  ribbon:
+#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+ribbon:
+  MaxAutoRetries: 0 # 同一实例最大重试次数，不包括首次调用，默认0
+  MaxAutoRetriesNextServer: 1 # 重试其他实例的最大重试次数，不包括首次所选的server，默认1
+  ConnectTimeout: 10000 # 连接建立的超时时长，默认1秒
+  ReadTimeout: 10000  # 处理请求的超时时间，默认1秒
+
+feign:
+  sentinel:
+    enabled: true
