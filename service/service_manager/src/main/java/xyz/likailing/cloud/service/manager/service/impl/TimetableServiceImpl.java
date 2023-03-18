@@ -3,7 +3,9 @@ package xyz.likailing.cloud.service.manager.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+
+
+
 import xyz.likailing.cloud.common.base.util.RedisCache;
 import xyz.likailing.cloud.service.manager.entity.Timetable;
 import xyz.likailing.cloud.service.manager.entity.vo.TimetableVO;
@@ -12,7 +14,6 @@ import xyz.likailing.cloud.service.manager.service.TimetableService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

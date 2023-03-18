@@ -24,12 +24,12 @@ import java.time.Duration;
 public class RedisConfig {
 
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(LettuceConnectionFactory connectionFactory){
+    public RedisTemplate<String, Serializable> redisTemplate(LettuceConnectionFactory connectionFactory){
 
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        RedisTemplate<String, Serializable> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(connectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer()); //key的序列化
-        redisTemplate.setValueSerializer(new StringRedisSerializer()); //value序列化
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer()); //value序列化
         return redisTemplate;
     }
 
@@ -41,7 +41,7 @@ public class RedisConfig {
                 .entryTtl(Duration.ofSeconds(600))
                 // 配置序列化
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()))
                 .disableCachingNullValues();
 
         RedisCacheManager cacheManager = RedisCacheManager.builder(connectionFactory)

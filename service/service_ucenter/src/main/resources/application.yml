@@ -30,8 +30,9 @@ spring:
     time-zone: GMT+8
   #redis
   redis:
-    host: 123.60.178.255
+    host: 123.60.88.31
     port: 1002
+    password: cloud233
 
 #mybatis日志
 mybatis-plus:

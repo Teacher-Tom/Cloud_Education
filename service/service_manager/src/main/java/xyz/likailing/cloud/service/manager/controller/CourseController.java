@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import xyz.likailing.cloud.common.base.result.R;
@@ -65,6 +66,7 @@ public class CourseController {
 
     @ApiOperation("新增课程信息，包含教师、班级信息")
     @PostMapping("/save")
+    @PreAuthorize("hasRole('ROLE_admin')")
     public R save(@ApiParam(value = "课程信息", required = true) @RequestBody Course course,
                   @ApiParam(value = "教师id", required = true) String teacherId,
                   @ApiParam(value = "班级id", required = true) String classId) {

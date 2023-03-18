@@ -16,17 +16,7 @@
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <dependencies>
-        <dependency>
-            <groupId>com.gitee.sunchenbin.mybatis.actable</groupId>
-            <artifactId>mybatis-enhance-actable</artifactId>
-            <version>1.5.0.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-        </dependency>
-    </dependencies>
+
 
     <build>
         <plugins>

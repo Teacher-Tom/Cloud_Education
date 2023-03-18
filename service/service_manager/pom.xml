@@ -12,13 +12,9 @@
     <artifactId>service_manager</artifactId>
     <dependencies>
         <dependency>
-            <groupId>com.gitee.sunchenbin.mybatis.actable</groupId>
-            <artifactId>mybatis-enhance-actable</artifactId>
-            <version>1.5.0.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
+            <groupId>xyz.likailing</groupId>
+            <artifactId>common_utils</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <properties>

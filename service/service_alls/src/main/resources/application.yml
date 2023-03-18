@@ -26,6 +26,7 @@ spring:
   redis:
     database: 0
     host: 123.60.88.31
+    password: cloud233
     lettuce:
       pool:
         max-active: 20
