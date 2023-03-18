@@ -1,5 +1,6 @@
 package xyz.likailing.cloud.service.base.config;
 
+import com.alibaba.fastjson.parser.ParserConfig;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -9,8 +10,10 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import xyz.likailing.cloud.common.base.util.FastJsonRedisSerializer;
 
 import java.io.Serializable;
 import java.time.Duration;
@@ -25,11 +28,15 @@ public class RedisConfig {
 
     @Bean
     public RedisTemplate<String, Serializable> redisTemplate(LettuceConnectionFactory connectionFactory){
-
+        //这里用fastjson，jackson会报错
+        FastJsonRedisSerializer fastJsonRedisSerializer = new FastJsonRedisSerializer(Object.class);
         RedisTemplate<String, Serializable> redisTemplate = new RedisTemplate<>();
+        ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
         redisTemplate.setConnectionFactory(connectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer()); //key的序列化
-        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer()); //value序列化
+        redisTemplate.setValueSerializer(fastJsonRedisSerializer); //value序列化
+        redisTemplate.setHashKeySerializer(fastJsonRedisSerializer);
+        redisTemplate.setHashValueSerializer(new StringRedisSerializer());
         return redisTemplate;
     }
 

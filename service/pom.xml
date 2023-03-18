@@ -28,6 +28,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+        </dependency>
+        <dependency>
             <groupId>xyz.likailing</groupId>
             <artifactId>service_base</artifactId>
             <version>1.0-SNAPSHOT</version>

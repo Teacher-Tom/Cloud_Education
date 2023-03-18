@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.common.base.result.ResultCodeEnum;
@@ -52,5 +53,15 @@ public class UserController {
             log.error("解析用户信息失败"+e.getMessage());
             throw new CloudException(ResultCodeEnum.FETCH_USERINFO_ERROR);
         }
+    }
+    @RequestMapping("test")
+    @PreAuthorize("hasAuthority('admin')")
+    public R testController(){
+        return R.ok().message("测试成功");
+    }
+    @RequestMapping("logout")
+    public R logout(){
+        userService.logout();
+        return R.ok().message("注销成功");
     }
 }
