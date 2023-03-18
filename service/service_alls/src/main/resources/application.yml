@@ -15,8 +15,8 @@ spring:
     name: service-alls
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: cloud233
-    url: jdbc:mysql://123.60.178.255:3307/space?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&useSSL=true
+    password: CloudEdu233
+    url: jdbc:mysql://123.60.88.31:1001/space?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&useSSL=true
     username: root
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
@@ -25,14 +25,14 @@ spring:
     active: dev
   redis:
     database: 0
-    host: 123.60.178.255
+    host: 123.60.88.31
     lettuce:
       pool:
         max-active: 20
         max-idle: 5
         max-wait: -1
         min-idle: 0
-    port: 6379
+    port: 1002
     timeout: 1800000
   servlet:
     multipart:
@@ -41,10 +41,10 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 123.60.178.255:8844
+        server-addr: 123.60.88.31:1003
     sentinel:
       transport:
-        port: 8082  # 跟控制台交流的端口，随便指定一个未使用的即可
-        dashboard: localhost:8080 # dashboard端口
+        port: 10011  # 跟控制台交流的端口，随便指定一个未使用的即可
+        dashboard: 123.60.88.31:1004 # dashboard端口
 swagger:
   enable: true

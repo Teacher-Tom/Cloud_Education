@@ -37,6 +37,9 @@ public class JwtUtils {
                 .setExpiration(DateTime.now().plusSeconds(expire).toDate())//过期时间
                 .claim("id", jwtInfo.getId())//用户id
                 .claim("userName", jwtInfo.getUserName())//用户名
+                .claim("nickName", jwtInfo.getUserName())//昵称
+                .claim("avatar",jwtInfo.getAvatar())//头像
+                .claim("role",jwtInfo.getRole())//角色
                 .signWith(SignatureAlgorithm.HS256, getKeyInstance())
                 .compact();
 
@@ -86,7 +89,11 @@ public class JwtUtils {
         if(ObjectUtils.isEmpty(jwtToken)) return null;
         Jws<Claims> claimsJws = Jwts.parser().setSigningKey(getKeyInstance()).parseClaimsJws(jwtToken);
         Claims claims = claimsJws.getBody();
-        JwtInfo jwtInfo = new JwtInfo(claims.get("id").toString(), claims.get("userName").toString());
+        JwtInfo jwtInfo = new JwtInfo(claims.get("id").toString(),
+                claims.get("userName").toString(),
+                claims.get("nickName").toString(),
+                claims.get("avatar").toString(),
+                claims.get("role").toString());
         return jwtInfo;
     }
 }

@@ -14,6 +14,9 @@ import lombok.NoArgsConstructor;
 public class JwtInfo {
     private String id;
     private String userName;
+    private String nickName;
+    private String avatar;
+    private String role;
     //权限、角色等
     //不要存敏感信息
 }

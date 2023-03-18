@@ -165,7 +165,7 @@
                     </imageTags>
                     <!--指定Dockerfile路径-->
                     <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
-                    <dockerHost>http://123.60.178.255:2376</dockerHost>
+                    <dockerHost>http://123.60.88.31:1005</dockerHost>
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>

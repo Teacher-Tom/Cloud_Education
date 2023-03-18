@@ -17,6 +17,7 @@
         <module>service_vod</module>
         <module>service_manager</module>
         <module>service_alls</module>
+        <module>service_ucenter</module>
     </modules>
 
     <properties>
