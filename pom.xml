@@ -198,6 +198,7 @@
                 <artifactId>xmlbeans</artifactId>
                 <version>${apache.xmlbeans.version}</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 

@@ -20,6 +20,7 @@ import xyz.likailing.cloud.service.entity.LoginUserDetails;
 import xyz.likailing.cloud.service.entity.User;
 import xyz.likailing.cloud.service.entity.vo.LoginVo;
 import xyz.likailing.cloud.service.entity.vo.RegisterVo;
+import xyz.likailing.cloud.service.mapper.AuthorityMapper;
 import xyz.likailing.cloud.service.service.UserService;
 import xyz.likailing.cloud.service.mapper.UserMapper;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private AuthorityMapper authorityMapper;
     @Override
     public void register(RegisterVo registerVo) {
         String nickname = registerVo.getNickname();
@@ -133,8 +136,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             throw new CloudException(ResultCodeEnum.LOGIN_MOBILE_ERROR);
         }
         String password = user.getPassword();
-        List<String> list = Arrays.asList("test","admin");
-        LoginUserDetails loginUserDetails = new LoginUserDetails(user,list);
+        List<String> auth = authorityMapper.selectParamsByUserId(user.getId());
+        LoginUserDetails loginUserDetails = new LoginUserDetails(user,auth);
         return loginUserDetails;
     }
 

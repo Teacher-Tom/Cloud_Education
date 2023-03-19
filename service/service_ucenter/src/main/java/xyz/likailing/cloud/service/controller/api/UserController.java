@@ -55,7 +55,7 @@ public class UserController {
         }
     }
     @RequestMapping("test")
-    @PreAuthorize("hasAuthority('admin')")
+    @PreAuthorize("hasAuthority('auth_test')")
     public R testController(){
         return R.ok().message("测试成功");
     }
