@@ -40,8 +40,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
         //解析token
         if(!JwtUtils.checkJwtTToken(request)){
-            throw new CloudException(ResultCodeEnum.FETCH_ACCESSTOKEN_FAILD);
+            throw new CloudException(ResultCodeEnum.LOGIN_AUTH);
         }
+
         JwtInfo info = JwtUtils.getUserIdByJwtToken(request);
         //从redis中获取用户信息
         if (Objects.isNull(info)){

@@ -27,6 +27,8 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/admin/manager/course")
+@PreAuthorize("hasAuthority('auth_course')")
+@CrossOrigin
 public class CourseController {
 
     @Autowired
@@ -66,7 +68,6 @@ public class CourseController {
 
     @ApiOperation("新增课程信息，包含教师、班级信息")
     @PostMapping("/save")
-    @PreAuthorize("hasAuthority('admin')")
     public R save(@ApiParam(value = "课程信息", required = true) @RequestBody Course course,
                   @ApiParam(value = "教师id", required = true) String teacherId,
                   @ApiParam(value = "班级id", required = true) String classId) {

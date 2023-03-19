@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -36,6 +37,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private UserDetailsService userDetailsService;
+
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security
@@ -58,19 +62,20 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 //允许的授权范围，客户端的权限，all只是一种标识，可以自定义
                 .scopes("all")
                 //false跳转到授权页面
-                .autoApprove(false)
+                .autoApprove(false);
                 //授权码模式的回调地址
-                .redirectUris("http://www.baidu.com");
+                //.redirectUris("http://www.baidu.com");
 
     }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
+                .userDetailsService(userDetailsService)
                 .authorizationCodeServices(authorizationCodeServices())
                 .authenticationManager(authenticationManager)
                 .tokenServices(tokenServices())
-                .allowedTokenEndpointRequestMethods(HttpMethod.POST);
+                .allowedTokenEndpointRequestMethods(HttpMethod.GET,HttpMethod.POST);
     }
     /**
      * 授权码模式
@@ -104,7 +109,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         //access_token的过期时间
         services.setAccessTokenValiditySeconds(60*60*24*3);
         //refresh_token的过期时间
-        services.setRefreshTokenValiditySeconds(60*60*24*3);
+        services.setRefreshTokenValiditySeconds(60*60*24*5);
         return services;
     }
 }

@@ -18,9 +18,12 @@ import xyz.likailing.cloud.common.base.util.*;
 import xyz.likailing.cloud.service.base.exception.CloudException;
 import xyz.likailing.cloud.service.entity.LoginUserDetails;
 import xyz.likailing.cloud.service.entity.User;
+import xyz.likailing.cloud.service.entity.UserRole;
 import xyz.likailing.cloud.service.entity.vo.LoginVo;
 import xyz.likailing.cloud.service.entity.vo.RegisterVo;
 import xyz.likailing.cloud.service.mapper.AuthorityMapper;
+import xyz.likailing.cloud.service.mapper.RoleMapper;
+import xyz.likailing.cloud.service.mapper.UserRoleMapper;
 import xyz.likailing.cloud.service.service.UserService;
 import xyz.likailing.cloud.service.mapper.UserMapper;
 import org.springframework.stereotype.Service;
@@ -44,6 +47,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private UserRoleMapper userRoleMapper;
 
     @Autowired
     private AuthorityMapper authorityMapper;
@@ -64,14 +69,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             throw new CloudException(ResultCodeEnum.PARAM_ERROR);
         }
         //校验验证码
-
+        //用户是否已注册
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username",username);
         Integer count = baseMapper.selectCount(queryWrapper);
         if(count>0){
             throw new CloudException(ResultCodeEnum.REGISTER_MOBLE_ERROR);
         }
-
+        //保存数据到库中
         User user = new User();
         user.setNickname(nickname);
         user.setUsername(username);
@@ -79,6 +84,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         user.setAvatar("https://cloud-file-230201-1.oss-cn-hangzhou.aliyuncs.com/avatar/2023/02/01/QQ%E5%9B%BE%E7%89%8720221017125912.jpg");
         user.setRole(role);
         baseMapper.insert(user);
+        //保存用户-角色关系
+        String role_id;
+        switch (role){
+            case "student":
+                role_id = "2";
+                break;
+            case "teacher":
+                role_id = "3";
+                break;
+            case "admin":
+                role_id = "4";
+                break;
+            default:
+                role_id = "1";
+        }
+        UserRole userRole = new UserRole();
+        userRole.setUserId(user.getId());
+        userRole.setRoleId(role_id);
+        userRoleMapper.insert(userRole);
 
     }
 
