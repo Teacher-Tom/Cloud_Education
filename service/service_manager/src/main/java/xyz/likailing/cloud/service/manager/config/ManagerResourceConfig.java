@@ -37,13 +37,15 @@ public class ManagerResourceConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/**").access("#oauth2.hasScope('all')")
                 .antMatchers("/swagger-ui.html",
                         "/swagger-ui/*",
                         "/swagger-resources/**",
                         "/v2/api-docs",
                         "/v3/api-docs",
-                        "/webjars/**").anonymous()
+                        "/webjars/**",
+                        "/swagger-ui/index.html").anonymous()
+                .antMatchers("/**").access("#oauth2.hasScope('all')")
+                
                 .anyRequest().authenticated();
     }
 }
