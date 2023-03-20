@@ -20,7 +20,5 @@ public interface TimetableService extends IService<Timetable> {
 
     List<Timetable> tempList(TimetableVO timetableVO);
 
-    boolean saveTempList();
-
-    boolean removeTempElement(Timetable timetable);
+    boolean saveTempList(List<Timetable> tempList);
 }

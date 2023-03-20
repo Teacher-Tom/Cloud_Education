@@ -5,7 +5,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-
+import org.springframework.util.ObjectUtils;
 import xyz.likailing.cloud.common.base.util.RedisCache;
 import xyz.likailing.cloud.service.manager.entity.Timetable;
 import xyz.likailing.cloud.service.manager.entity.vo.TimetableVO;
@@ -28,9 +28,6 @@ import java.util.List;
 @Service
 public class TimetableServiceImpl extends ServiceImpl<TimetableMapper, Timetable> implements TimetableService {
 
-    @Autowired
-    private RedisCache redisCache;
-
     @Override
     public List<Timetable> listCourseTime(String courseId) {
         QueryWrapper<Timetable> wrapper = new QueryWrapper<>();
@@ -40,43 +37,27 @@ public class TimetableServiceImpl extends ServiceImpl<TimetableMapper, Timetable
 
     @Override
     public List<Timetable> tempList(TimetableVO timetableVO) {
+        if(ObjectUtils.isEmpty(timetableVO)) return null;
+
+        ArrayList<Timetable> timetables = new ArrayList<>();
         Integer beginWeek = timetableVO.getBeginWeek();
         Integer endWeek = timetableVO.getEndWeek();
-        List<Timetable> timetables = redisCache.getCacheObject("tempSchList");
-        if(timetables == null) {
-            timetables = new ArrayList<>();
-        }
         for (int i = beginWeek; i <= endWeek; i++) {
             Timetable timetable = new Timetable();
             BeanUtils.copyProperties(timetableVO, timetable);
             timetable.setWeek(i);
             timetables.add(timetable);
         }
-        redisCache.setCacheObject("tempSchList", timetables);
         return timetables;
     }
 
     @Override
-    public boolean saveTempList() {
-        List<Timetable> timetables = redisCache.getCacheObject("tempSchList");
-        if(timetables == null) {
-            return false;
-        }
+    public boolean saveTempList(List<Timetable> tempList) {
         int insert = 0;
-        for (Timetable timetable : timetables) {
+        for (Timetable timetable : tempList) {
             insert += baseMapper.insert(timetable);
         }
         return (insert > 0);
     }
 
-    @Override
-    public boolean removeTempElement(Timetable timetable) {
-        List<Timetable> timetables = redisCache.getCacheObject("tempSchList");
-        if(timetables == null) {
-            return false;
-        }
-        boolean remove = timetables.remove(timetable);
-        redisCache.setCacheList("tempSchList", timetables);
-        return remove;
-    }
 }
