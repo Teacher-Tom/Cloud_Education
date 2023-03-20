@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.manager.entity.CourseHomework;
+import xyz.likailing.cloud.service.manager.entity.CourseHomeworkContext;
 import xyz.likailing.cloud.service.manager.entity.CourseHomeworkSubmit;
-import xyz.likailing.cloud.service.manager.entity.vo.HomeworkVO;
+import xyz.likailing.cloud.service.manager.service.CourseHomeworkContextService;
 import xyz.likailing.cloud.service.manager.service.CourseHomeworkService;
 import xyz.likailing.cloud.service.manager.service.CourseHomeworkSubmitService;
 
@@ -35,12 +36,15 @@ public class CourseHomeworkController {
     @Autowired
     private CourseHomeworkService homeworkService;
     @Autowired
+    private CourseHomeworkContextService contextService;
+    @Autowired
     private CourseHomeworkSubmitService submitService;
 
     @ApiOperation("保存作业信息")
     @PostMapping("/save")
-    public R saveHomework(@ApiParam("作业信息") HomeworkVO homeworkVO) {
-        String id = homeworkService.saveHomework(homeworkVO);
+    public R saveHomework(@ApiParam("作业基本信息") CourseHomework homework,
+                          @ApiParam("作业详细内容") List<CourseHomeworkContext> contexts) {
+        String id = homeworkService.saveHomework(homework, contexts);
         if(id != null) {
             return R.ok().data("homeworkId", id).message("保存成功");
         }
@@ -55,19 +59,29 @@ public class CourseHomeworkController {
     }
 
     @ApiOperation("根据id获取作业详细信息")
-    @GetMapping("/get")
+    @GetMapping("/get-info")
     public R getHomework(@ApiParam(value = "作业id", required = true) String id) {
-        HomeworkVO homework = homeworkService.getHomework(id);
-        QueryWrapper<CourseHomeworkSubmit> wrapper = new QueryWrapper<>();
-        wrapper.eq("homework_id", id);
-        List<CourseHomeworkSubmit> submits = submitService.list(wrapper);
+        //作业基本信息
+        CourseHomework homework = homeworkService.getById(id);
+        //作业详细内容
+        QueryWrapper<CourseHomeworkContext> contextQueryWrapper = new QueryWrapper<>();
+        contextQueryWrapper.eq("homework_id", id);
+        List<CourseHomeworkContext> contexts = contextService.list(contextQueryWrapper);
+        //学生提交情况
+        QueryWrapper<CourseHomeworkSubmit> submitQueryWrapper = new QueryWrapper<>();
+        submitQueryWrapper.eq("homework_id", id);
+        List<CourseHomeworkSubmit> submits = submitService.list(submitQueryWrapper);
         HashSet<String> students = new HashSet<>();
         for (CourseHomeworkSubmit submit : submits) {
             String studentId = submit.getStudentId();
             students.add(studentId);
         }
         if(!ObjectUtils.isEmpty(homework)) {
-            return R.ok().data("homework", homework).data("studentNumber", students.size()).data("submits", submits);
+            return R.ok()
+                    .data("homework", homework)
+                    .data("contexts", contexts)
+                    .data("studentNumber", students.size())
+                    .data("submits", submits);
         }
         return R.error().message("数据不存在");
     }

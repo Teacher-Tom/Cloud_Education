@@ -1,12 +1,8 @@
 package xyz.likailing.cloud.service.manager.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ObjectUtils;
 import xyz.likailing.cloud.service.manager.entity.CourseHomework;
 import xyz.likailing.cloud.service.manager.entity.CourseHomeworkContext;
-import xyz.likailing.cloud.service.manager.entity.vo.HomeworkVO;
 import xyz.likailing.cloud.service.manager.mapper.CourseHomeworkContextMapper;
 import xyz.likailing.cloud.service.manager.mapper.CourseHomeworkMapper;
 import xyz.likailing.cloud.service.manager.service.CourseHomeworkService;
@@ -30,15 +26,12 @@ public class CourseHomeworkServiceImpl extends ServiceImpl<CourseHomeworkMapper,
     private CourseHomeworkContextMapper contextMapper;
 
     @Override
-    public String saveHomework(HomeworkVO homeworkVO) {
+    public String saveHomework(CourseHomework homework, List<CourseHomeworkContext> contexts) {
         //存储作业基本信息
-        CourseHomework homework = new CourseHomework();
-        BeanUtils.copyProperties(homeworkVO, homework);
         int insertHomework = baseMapper.insert(homework);
         if(insertHomework <= 0) return null;
         //存储作业内容
         String id = homework.getId();
-        List<CourseHomeworkContext> contexts = homeworkVO.getContexts();
         int insertContext = 0;
         for (CourseHomeworkContext context : contexts) {
             context.setHomeworkId(id);
@@ -53,20 +46,4 @@ public class CourseHomeworkServiceImpl extends ServiceImpl<CourseHomeworkMapper,
         return baseMapper.selectTeacherHomework(teacherId);
     }
 
-    @Override
-    public HomeworkVO getHomework(String id) {
-        HomeworkVO homeworkVO = new HomeworkVO();
-        CourseHomework homework = baseMapper.selectById(id);
-        if(!ObjectUtils.isEmpty(homework)) {
-            //作业基本信息
-            BeanUtils.copyProperties(homework, homeworkVO);
-            //作业详细内容
-            QueryWrapper<CourseHomeworkContext> wrapper = new QueryWrapper<>();
-            wrapper.eq("homework_id", id);
-            List<CourseHomeworkContext> contexts = contextMapper.selectList(wrapper);
-            homeworkVO.setContexts(contexts);
-            return homeworkVO;
-        }
-        return null;
-    }
 }
