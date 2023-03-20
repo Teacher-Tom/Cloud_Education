@@ -1,10 +1,11 @@
 package xyz.likailing.cloud.service.manager.entity.vo;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
+import xyz.likailing.cloud.service.manager.entity.CourseHomeworkContext;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class HomeworkVO implements Serializable {
@@ -31,9 +32,5 @@ public class HomeworkVO implements Serializable {
 
     private String isGlobal;
 
-    private String context;
-
-    private String refAnswer;
-
-    private String pictureUrl;
+    private List<CourseHomeworkContext> contexts;
 }
