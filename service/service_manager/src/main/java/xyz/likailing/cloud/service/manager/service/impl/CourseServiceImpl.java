@@ -40,12 +40,44 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 
     @Override
     public List<CourseVO> listYearTermStudent(CourseQueryVO courseQueryVO) {
-        return baseMapper.selectYTStuCourses(courseQueryVO);
+        QueryWrapper<CourseVO> wrapper = new QueryWrapper<>();
+        wrapper.orderByAsc("mc.id");
+        if(!ObjectUtils.isEmpty(courseQueryVO)) {
+            String id = courseQueryVO.getId();
+            Integer year = courseQueryVO.getYear();
+            Integer term = courseQueryVO.getTerm();
+            if(!ObjectUtils.isEmpty(id)) {
+                wrapper.eq("s.id", id);
+            }
+            if(!ObjectUtils.isEmpty(year) && year > 0) {
+                wrapper.eq("mc.year", year);
+            }
+            if(!ObjectUtils.isEmpty(term) && term > 0) {
+                wrapper.eq("mc.term", term);
+            }
+        }
+        return baseMapper.selectYTStuCourses(wrapper);
     }
 
     @Override
     public List<CourseVO> listYearTermTeacher(CourseQueryVO courseQueryVO) {
-        return baseMapper.selectYTTeaCourses(courseQueryVO);
+        QueryWrapper<CourseVO> wrapper = new QueryWrapper<>();
+        wrapper.orderByAsc("mc.id");
+        if(!ObjectUtils.isEmpty(courseQueryVO)) {
+            String id = courseQueryVO.getId();
+            Integer year = courseQueryVO.getYear();
+            Integer term = courseQueryVO.getTerm();
+            if(!ObjectUtils.isEmpty(id)) {
+                wrapper.eq("t.id", id);
+            }
+            if(!ObjectUtils.isEmpty(year) && year > 0) {
+                wrapper.eq("mc.year", year);
+            }
+            if(!ObjectUtils.isEmpty(term) && term > 0) {
+                wrapper.eq("mc.term", term);
+            }
+        }
+        return baseMapper.selectYTTeaCourses(wrapper);
     }
 
     @Override
@@ -57,7 +89,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     public IPage<AdminCourseVO> listPage(Long page, Long limit, AdminCourseQueryVO adminCourseQueryVO) {
         Page<AdminCourseVO> adminCourseVOPage = new Page<>(page, limit);
         QueryWrapper<AdminCourseVO> wrapper = new QueryWrapper<>();
-        wrapper.orderByAsc("c.id");
+        wrapper.orderByAsc("mc.id");
         if(!ObjectUtils.isEmpty(adminCourseQueryVO)) {
             String courseId = adminCourseQueryVO.getCourseId();
             String courseName = adminCourseQueryVO.getCourseName();
@@ -65,19 +97,19 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
             Integer year = adminCourseQueryVO.getYear();
             Integer term = adminCourseQueryVO.getTerm();
             if(!ObjectUtils.isEmpty(courseId)) {
-                wrapper.eq("c.id", courseId);
+                wrapper.eq("mc.id", courseId);
             }
             if(!ObjectUtils.isEmpty(courseName)) {
-                wrapper.like("c.name", courseName);
+                wrapper.like("mc.name", courseName);
             }
             if(!ObjectUtils.isEmpty(department)) {
-                wrapper.eq("c.department", department);
+                wrapper.eq("mc.department", department);
             }
             if(!ObjectUtils.isEmpty(year) && year > 0) {
-                wrapper.eq("c.year", year);
+                wrapper.eq("mc.year", year);
             }
             if(!ObjectUtils.isEmpty(term) && term > 0) {
-                wrapper.eq("c.term", term);
+                wrapper.eq("mc.term", term);
             }
         }
         List<AdminCourseVO> courses = baseMapper.selectPageCourses(adminCourseVOPage, wrapper);

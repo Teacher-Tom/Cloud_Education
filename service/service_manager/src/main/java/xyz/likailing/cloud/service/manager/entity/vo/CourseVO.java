@@ -20,4 +20,6 @@ public class CourseVO implements Serializable {
     private Integer beginWeek;
 
     private Integer endWeek;
+
+    private String coverUrl;
 }

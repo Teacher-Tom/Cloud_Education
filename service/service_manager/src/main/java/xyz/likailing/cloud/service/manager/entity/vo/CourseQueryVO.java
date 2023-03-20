@@ -20,4 +20,10 @@ public class CourseQueryVO implements Serializable {
 
     @ApiModelProperty("学期")
     private Integer term;
+
+    public CourseQueryVO(String id, Integer year, Integer term) {
+        this.id = id;
+        this.year = year;
+        this.term = term;
+    }
 }

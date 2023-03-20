@@ -5,53 +5,51 @@
     <select id="selectYTStuCourses" parameterType="xyz.likailing.cloud.service.manager.entity.vo.CourseQueryVO"
             resultType="xyz.likailing.cloud.service.manager.entity.vo.CourseVO">
         SElECT
-            c.id AS courseId,
-            c.name AS courseName,
+            mc.id AS courseId,
+            mc.name AS courseName,
             t.name AS teacherName,
             cl.name AS className,
-            c.begin_week AS beginWeek,
-            c.end_week AS endWeek
+            mc.begin_week AS beginWeek,
+            mc.end_week AS endWeek,
+            mc.cover_url AS coverUrl
         FROM
-            manager_course c,
+            manager_course mc,
             manager_student s,
             manager_class cl,
             manager_teacher t,
             manager_class_course cc,
             manager_teacher_course tc
         WHERE
-            {#id} = s.id
-            AND s.class_id = cl.id
+            s.class_id = cl.id
             AND cl.id = cc.class_id
-            AND c.id = cc.course_id
-            AND {#year}= c.year
-            AND {#term} = c.term
-            AND c.id = tc.course_id
+            AND mc.id = cc.course_id
+            AND mc.id = tc.course_id
             AND t.id = tc.teacher_id
+            ${ew.customSqlSegment}
     </select>
 
     <select id="selectYTTeaCourses" parameterType="xyz.likailing.cloud.service.manager.entity.vo.CourseQueryVO"
             resultType="xyz.likailing.cloud.service.manager.entity.vo.CourseVO">
         SElECT
-            c.id AS courseId,
-            c.name AS courseName,
+            mc.id AS courseId,
+            mc.name AS courseName,
             t.name AS teacherName,
             cl.name AS className,
-            c.begin_week AS beginWeek,
-            c.end_week AS endWeek
+            mc.begin_week AS beginWeek,
+            mc.end_week AS endWeek,
+            mc.cover_url AS coverUrl
         FROM
-            manager_course c,
+            manager_course mc,
             manager_class cl,
             manager_teacher t,
             manager_class_course cc,
             manager_teacher_course tc
         WHERE
-            {#id} = t.id
-            AND t.id = tc.teacher_id
-            AND c.id = tc.course_id
-            AND {#year}= c.year
-            AND {#term} = c.term
-            AND c.id = cc.course_id
+            t.id = tc.teacher_id
+            AND mc.id = tc.course_id
+            AND mc.id = cc.course_id
             AND cl.id = cc.class_id
+            ${ew.customSqlSegment}
     </select>
 
     <select id="selectAllCourses" resultType="xyz.likailing.cloud.service.manager.entity.vo.AdminCourseVO">
