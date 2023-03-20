@@ -45,6 +45,8 @@ public class User implements Serializable {
      */
     private String nickname;
 
+    private String roleId;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
