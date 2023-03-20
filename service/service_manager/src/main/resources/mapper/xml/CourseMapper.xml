@@ -56,57 +56,57 @@
 
     <select id="selectAllCourses" resultType="xyz.likailing.cloud.service.manager.entity.vo.AdminCourseVO">
         SElECT
-            c.id AS courseId,
-            c.name AS courseName,
-            c.credit_hour AS creditHour,
-            c.credit_num AS creditNum,
-            c.type AS type,
-            c.year AS year,
-            c.term AS term,
-            c.begin_week AS beginWeek,
-            c.end_week AS endWeek,
-            c.department AS department,
+            mc.id AS courseId,
+            mc.name AS courseName,
+            mc.credit_hour AS creditHour,
+            mc.credit_num AS creditNum,
+            mc.type AS type,
+            mc.year AS year,
+            mc.term AS term,
+            mc.begin_week AS beginWeek,
+            mc.end_week AS endWeek,
+            mc.department AS department,
             t.name AS teacherName,
             cl.name AS className,
-            c.cover_url AS coverUrl
+            mc.cover_url AS coverUrl
         FROM
-            manager_course c,
+            manager_course mc,
             manager_teacher t,
             manager_teacher_course tc,
             manager_class cl,
             manager_class_course clc
         WHERE
-            c.id = tc.course_id
+            mc.id = tc.course_id
             AND t.id = tc.teacher_id
-            AND c.id = clc.course_id
+            AND mc.id = clc.course_id
             AND cl.id = clc.class_id
     </select>
 
     <select id="selectPageCourses" resultType="xyz.likailing.cloud.service.manager.entity.vo.AdminCourseVO">
         SElECT
-            c.id AS courseId,
-            c.name AS courseName,
-            c.credit_hour AS creditHour,
-            c.credit_num AS creditNum,
-            c.type AS type,
-            c.year AS year,
-            c.term AS term,
-            c.begin_week AS beginWeek,
-            c.end_week AS endWeek,
-            c.department AS department,
+            mc.id AS courseId,
+            mc.name AS courseName,
+            mc.credit_hour AS creditHour,
+            mc.credit_num AS creditNum,
+            mc.type AS type,
+            mc.year AS year,
+            mc.term AS term,
+            mc.begin_week AS beginWeek,
+            mc.end_week AS endWeek,
+            mc.department AS department,
             t.name AS teacherName,
             cl.name AS className,
-            c.cover_url AS coverUrl
+            mc.cover_url AS coverUrl
         FROM
-            manager_course c,
+            manager_course mc,
             manager_teacher t,
             manager_teacher_course tc,
             manager_class cl,
             manager_class_course clc
         WHERE
-            c.id = tc.course_id
+            mc.id = tc.course_id
           AND t.id = tc.teacher_id
-          AND c.id = clc.course_id
+          AND mc.id = clc.course_id
           AND cl.id = clc.class_id
         ${ew.customSqlSegment}
     </select>
