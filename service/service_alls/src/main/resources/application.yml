@@ -9,7 +9,7 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
-  port: 9090
+  port: 8001
 spring:
   application:
     name: service-alls
