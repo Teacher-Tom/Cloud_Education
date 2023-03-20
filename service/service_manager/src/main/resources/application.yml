@@ -40,6 +40,7 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   #扫描resources下的配置文件
   mapper-locations: classpath*:/mapper/*.xml
+  type-aliases-package: xyz.likailing.cloud.service.manager.entity
 
 swagger:
   enable: true

@@ -25,9 +25,9 @@ public class CodeGenerator {
     public void genGode(){
         String prefix = "cloud_";
         String moduleName = "manager";
-        String url = "jdbc:mysql://123.60.178.255:3307/cloud_manager?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8";
+        String url = "jdbc:mysql://123.60.88.31:1001/cloud_manager?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8";
         String username = "root";
-        String password = "cloud233";
+        String password = "CloudEdu233";
 
         // 1、创建代码生成器
         AutoGenerator mpg = new AutoGenerator();
