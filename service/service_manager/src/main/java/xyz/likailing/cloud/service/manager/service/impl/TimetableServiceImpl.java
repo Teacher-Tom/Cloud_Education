@@ -31,6 +31,8 @@ public class TimetableServiceImpl extends ServiceImpl<TimetableMapper, Timetable
     @Autowired
     private RedisCache redisCache;
 
+    private final String key = "tempSchList";
+
     @Override
     public List<Timetable> listCourseTime(String courseId) {
         QueryWrapper<Timetable> wrapper = new QueryWrapper<>();
@@ -39,11 +41,12 @@ public class TimetableServiceImpl extends ServiceImpl<TimetableMapper, Timetable
     }
 
     @Override
-    public List<Timetable> tempList(TimetableVO timetableVO) {
+    public List<Timetable> tempList(String userId, TimetableVO timetableVO) {
         Integer beginWeek = timetableVO.getBeginWeek();
         Integer endWeek = timetableVO.getEndWeek();
-        List<Timetable> timetables = redisCache.getCacheObject("tempSchList");
-        if(timetables == null) {
+
+        List<Timetable> timetables = redisCache.getCacheList(key + userId);
+        if(ObjectUtils.isEmpty(timetables)) {
             timetables = new ArrayList<>();
         }
         for (int i = beginWeek; i <= endWeek; i++) {
@@ -52,14 +55,15 @@ public class TimetableServiceImpl extends ServiceImpl<TimetableMapper, Timetable
             timetable.setWeek(i);
             timetables.add(timetable);
         }
-        redisCache.setCacheObject("tempSchList", timetables);
+        redisCache.setCacheList(key + userId, timetables);
         return timetables;
     }
 
     @Override
-    public boolean saveTempList() {
-        List<Timetable> timetables = redisCache.getCacheObject("tempSchList");
-        if(timetables == null) {
+    public boolean saveTempList(String userId) {
+        List<Timetable> timetables = redisCache.getCacheList(key + userId);
+        redisCache.deleteObject(key + userId); //存储到数据库后删除缓存数据
+        if(ObjectUtils.isEmpty(timetables)) {
             return false;
         }
         int insert = 0;
@@ -70,13 +74,13 @@ public class TimetableServiceImpl extends ServiceImpl<TimetableMapper, Timetable
     }
 
     @Override
-    public boolean removeTempElement(Timetable timetable) {
-        List<Timetable> timetables = redisCache.getCacheObject("tempSchList");
-        if(timetables == null) {
+    public boolean removeTempElement(String userId, Timetable timetable) {
+        List<Timetable> timetables = redisCache.getCacheList(key + userId);
+        if(ObjectUtils.isEmpty(timetables)) {
             return false;
         }
         boolean remove = timetables.remove(timetable);
-        redisCache.setCacheList("tempSchList", timetables);
+        redisCache.setCacheList(key + userId, timetables);
         return remove;
     }
 

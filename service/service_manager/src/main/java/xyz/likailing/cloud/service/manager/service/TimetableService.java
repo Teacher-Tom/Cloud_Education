@@ -18,9 +18,9 @@ public interface TimetableService extends IService<Timetable> {
 
     List<Timetable> listCourseTime(String courseId);
 
-    List<Timetable> tempList(TimetableVO timetableVO);
+    List<Timetable> tempList(String userId, TimetableVO timetableVO);
 
-    boolean saveTempList();
+    boolean saveTempList(String userId);
 
-    boolean removeTempElement(Timetable timetable);
+    boolean removeTempElement(String userId, Timetable timetable);
 }

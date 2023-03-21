@@ -38,6 +38,6 @@ public class RedisTest {
 //            Timetable o1 = (Timetable) o;
 //            System.out.println(o1);
 //        }
-        System.out.println(redisCache.deleteObject("tempList"));
+//        System.out.println(redisCache.deleteObject("tempList"));
     }
 }
