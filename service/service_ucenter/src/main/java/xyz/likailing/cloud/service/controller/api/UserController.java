@@ -11,14 +11,8 @@ import xyz.likailing.cloud.common.base.result.ResultCodeEnum;
 import xyz.likailing.cloud.common.base.util.JwtInfo;
 import xyz.likailing.cloud.common.base.util.JwtUtils;
 import xyz.likailing.cloud.service.base.exception.CloudException;
-import xyz.likailing.cloud.service.entity.User;
 import xyz.likailing.cloud.service.entity.vo.LoginVo;
 import xyz.likailing.cloud.service.entity.vo.RegisterVo;
-import xyz.likailing.cloud.service.manager.entity.vo.CourseQueryVO;
-import xyz.likailing.cloud.service.manager.entity.vo.CourseVO;
-import xyz.likailing.cloud.service.manager.service.CourseService;
-import xyz.likailing.cloud.service.manager.service.StudentService;
-import xyz.likailing.cloud.service.manager.service.TeacherService;
 import xyz.likailing.cloud.service.service.UserService;
 
 import javax.servlet.http.HttpServlet;
@@ -37,8 +31,6 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private CourseService courseService;
 
     @ApiOperation(value = "用户注册")
     @PostMapping("register")
@@ -63,23 +55,6 @@ public class UserController {
             log.error("解析用户信息失败"+e.getMessage());
             throw new CloudException(ResultCodeEnum.FETCH_USERINFO_ERROR);
         }
-    }
-
-    @ApiOperation("根据用户id获取该用户的课程列表")
-    public R getUserCourse(String id) {
-        User user = userService.getById(id);
-        String role = user.getRole();
-        String roleId = user.getRoleId();
-        CourseQueryVO courseQueryVO = new CourseQueryVO(roleId, null, null);
-        if("student".equals(role)) {
-            List<CourseVO> courses = courseService.listYearTermStudent(courseQueryVO);
-            return R.ok().data("courses", courses);
-        }
-        else if("teacher".equals(role)) {
-            List<CourseVO> courses = courseService.listYearTermTeacher(courseQueryVO);
-            return R.ok().data("courses", courses);
-        }
-        return R.error().message("用户角色错误");
     }
 
     @RequestMapping("test")
