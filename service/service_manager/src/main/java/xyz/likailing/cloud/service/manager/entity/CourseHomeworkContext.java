@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 /**
  * <p>
  * 
@@ -18,12 +20,14 @@ import lombok.experimental.Accessors;
  * @since 2023-03-20
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @ApiModel(value="CourseHomeworkContext对象", description="")
-public class CourseHomeworkContext extends BaseEntity {
+public class CourseHomeworkContext implements Serializable {
 
     private static final long serialVersionUID=1L;
+
+    @TableId(type = IdType.ASSIGN_ID)
+    private String id;
 
     private String homeworkId;
 
