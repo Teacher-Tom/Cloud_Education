@@ -25,7 +25,6 @@
             AND mc.id = cc.course_id
             AND mc.id = tc.course_id
             AND t.id = tc.teacher_id
-            ${ew.customSqlSegment}
     </select>
 
     <select id="selectYTTeaCourses" parameterType="xyz.likailing.cloud.service.manager.entity.vo.CourseQueryVO"
@@ -49,7 +48,6 @@
             AND mc.id = tc.course_id
             AND mc.id = cc.course_id
             AND cl.id = cc.class_id
-            ${ew.customSqlSegment}
     </select>
 
     <select id="selectAllCourses" resultType="xyz.likailing.cloud.service.manager.entity.vo.AdminCourseVO">
@@ -106,7 +104,6 @@
           AND t.id = tc.teacher_id
           AND mc.id = clc.course_id
           AND cl.id = clc.class_id
-        ${ew.customSqlSegment}
     </select>
 
 </mapper>
