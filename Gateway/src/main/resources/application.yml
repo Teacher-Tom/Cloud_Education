@@ -1,0 +1,15 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 123.60.88.31:1003
+    gateway:
+      routes:
+        - id: service-ucenter
+          uri: lb://service-ucenter
+          predicates:
+            - Path=/api/ucenter/**

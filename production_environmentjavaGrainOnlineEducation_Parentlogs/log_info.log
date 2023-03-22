@@ -2969,3 +2969,13 @@ Using generated security password: 0e3f547d-6d69-4b99-90b1-96c0a05bb533
 2023-03-22 10:54:47 |INFO  |RMI TCP Connection(1)-192.168.3.124 |HikariDataSource.java:123 |com.zaxxer.hikari.HikariDataSource |HikariPool-1 - Start completed.
 2023-03-22 10:54:47 |INFO  |boundedElastic-1 |EpollProvider.java:68 |io.lettuce.core.EpollProvider |Starting without optional epoll library
 2023-03-22 10:54:47 |INFO  |boundedElastic-1 |KqueueProvider.java:70 |io.lettuce.core.KqueueProvider |Starting without optional kqueue library
+2023-03-22 13:41:35 |INFO  |SpringContextShutdownHook |NacosServiceRegistry.java:74 |com.alibaba.cloud.nacos.registry.NacosServiceRegistry |De-registering from Nacos Server now...
+2023-03-22 13:41:35 |INFO  |SpringContextShutdownHook |NacosServiceRegistry.java:93 |com.alibaba.cloud.nacos.registry.NacosServiceRegistry |De-registration finished.
+2023-03-22 13:41:35 |INFO  |SpringContextShutdownHook |ExecutorConfigurationSupport.java:208 |org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor |Shutting down ExecutorService 'applicationTaskExecutor'
+2023-03-22 13:41:36 |INFO  |SpringContextShutdownHook |HikariDataSource.java:350 |com.zaxxer.hikari.HikariDataSource |HikariPool-1 - Shutdown initiated...
+2023-03-22 13:41:36 |INFO  |SpringContextShutdownHook |HikariDataSource.java:352 |com.zaxxer.hikari.HikariDataSource |HikariPool-1 - Shutdown completed.
+2023-03-22 13:41:44 |INFO  |main |SpringApplication.java:655 |xyz.likailing.cloud.service.manager.ServiceManagerApplication |The following profiles are active: dev
+2023-03-22 13:41:45 |INFO  |main |RepositoryConfigurationDelegate.java:249 |org.springframework.data.repository.config.RepositoryConfigurationDelegate |Multiple Spring Data modules found, entering strict repository configuration mode!
+2023-03-22 13:41:45 |INFO  |main |RepositoryConfigurationDelegate.java:127 |org.springframework.data.repository.config.RepositoryConfigurationDelegate |Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2023-03-22 13:41:45 |INFO  |main |RepositoryConfigurationDelegate.java:187 |org.springframework.data.repository.config.RepositoryConfigurationDelegate |Finished Spring Data repository scanning in 11ms. Found 0 Redis repository interfaces.
+2023-03-22 13:41:45 |INFO  |main |GenericScope.java:295 |org.springframework.cloud.context.scope.GenericScope |BeanFactory id=4c77393b-8677-3061-9a97-a11cb49d3756

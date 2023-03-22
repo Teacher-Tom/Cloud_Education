@@ -37,6 +37,7 @@ public class ManagerResourceConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers("/**").anonymous()
                 .antMatchers("/swagger-ui.html",
                         "/swagger-ui/*",
                         "/swagger-resources/**",
