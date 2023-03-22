@@ -64,13 +64,13 @@ public class CourseController {
     }
 
     @ApiOperation("新增课程信息，包含教师、班级信息")
-    @PostMapping("/save")
-    public R save(@ApiParam(value = "课程信息", required = true) @RequestBody Course course,
-                  @ApiParam(value = "教师id", required = true) String teacherId,
-                  @ApiParam(value = "班级id", required = true) String classId) {
+    @PostMapping("/save/{teacherId}/{classId}")
+    public R save(@ApiParam(value = "教师id", required = true) @PathVariable String teacherId,
+                  @ApiParam(value = "班级id", required = true) @PathVariable String classId,
+                  @ApiParam(value = "课程信息", required = true) @RequestBody Course course) {
         boolean save = courseService.saveCourse(course, teacherId, classId);
         if(save) {
-            R.ok().data("courseId", course.getId()).message("保存成功");
+            return R.ok().data("courseId", course.getId()).message("保存成功");
         }
         return R.error().message("保存失败");
     }

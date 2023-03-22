@@ -18,5 +18,5 @@ import java.util.List;
 @Mapper
 public interface StudentMapper extends BaseMapper<Student> {
 
-    List<StudentVO> selectAll();
+    List<StudentVO> selectWithoutClass();
 }

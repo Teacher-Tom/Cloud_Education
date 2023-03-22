@@ -41,7 +41,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Override
     public List<CourseVO> listYearTermStudent(CourseQueryVO courseQueryVO) {
         QueryWrapper<CourseVO> wrapper = new QueryWrapper<>();
-        wrapper.orderByAsc("mc.id");
+//        wrapper.orderByAsc("mc.id");
         if(!ObjectUtils.isEmpty(courseQueryVO)) {
             String id = courseQueryVO.getId();
             Integer year = courseQueryVO.getYear();
@@ -62,7 +62,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Override
     public List<CourseVO> listYearTermTeacher(CourseQueryVO courseQueryVO) {
         QueryWrapper<CourseVO> wrapper = new QueryWrapper<>();
-        wrapper.orderByAsc("mc.id");
+//        wrapper.orderByAsc("mc.id");
         if(!ObjectUtils.isEmpty(courseQueryVO)) {
             String id = courseQueryVO.getId();
             Integer year = courseQueryVO.getYear();
@@ -89,7 +89,6 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     public IPage<AdminCourseVO> listPage(Long page, Long limit, AdminCourseQueryVO adminCourseQueryVO) {
         Page<AdminCourseVO> adminCourseVOPage = new Page<>(page, limit);
         QueryWrapper<AdminCourseVO> wrapper = new QueryWrapper<>();
-        wrapper.orderByAsc("mc.id");
         if(!ObjectUtils.isEmpty(adminCourseQueryVO)) {
             String courseId = adminCourseQueryVO.getCourseId();
             String courseName = adminCourseQueryVO.getCourseName();
@@ -131,7 +130,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         classCourse.setClassId(classId);
         classCourseMapper.insert(classCourse);
 
-        return (insert > 0);
+        return (insert >= 1);
     }
 
     @Override
