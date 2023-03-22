@@ -30,16 +30,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-
 /**
 * @author 12042
 * @description 针对表【user】的数据库操作Service实现
-* @createDate 2023-03-17 22:43:33
+* @createDate 2023-03-22 10:31:21
 */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
-    implements UserService, UserDetailsService {
-
+    implements UserService{
     @Autowired
     private RedisCache redisCache;
 

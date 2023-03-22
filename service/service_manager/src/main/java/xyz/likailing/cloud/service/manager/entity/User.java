@@ -1,4 +1,4 @@
-package xyz.likailing.cloud.service.entity;
+package xyz.likailing.cloud.service.manager.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

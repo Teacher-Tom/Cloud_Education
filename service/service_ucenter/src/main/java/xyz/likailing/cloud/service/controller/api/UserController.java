@@ -11,14 +11,11 @@ import xyz.likailing.cloud.common.base.result.ResultCodeEnum;
 import xyz.likailing.cloud.common.base.util.JwtInfo;
 import xyz.likailing.cloud.common.base.util.JwtUtils;
 import xyz.likailing.cloud.service.base.exception.CloudException;
-import xyz.likailing.cloud.service.entity.User;
 import xyz.likailing.cloud.service.entity.vo.LoginVo;
 import xyz.likailing.cloud.service.entity.vo.RegisterVo;
 import xyz.likailing.cloud.service.service.UserService;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * @Author 12042
