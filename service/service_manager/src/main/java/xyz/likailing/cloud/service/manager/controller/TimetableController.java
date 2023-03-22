@@ -29,8 +29,8 @@ public class TimetableController {
     private TimetableService timetableService;
 
     @ApiOperation("根据课程id获取时序信息")
-    @GetMapping("/course-time")
-    public R getTime(@ApiParam(value = "课程id", required = true) String courseId) {
+    @GetMapping("/course-time/{courseId}")
+    public R getTime(@ApiParam(value = "课程id", required = true) @PathVariable String courseId) {
         List<Timetable> courseTime = timetableService.listCourseTime(courseId);
         if(!ObjectUtils.isEmpty(courseTime)) {
             return R.ok().data("time", courseTime);

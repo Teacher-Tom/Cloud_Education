@@ -3,9 +3,12 @@
 <mapper namespace="xyz.likailing.cloud.service.manager.mapper.CourseHomeworkMapper">
 
     <select id="selectTeacherHomework" resultType="CourseHomework">
-        SELECT * FROM course_homework ch, manager_timetable mt
-                 WHERE ch.timetable_id = mt.id
-                   AND mt.teacher_id = #{teacherId}
+        SELECT *
+        FROM course_homework ch,
+             manager_timetable mt
+        WHERE
+            ch.timetable_id = mt.id
+          AND mt.teacher_id = #{teacherId}
     </select>
 
 </mapper>

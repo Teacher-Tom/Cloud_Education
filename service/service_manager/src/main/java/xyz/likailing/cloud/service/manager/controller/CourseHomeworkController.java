@@ -5,15 +5,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
 import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.manager.entity.CourseHomework;
 import xyz.likailing.cloud.service.manager.entity.CourseHomeworkContext;
 import xyz.likailing.cloud.service.manager.entity.CourseHomeworkSubmit;
+import xyz.likailing.cloud.service.manager.entity.vo.HomeworkVO;
 import xyz.likailing.cloud.service.manager.service.CourseHomeworkContextService;
 import xyz.likailing.cloud.service.manager.service.CourseHomeworkService;
 import xyz.likailing.cloud.service.manager.service.CourseHomeworkSubmitService;
@@ -42,8 +40,9 @@ public class CourseHomeworkController {
 
     @ApiOperation("保存作业信息")
     @PostMapping("/save")
-    public R saveHomework(@ApiParam("作业基本信息") CourseHomework homework,
-                          @ApiParam("作业详细内容") List<CourseHomeworkContext> contexts) {
+    public R saveHomework(@ApiParam("作业基本信息") @RequestBody HomeworkVO homeworkVO) {
+        CourseHomework homework = homeworkVO.getCourseHomework();
+        List<CourseHomeworkContext> contexts = homeworkVO.getContexts();
         String id = homeworkService.saveHomework(homework, contexts);
         if(id != null) {
             return R.ok().data("homeworkId", id).message("保存成功");
@@ -52,15 +51,15 @@ public class CourseHomeworkController {
     }
 
     @ApiOperation("根据教师id获取作业列表")
-    @GetMapping("/list-teacher")
-    public R listByTeacherId(@ApiParam(value = "教师id", required = true) String teacherId) {
+    @GetMapping("/list-teacher/{teacherId}")
+    public R listByTeacherId(@ApiParam(value = "教师id", required = true) @PathVariable String teacherId) {
         List<CourseHomework> homeworks = homeworkService.listTeacherHomework(teacherId);
         return R.ok().data("homeworks", homeworks);
     }
 
     @ApiOperation("根据id获取作业详细信息")
-    @GetMapping("/get-info")
-    public R getHomework(@ApiParam(value = "作业id", required = true) String id) {
+    @GetMapping("/get-info/{id}")
+    public R getHomework(@ApiParam(value = "作业id", required = true) @PathVariable String id) {
         //作业基本信息
         CourseHomework homework = homeworkService.getById(id);
         //作业详细内容

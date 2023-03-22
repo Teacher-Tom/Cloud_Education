@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 /**
  * <p>
  * 
@@ -19,13 +21,15 @@ import lombok.experimental.Accessors;
  * @since 2023-03-11
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("manager_class_course")
 @ApiModel(value="ClassCourse对象", description="")
-public class ClassCourse extends BaseEntity {
+public class ClassCourse implements Serializable {
 
     private static final long serialVersionUID=1L;
+
+    @TableId(type = IdType.AUTO)
+    private String id;
 
     private String classId;
 

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.likailing.cloud.service.manager.mapper.StudentMapper">
 
-    <select id="selectAll" resultType="xyz.likailing.cloud.service.manager.entity.vo.StudentVO">
+    <select id="selectWithoutClass" resultType="xyz.likailing.cloud.service.manager.entity.vo.StudentVO">
         SElECT
             s.id AS id,
             s.name AS name,

@@ -31,7 +31,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @Override
     public List<StudentVO> listStudents() {
-        List<StudentVO> students = baseMapper.selectAll();
+        //获取全部有班级信息的学生
+        List<StudentVO> students = baseMapper.selectWithoutClass();
+        //查询无班级信息的学生，手动设置班级名
         QueryWrapper<Student> studentQueryWrapper = new QueryWrapper<>();
         studentQueryWrapper.eq("class_id", "nul");
         List<Student> studentsNul = baseMapper.selectList(studentQueryWrapper);
