@@ -45,9 +45,9 @@ public class ManagerResourceConfig extends ResourceServerConfigurerAdapter {
                         "/v3/api-docs",
                         "/webjars/**",
                         "/swagger-ui/index.html",
-                        "/api/manager/user/user-course").anonymous()
-                .antMatchers("/**").access("#oauth2.hasScope('all')")
+                        "/api/manager/user/user-course").anonymous();
+                //.antMatchers("/**").access("#oauth2.hasScope('all')")
 
-                .anyRequest().authenticated();
+                //.anyRequest().authenticated();
     }
 }

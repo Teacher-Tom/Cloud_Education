@@ -1214,3 +1214,11 @@
 2023-03-22 10:54:37 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
 2023-03-22 10:54:41 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
 2023-03-22 10:54:41 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-22 13:41:44 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2023-03-22 13:41:45 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2023-03-22 13:41:49 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-22 13:41:49 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-22 13:43:04 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2023-03-22 13:43:04 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2023-03-22 13:43:09 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-22 13:43:09 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
