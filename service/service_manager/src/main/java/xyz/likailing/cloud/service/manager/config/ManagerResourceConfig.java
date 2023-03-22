@@ -37,6 +37,7 @@ public class ManagerResourceConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers("/**").anonymous()
                 .antMatchers("/swagger-ui.html",
                         "/swagger-ui/*",
                         "/swagger-resources/**",
@@ -44,9 +45,9 @@ public class ManagerResourceConfig extends ResourceServerConfigurerAdapter {
                         "/v3/api-docs",
                         "/webjars/**",
                         "/swagger-ui/index.html",
-                        "/api/manager/user/user-course").anonymous()
-                .antMatchers("/**").access("#oauth2.hasScope('all')")
+                        "/api/manager/user/user-course").anonymous();
+                //.antMatchers("/**").access("#oauth2.hasScope('all')")
 
-                .anyRequest().authenticated();
+                //.anyRequest().authenticated();
     }
 }
