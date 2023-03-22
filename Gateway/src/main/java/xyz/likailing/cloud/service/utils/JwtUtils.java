@@ -1,4 +1,4 @@
-package xyz.likailing.cloud.common.base.util;
+package xyz.likailing.cloud.service.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -56,6 +56,7 @@ public class JwtUtils {
         try {
             Jwts.parser().setSigningKey(getKeyInstance()).parseClaimsJws(jwtToken);
         } catch (Exception e) {
+            System.err.println("token解析错误");
             e.printStackTrace();
             return false;
         }
