@@ -1,5 +1,6 @@
 package xyz.likailing.cloud.service.manager.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -19,19 +20,18 @@ import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 public class ManagerResourceConfig extends ResourceServerConfigurerAdapter {
 
     @Bean
-    public RemoteTokenServices tokenServices(){
+    public RemoteTokenServices remoteTokenServices(){
         RemoteTokenServices services = new RemoteTokenServices();
         services.setCheckTokenEndpointUrl("http://123.60.88.31:8003/oauth/check_token");
         services.setClientId("cloud");
         services.setClientSecret("123");
         return services;
     }
-
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
         resources.resourceId("res1")//唯一id
                 //令牌校验服务
-                .tokenServices(tokenServices());
+                .tokenServices(remoteTokenServices());
     }
 
     @Override
@@ -45,7 +45,7 @@ public class ManagerResourceConfig extends ResourceServerConfigurerAdapter {
                         "/webjars/**",
                         "/swagger-ui/index.html").anonymous()
                 .antMatchers("/**").access("#oauth2.hasScope('all')")
-                
+
                 .anyRequest().authenticated();
     }
 }

@@ -1,5 +1,6 @@
 package xyz.likailing.cloud.service.msg.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -17,7 +18,6 @@ import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true,jsr250Enabled = true,securedEnabled = true)
 public class MsgResourceConfig extends ResourceServerConfigurerAdapter {
-
     @Bean
     public RemoteTokenServices tokenServices(){
         RemoteTokenServices services = new RemoteTokenServices();
