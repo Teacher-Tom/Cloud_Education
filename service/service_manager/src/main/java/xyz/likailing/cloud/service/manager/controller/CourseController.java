@@ -8,10 +8,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.manager.entity.Course;
-import xyz.likailing.cloud.service.manager.entity.vo.AdminCourseQueryVO;
-import xyz.likailing.cloud.service.manager.entity.vo.AdminCourseVO;
-import xyz.likailing.cloud.service.manager.entity.vo.CourseQueryVO;
-import xyz.likailing.cloud.service.manager.entity.vo.CourseVO;
+import xyz.likailing.cloud.service.manager.entity.vo.*;
 import xyz.likailing.cloud.service.manager.service.CourseService;
 
 import java.util.List;
@@ -48,7 +45,7 @@ public class CourseController {
     @ApiOperation("管理员获取详细课程信息列表")
     @GetMapping("/list")
     public R listAll() {
-        List<AdminCourseVO> courses = courseService.listAll();
+        List<CourseVO> courses = courseService.listAll();
         return R.ok().data("courses", courses);
     }
 
@@ -57,18 +54,17 @@ public class CourseController {
     public R listPage(@ApiParam(value = "页号", required = true) @PathVariable Long page,
                       @ApiParam(value = "每页记录数", required = true) @PathVariable Long limit,
                       @ApiParam("查询对象") AdminCourseQueryVO adminCourseQueryVO) {
-        IPage<AdminCourseVO> courses = courseService.listPage(page, limit, adminCourseQueryVO);
-        List<AdminCourseVO> records = courses.getRecords();
+        IPage<CourseVO> courses = courseService.listPage(page, limit, adminCourseQueryVO);
+        List<CourseVO> records = courses.getRecords();
         long total = courses.getTotal();
         return R.ok().data("rows", records).data("total", total);
     }
 
     @ApiOperation("新增课程信息，包含教师、班级信息")
-    @PostMapping("/save/{teacherId}/{classId}")
-    public R save(@ApiParam(value = "教师id", required = true) @PathVariable String teacherId,
-                  @ApiParam(value = "班级id", required = true) @PathVariable String classId,
-                  @ApiParam(value = "课程信息", required = true) @RequestBody Course course) {
-        boolean save = courseService.saveCourse(course, teacherId, classId);
+    @PostMapping("/save")
+    public R save(@ApiParam(value = "课程信息", required = true) @RequestBody CourseSaveVO courseSaveVO) {
+        Course course = courseSaveVO.getCourse();
+        boolean save = courseService.saveCourse(course, courseSaveVO.getTeacherIds(), courseSaveVO.getClassIds());
         if(save) {
             return R.ok().data("courseId", course.getId()).message("保存成功");
         }

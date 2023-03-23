@@ -24,11 +24,11 @@ public interface CourseService extends IService<Course> {
 
     List<CourseVO> listYearTermTeacher(CourseQueryVO CourseQueryVO);
 
-    List<AdminCourseVO> listAll();
+    List<CourseVO> listAll();
 
-    IPage<AdminCourseVO> listPage(Long page, Long limit, AdminCourseQueryVO adminCourseQueryVO);
+    IPage<CourseVO> listPage(Long page, Long limit, AdminCourseQueryVO adminCourseQueryVO);
 
-    boolean saveCourse(Course course, String teacherId, String classId);
+    boolean saveCourse(Course course, List<String> teacherIds, List<String> classIds);
 
     boolean removeCourseById(String id);
 }
