@@ -3,13 +3,14 @@ package xyz.likailing.cloud.service.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.entity.File;
 import xyz.likailing.cloud.service.entity.TreeNode;
 import xyz.likailing.cloud.service.entity.UserDir;
 import xyz.likailing.cloud.service.excepyionhandler.SpaceException;
 import xyz.likailing.cloud.service.service.FileService;
 import xyz.likailing.cloud.service.service.UserDirService;
-import xyz.likailing.cloud.service.utils.R;
+
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

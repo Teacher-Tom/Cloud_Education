@@ -5,13 +5,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
+import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.entity.File;
 import xyz.likailing.cloud.service.entity.TreeNode;
 import xyz.likailing.cloud.service.entity.UserDir;
 import xyz.likailing.cloud.service.service.FileService;
 import xyz.likailing.cloud.service.service.UcenterMemberService;
 import xyz.likailing.cloud.service.service.UserDirService;
-import xyz.likailing.cloud.service.utils.R;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
