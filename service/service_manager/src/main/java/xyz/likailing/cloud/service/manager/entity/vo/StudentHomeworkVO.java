@@ -24,6 +24,8 @@ public class StudentHomeworkVO implements Serializable {
 
     private Integer score;
 
+    private String remark;
+
     private String courseName;
 
     private String timetableId;

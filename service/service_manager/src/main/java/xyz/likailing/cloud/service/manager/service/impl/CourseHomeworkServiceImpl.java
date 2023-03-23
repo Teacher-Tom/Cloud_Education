@@ -59,17 +59,7 @@ public class CourseHomeworkServiceImpl extends ServiceImpl<CourseHomeworkMapper,
         List<StudentHomeworkVO> studentHomeworks = baseMapper.selectByStudentId(studentId);
         for (StudentHomeworkVO homework : studentHomeworks) {
             String homeworkId = homework.getHomeworkId();
-            QueryWrapper<CourseHomeworkStudent> wrapper = new QueryWrapper<>();
-            wrapper.eq("homework_id", homeworkId).eq("student_id", studentId);
-            CourseHomeworkStudent courseHomeworkStudent = homeworkStudentMapper.selectOne(wrapper);
-            if(!ObjectUtils.isEmpty(courseHomeworkStudent)) {
-                homework.setMarked(true);
-                homework.setScore(courseHomeworkStudent.getScore());
-            }
-            else {
-                homework.setMarked(false);
-                homework.setScore(0);
-            }
+            getCorrecting(studentId, homeworkId, homework);
         }
         return studentHomeworks;
     }
@@ -77,18 +67,29 @@ public class CourseHomeworkServiceImpl extends ServiceImpl<CourseHomeworkMapper,
     @Override
     public StudentHomeworkVO listStudentHomework(String studentId, String id) {
         StudentHomeworkVO homework = baseMapper.selectStudentHomework(studentId, id);
+        getCorrecting(studentId, id, homework);
+        return homework;
+    }
+
+    /**
+     * 为作业对象补充批改信息
+     * @param studentId 学生id
+     * @param id 作业id
+     * @param homework 作业对象
+     */
+    public void getCorrecting(String studentId, String id, StudentHomeworkVO homework) {
         QueryWrapper<CourseHomeworkStudent> wrapper = new QueryWrapper<>();
         wrapper.eq("homework_id", id).eq("student_id", studentId);
         CourseHomeworkStudent courseHomeworkStudent = homeworkStudentMapper.selectOne(wrapper);
         if(!ObjectUtils.isEmpty(courseHomeworkStudent)) {
             homework.setMarked(true);
             homework.setScore(courseHomeworkStudent.getScore());
+            homework.setRemark(courseHomeworkStudent.getRemark());
         }
         else {
             homework.setMarked(false);
             homework.setScore(0);
         }
-        return homework;
     }
 
 }

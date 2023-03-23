@@ -62,7 +62,7 @@ public class CourseHomeworkController {
         return R.ok().data("homeworks", homeworks);
     }
 
-    @ApiOperation("根据id获取作业完成情况信息")
+    @ApiOperation("根据id获取作业完成学生信息，只能查询提交了的学生，未提交查询不到")
     @GetMapping("/get-marked/{id}")
     public R getHomework(@ApiParam(value = "作业id", required = true) @PathVariable String id) {
         //作业基本信息
@@ -93,7 +93,7 @@ public class CourseHomeworkController {
 
     /* 共用 */
 
-    @ApiOperation("根据学生和作业id获取作业提交信息，包括作业内容、提交的答案、以及评分参考答案等")
+    @ApiOperation("根据学生和作业id获取作业提交信息，包括作业内容、作业是否提交、提交的答案、以及评分和参考答案等")
     @GetMapping("/get-submit/{id}/{studentId}")
     public R getStudentSubmit(@ApiParam(value = "作业id", required = true) @PathVariable String id,
                               @ApiParam(value = "学生id", required = true) @PathVariable String studentId) {

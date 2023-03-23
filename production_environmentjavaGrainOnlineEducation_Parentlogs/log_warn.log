@@ -1460,3 +1460,7 @@ Caused by: javax.net.ssl.SSLHandshakeException: No appropriate protocol (protoco
 2023-03-23 18:26:00 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
 2023-03-23 18:26:03 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
 2023-03-23 18:26:03 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-23 21:41:15 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2023-03-23 21:41:16 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2023-03-23 21:41:19 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-23 21:41:19 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
