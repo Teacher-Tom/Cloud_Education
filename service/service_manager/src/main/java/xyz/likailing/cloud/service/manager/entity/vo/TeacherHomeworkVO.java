@@ -20,11 +20,9 @@ public class TeacherHomeworkVO implements Serializable {
 
     private Boolean outdated;
 
-    private String courseId;
+    private String courseName;
 
     private String timetableId;
-
-    private String classId;
 
     private String className;
 

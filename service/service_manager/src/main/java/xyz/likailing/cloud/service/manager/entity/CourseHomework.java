@@ -44,6 +44,8 @@ public class CourseHomework implements Serializable {
 
     private String courseId;
 
+    private String teacherId;
+
     private String timetableId;
 
     private String isGlobal;
