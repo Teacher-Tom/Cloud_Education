@@ -3,7 +3,6 @@ package xyz.likailing.cloud.service.msg.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.base.exception.CloudException;
@@ -18,7 +17,7 @@ import java.io.IOException;
 @CrossOrigin
 @Api(description = "消息管理")
 @RestController
-@RequestMapping("/api/msg")
+@RequestMapping("/msg")
 @Slf4j
 public class MsgController {
 

@@ -7,7 +7,7 @@
     <modules>
         <module>common</module>
         <module>service</module>
-        <module>Gateway</module>
+        <module>service_gateway</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http){
         http.authorizeExchange()
-                .pathMatchers("/api/ucenter/user/login","/api/ucenter/user/register").permitAll()
+                .pathMatchers("/ucenter/user/login","/ucenter/user/register").permitAll()
                 .pathMatchers("/swagger-ui.html",
                         "/swagger-ui/*",
                         "/swagger-resources/**",

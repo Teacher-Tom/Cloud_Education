@@ -69,14 +69,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/api/ucenter/user/login","/api/ucenter/user/register").anonymous()
+                .antMatchers("/ucenter/user/login","/ucenter/user/register").anonymous()
                 .antMatchers("/swagger-ui.html",
                         "/swagger-ui/*",
                         "/swagger-resources/**",
                         "/v2/api-docs",
                         "/v3/api-docs",
                         "/webjars/**").anonymous()
-                .antMatchers("/api/ucenter/user/register").anonymous()
+                .antMatchers("/ucenter/user/register").anonymous()
                 .anyRequest().authenticated()
                 .and()
                 .csrf()
