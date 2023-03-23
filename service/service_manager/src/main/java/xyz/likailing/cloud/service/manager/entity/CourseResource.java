@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 /**
  * <p>
  * 
@@ -19,12 +21,14 @@ import lombok.experimental.Accessors;
  * @since 2023-03-20
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @ApiModel(value="CourseResource对象", description="")
-public class CourseResource extends BaseEntity {
+public class CourseResource implements Serializable {
 
     private static final long serialVersionUID=1L;
+
+    @TableId(type = IdType.ASSIGN_ID)
+    private String id;
 
     @ApiModelProperty(value = "云盘文件id")
     private String fileId;

@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 /**
  * <p>
  * 
@@ -19,13 +21,15 @@ import lombok.experimental.Accessors;
  * @since 2023-03-14
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("manager_chapter_timetable")
 @ApiModel(value="ChapterTimetable对象", description="")
-public class ChapterTimetable extends BaseEntity {
+public class ChapterTimetable implements Serializable {
 
     private static final long serialVersionUID=1L;
+
+    @TableId(type = IdType.ASSIGN_ID)
+    private String id;
 
     @ApiModelProperty(value = "课程id")
     private String courseId;

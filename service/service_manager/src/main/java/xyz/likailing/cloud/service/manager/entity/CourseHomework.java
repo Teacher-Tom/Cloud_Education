@@ -3,6 +3,8 @@ package xyz.likailing.cloud.service.manager.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import xyz.likailing.cloud.service.base.model.BaseEntity;
 import com.baomidou.mybatisplus.annotation.IdType;
+
+import java.io.Serializable;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
@@ -20,12 +22,14 @@ import lombok.experimental.Accessors;
  * @since 2023-03-20
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @ApiModel(value="CourseHomework对象", description="")
-public class CourseHomework extends BaseEntity {
+public class CourseHomework implements Serializable {
 
     private static final long serialVersionUID=1L;
+
+    @TableId(type = IdType.ASSIGN_ID)
+    private String id;
 
     private String name;
 
@@ -35,11 +39,6 @@ public class CourseHomework extends BaseEntity {
 
     @TableField("is_outdated")
     private Boolean outdated;
-
-    @TableField("is_marked")
-    private Boolean marked;
-
-    private Integer score;
 
     private String review;
 
