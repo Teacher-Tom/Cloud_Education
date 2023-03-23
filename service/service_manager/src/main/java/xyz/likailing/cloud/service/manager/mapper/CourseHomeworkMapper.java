@@ -1,7 +1,10 @@
 package xyz.likailing.cloud.service.manager.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import xyz.likailing.cloud.service.manager.entity.CourseHomework;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import xyz.likailing.cloud.service.manager.entity.vo.StudentHomeworkVO;
+import xyz.likailing.cloud.service.manager.entity.vo.TeacherHomeworkVO;
 
 import java.util.List;
 
@@ -15,5 +18,9 @@ import java.util.List;
  */
 public interface CourseHomeworkMapper extends BaseMapper<CourseHomework> {
 
-    List<CourseHomework> selectTeacherHomework(String teacherId);
+    List<TeacherHomeworkVO> selectByTeacherId(String teacherId);
+
+    List<StudentHomeworkVO> selectByStudentId(String studentId);
+
+    StudentHomeworkVO selectStudentHomework(String studentId, String id);
 }

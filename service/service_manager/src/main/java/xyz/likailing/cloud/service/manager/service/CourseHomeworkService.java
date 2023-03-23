@@ -3,6 +3,8 @@ package xyz.likailing.cloud.service.manager.service;
 import xyz.likailing.cloud.service.manager.entity.CourseHomework;
 import com.baomidou.mybatisplus.extension.service.IService;
 import xyz.likailing.cloud.service.manager.entity.CourseHomeworkContext;
+import xyz.likailing.cloud.service.manager.entity.vo.StudentHomeworkVO;
+import xyz.likailing.cloud.service.manager.entity.vo.TeacherHomeworkVO;
 
 import java.util.List;
 
@@ -18,5 +20,8 @@ public interface CourseHomeworkService extends IService<CourseHomework> {
 
     String saveHomework(CourseHomework homework, List<CourseHomeworkContext> contexts);
 
-    List<CourseHomework> listTeacherHomework(String teacherId);
+    List<TeacherHomeworkVO> listTeacherHomework(String teacherId);
+
+    List<StudentHomeworkVO> listStudentHomework(String studentId);
+    StudentHomeworkVO listStudentHomework(String studentId, String id);
 }

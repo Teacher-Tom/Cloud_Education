@@ -2,13 +2,59 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.likailing.cloud.service.manager.mapper.CourseHomeworkMapper">
 
-    <select id="selectTeacherHomework" resultType="CourseHomework">
-        SELECT *
-        FROM course_homework ch,
-             manager_timetable mt
-        WHERE
-            ch.timetable_id = mt.id
-          AND mt.teacher_id = #{teacherId}
+    <select id="selectByTeacherId" resultType="xyz.likailing.cloud.service.manager.entity.vo.TeacherHomeworkVO">
+        SELECT
+            ch.id AS homeworkId,
+            ch.name AS name,
+            ch.begin_time AS beginTime,
+            ch.end_time AS endTime,
+            ch.is_outdated AS outdated,
+            mc.name AS courseName,
+            ch.timetable_id AS timetableId,
+            cl.name AS className
+        FROM course_homework ch
+            LEFT JOIN manager_class_course cc ON ch.course_id = cc.course_id
+            LEFT JOIN manager_class cl ON cl.id = cc.class_id
+            LEFT JOIN manager_course mc ON mc.id = ch.course_id
+        WHERE ch.teacher_id = #{teacherId}
+    </select>
+
+    <select id="selectByStudentId" resultType="xyz.likailing.cloud.service.manager.entity.vo.StudentHomeworkVO">
+        SELECT
+            ch.id AS homeworkId,
+            ch.name AS name,
+            ch.begin_time AS beginTime,
+            ch.end_time AS endTime,
+            ch.is_outdated AS outdated,
+            mc.name AS courseName,
+            ch.timetable_id AS timetableId,
+            mt.name AS teacherName
+        FROM course_homework ch
+            LEFT JOIN manager_class_course cc ON ch.course_id = cc.course_id
+            LEFT JOIN manager_class cl ON cl.id = cc.class_id
+            LEFT JOIN manager_course mc ON mc.id = ch.course_id
+            LEFT JOIN manager_teacher mt ON mt.id = ch.teacher_id
+            LEFT JOIN manager_student ms ON ms.class_id = cl.id
+        WHERE ms.id = #{studentId}
+    </select>
+
+    <select id="selectStudentHomework" resultType="xyz.likailing.cloud.service.manager.entity.vo.StudentHomeworkVO">
+        SELECT
+            ch.id AS homeworkId,
+            ch.name AS name,
+            ch.begin_time AS beginTime,
+            ch.end_time AS endTime,
+            ch.is_outdated AS outdated,
+            mc.name AS courseName,
+            ch.timetable_id AS timetableId,
+            mt.name AS teacherName
+        FROM course_homework ch
+            LEFT JOIN manager_class_course cc ON ch.course_id = cc.course_id
+            LEFT JOIN manager_class cl ON cl.id = cc.class_id
+            LEFT JOIN manager_course mc ON mc.id = ch.course_id
+            LEFT JOIN manager_teacher mt ON mt.id = ch.teacher_id
+            LEFT JOIN manager_student ms ON ms.class_id = cl.id
+        WHERE ms.id = #{studentId} AND ch.id = #{id}
     </select>
 
 </mapper>

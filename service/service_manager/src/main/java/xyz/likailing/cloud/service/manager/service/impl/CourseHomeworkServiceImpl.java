@@ -1,10 +1,16 @@
 package xyz.likailing.cloud.service.manager.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import xyz.likailing.cloud.service.manager.entity.CourseHomework;
 import xyz.likailing.cloud.service.manager.entity.CourseHomeworkContext;
+import xyz.likailing.cloud.service.manager.entity.CourseHomeworkStudent;
+import xyz.likailing.cloud.service.manager.entity.vo.StudentHomeworkVO;
+import xyz.likailing.cloud.service.manager.entity.vo.TeacherHomeworkVO;
 import xyz.likailing.cloud.service.manager.mapper.CourseHomeworkContextMapper;
 import xyz.likailing.cloud.service.manager.mapper.CourseHomeworkMapper;
+import xyz.likailing.cloud.service.manager.mapper.CourseHomeworkStudentMapper;
 import xyz.likailing.cloud.service.manager.service.CourseHomeworkService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -24,6 +30,8 @@ public class CourseHomeworkServiceImpl extends ServiceImpl<CourseHomeworkMapper,
 
     @Autowired
     private CourseHomeworkContextMapper contextMapper;
+    @Autowired
+    private CourseHomeworkStudentMapper homeworkStudentMapper;
 
     @Override
     public String saveHomework(CourseHomework homework, List<CourseHomeworkContext> contexts) {
@@ -42,8 +50,46 @@ public class CourseHomeworkServiceImpl extends ServiceImpl<CourseHomeworkMapper,
     }
 
     @Override
-    public List<CourseHomework> listTeacherHomework(String teacherId) {
-        return baseMapper.selectTeacherHomework(teacherId);
+    public List<TeacherHomeworkVO> listTeacherHomework(String teacherId) {
+        return baseMapper.selectByTeacherId(teacherId);
+    }
+
+    @Override
+    public List<StudentHomeworkVO> listStudentHomework(String studentId) {
+        List<StudentHomeworkVO> studentHomeworks = baseMapper.selectByStudentId(studentId);
+        for (StudentHomeworkVO homework : studentHomeworks) {
+            String homeworkId = homework.getHomeworkId();
+            getCorrecting(studentId, homeworkId, homework);
+        }
+        return studentHomeworks;
+    }
+
+    @Override
+    public StudentHomeworkVO listStudentHomework(String studentId, String id) {
+        StudentHomeworkVO homework = baseMapper.selectStudentHomework(studentId, id);
+        getCorrecting(studentId, id, homework);
+        return homework;
+    }
+
+    /**
+     * 为作业对象补充批改信息
+     * @param studentId 学生id
+     * @param id 作业id
+     * @param homework 作业对象
+     */
+    public void getCorrecting(String studentId, String id, StudentHomeworkVO homework) {
+        QueryWrapper<CourseHomeworkStudent> wrapper = new QueryWrapper<>();
+        wrapper.eq("homework_id", id).eq("student_id", studentId);
+        CourseHomeworkStudent courseHomeworkStudent = homeworkStudentMapper.selectOne(wrapper);
+        if(!ObjectUtils.isEmpty(courseHomeworkStudent)) {
+            homework.setMarked(true);
+            homework.setScore(courseHomeworkStudent.getScore());
+            homework.setRemark(courseHomeworkStudent.getRemark());
+        }
+        else {
+            homework.setMarked(false);
+            homework.setScore(0);
+        }
     }
 
 }

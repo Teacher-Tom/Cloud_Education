@@ -1,7 +1,6 @@
 package xyz.likailing.cloud.service.manager.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -25,8 +24,7 @@ public class CourseHomeworkStudent implements Serializable {
 
     private Integer score;
 
-    @TableField("is_marked")
-    private Boolean marked;
+    private String remark;
 
 
 }
