@@ -23,5 +23,6 @@ public interface CourseHomeworkService extends IService<CourseHomework> {
     List<TeacherHomeworkVO> listTeacherHomework(String teacherId);
 
     List<StudentHomeworkVO> listStudentHomework(String studentId);
-    StudentHomeworkVO listStudentHomework(String studentId, String id);
+
+    StudentHomeworkVO getStudentHomework(String studentId, String id);
 }
