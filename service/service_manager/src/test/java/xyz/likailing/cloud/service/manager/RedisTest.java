@@ -32,12 +32,12 @@ public class RedisTest {
 //        timetables.add(timetable4);
 //        timetables.add(timetable5);
 //        timetables.add(timetable6);
-//        redisCache.setCacheList("tempList", timetables);
-//        List<Object> tempList = redisCache.getCacheList("tempList");
-//        for (Object o : tempList) {
+//        redisCache.setCacheList("getTempList", timetables);
+//        List<Object> getTempList = redisCache.getCacheList("getTempList");
+//        for (Object o : getTempList) {
 //            Timetable o1 = (Timetable) o;
 //            System.out.println(o1);
 //        }
-//        System.out.println(redisCache.deleteObject("tempList"));
+//        System.out.println(redisCache.deleteObject("getTempList"));
     }
 }
