@@ -40,7 +40,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Override
     public List<CourseVO> listYearTermStudent(CourseQueryVO courseQueryVO) {
         QueryWrapper<CourseVO> wrapper = new QueryWrapper<>();
-//        wrapper.orderByAsc("mc.id");
+        wrapper.orderByAsc("mc.id");
         if(!ObjectUtils.isEmpty(courseQueryVO)) {
             String id = courseQueryVO.getId();
             Integer year = courseQueryVO.getYear();
@@ -61,7 +61,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Override
     public List<CourseVO> listYearTermTeacher(CourseQueryVO courseQueryVO) {
         QueryWrapper<CourseVO> wrapper = new QueryWrapper<>();
-//        wrapper.orderByAsc("mc.id");
+        wrapper.orderByAsc("mc.id");
         if(!ObjectUtils.isEmpty(courseQueryVO)) {
             String id = courseQueryVO.getId();
             Integer year = courseQueryVO.getYear();
@@ -155,5 +155,10 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         classCourseMapper.delete(classCourseQueryWrapper);
 
         return (delete >= 1);
+    }
+
+    @Override
+    public CourseVO getCourseById(String id) {
+        return baseMapper.selectCourseById(id);
     }
 }

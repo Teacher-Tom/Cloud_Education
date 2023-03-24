@@ -84,7 +84,7 @@ public class CourseController {
     @ApiOperation("根据id查询课程信息")
     @GetMapping("/get/{id}")
     public R getById(@ApiParam(value = "课程id", required = true) @PathVariable String id) {
-        Course course = courseService.getById(id);
+        CourseVO course = courseService.getCourseById(id);
         if(!ObjectUtils.isEmpty(course)) {
             return R.ok().data("course", course);
         }

@@ -31,4 +31,6 @@ public interface CourseService extends IService<Course> {
     boolean saveCourse(Course course, List<String> teacherIds, List<String> classIds);
 
     boolean removeCourseById(String id);
+
+    CourseVO getCourseById(String id);
 }
