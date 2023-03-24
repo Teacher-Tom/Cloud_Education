@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import xyz.likailing.cloud.service.manager.entity.vo.TimetableVO;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -18,9 +19,11 @@ public interface TimetableService extends IService<Timetable> {
 
     List<Timetable> listCourseTime(String courseId);
 
-    List<Timetable> tempList(String userId, TimetableVO timetableVO);
+//    Set<Timetable> getTempList(String userId, TimetableVO timetableVO);
+//
+//    boolean saveUserTempList(String userId);
+//
+//    boolean removeTempElement(String userId, Timetable timetable);
 
-    boolean saveTempList(String userId);
-
-    boolean removeTempElement(String userId, Timetable timetable);
+    boolean saveTempList(List<Timetable> allList);
 }

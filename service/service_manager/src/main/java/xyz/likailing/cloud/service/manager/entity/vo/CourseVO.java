@@ -3,6 +3,7 @@ package xyz.likailing.cloud.service.manager.entity.vo;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 public class CourseVO implements Serializable {
@@ -13,13 +14,25 @@ public class CourseVO implements Serializable {
 
     private String courseName;
 
-    private String teacherName;
+    private Integer creditHour;
 
-    private String className;
+    private Integer creditNum;
+
+    private Boolean type;
+
+    private Integer year;
+
+    private Integer term;
 
     private Integer beginWeek;
 
     private Integer endWeek;
 
+    private String department;
+
     private String coverUrl;
+
+    private List<String> teacherNames;
+
+    private List<String> classNames;
 }

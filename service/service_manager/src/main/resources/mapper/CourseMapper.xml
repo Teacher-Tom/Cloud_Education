@@ -2,16 +2,66 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.likailing.cloud.service.manager.mapper.CourseMapper">
 
-    <select id="selectYTStuCourses" parameterType="xyz.likailing.cloud.service.manager.entity.vo.CourseQueryVO"
-            resultType="xyz.likailing.cloud.service.manager.entity.vo.CourseVO">
+    <resultMap id="courseVO" type="xyz.likailing.cloud.service.manager.entity.vo.CourseVO">
+        <result column="id" property="courseId"/>
+        <result column="name" property="courseName"/>
+        <result column="credit_hour" property="creditHour"/>
+        <result column="credit_num" property="creditNum"/>
+        <result column="type" property="type"/>
+        <result column="year" property="year"/>
+        <result column="term" property="term"/>
+        <result column="begin_week" property="beginWeek"/>
+        <result column="end_week" property="endWeek"/>
+        <result column="department" property="department"/>
+        <result column="cover_url" property="coverUrl"/>
+        <collection property="teacherNames" ofType="string">
+            <result column="t.name"/>
+        </collection>
+        <collection property="classNames" ofType="string" select="getClasses" column="id"/>
+    </resultMap>
+    <select id="getClasses" resultType="string" parameterType="string">
+        SELECT cl.name FROM manager_class cl
+            LEFT JOIN manager_class_course cc ON cl.id = cc.class_id
+        WHERE cc.course_id = #{id}
+    </select>
+
+    <resultMap id="courseVOTeacher" type="xyz.likailing.cloud.service.manager.entity.vo.CourseVO">
+        <result column="id" property="courseId"/>
+        <result column="name" property="courseName"/>
+        <result column="credit_hour" property="creditHour"/>
+        <result column="credit_num" property="creditNum"/>
+        <result column="type" property="type"/>
+        <result column="year" property="year"/>
+        <result column="term" property="term"/>
+        <result column="begin_week" property="beginWeek"/>
+        <result column="end_week" property="endWeek"/>
+        <result column="department" property="department"/>
+        <result column="cover_url" property="coverUrl"/>
+        <collection property="teacherNames" ofType="string" select="getTeachers" column="id"/>
+        <collection property="classNames" ofType="string">
+            <result column="cl.name"/>
+        </collection>
+    </resultMap>
+    <select id="getTeachers" resultType="string" parameterType="string">
+        SELECT t.name FROM manager_teacher t
+            LEFT JOIN manager_teacher_course tc ON t.id = tc.teacher_id
+        WHERE tc.course_id = #{id}
+    </select>
+
+    <select id="selectYTStuCourses" resultMap="courseVO">
         SElECT
-            mc.id AS courseId,
-            mc.name AS courseName,
-            t.name AS teacherName,
-            cl.name AS className,
-            mc.begin_week AS beginWeek,
-            mc.end_week AS endWeek,
-            mc.cover_url AS coverUrl
+            mc.id,
+            mc.name,
+            mc.credit_hour,
+            mc.credit_num,
+            mc.type,
+            mc.year,
+            mc.term,
+            mc.begin_week,
+            mc.end_week,
+            mc.department,
+            mc.cover_url,
+            t.name
         FROM manager_course mc
             LEFT JOIN manager_teacher_course tc ON mc.id = tc.course_id
             LEFT JOIN manager_teacher t ON t.id = tc.teacher_id
@@ -21,16 +71,20 @@
         ${ew.customSqlSegment}
     </select>
 
-    <select id="selectYTTeaCourses" parameterType="xyz.likailing.cloud.service.manager.entity.vo.CourseQueryVO"
-            resultType="xyz.likailing.cloud.service.manager.entity.vo.CourseVO">
+    <select id="selectYTTeaCourses" resultMap="courseVOTeacher">
         SElECT
-            mc.id AS courseId,
-            mc.name AS courseName,
-            t.name AS teacherName,
-            cl.name AS className,
-            mc.begin_week AS beginWeek,
-            mc.end_week AS endWeek,
-            mc.cover_url AS coverUrl
+            mc.id,
+            mc.name,
+            mc.credit_hour,
+            mc.credit_num,
+            mc.type,
+            mc.year,
+            mc.term,
+            mc.begin_week,
+            mc.end_week,
+            mc.department,
+            mc.cover_url,
+            cl.name
         FROM manager_course mc
             LEFT JOIN manager_teacher_course tc ON mc.id = tc.course_id
             LEFT JOIN manager_teacher t ON t.id = tc.teacher_id
@@ -39,49 +93,63 @@
         ${ew.customSqlSegment}
     </select>
 
-    <select id="selectAllCourses" resultType="xyz.likailing.cloud.service.manager.entity.vo.AdminCourseVO">
+    <select id="selectAllCourses" resultMap="courseVO">
         SElECT
-            mc.id AS courseId,
-            mc.name AS courseName,
-            mc.credit_hour AS creditHour,
-            mc.credit_num AS creditNum,
-            mc.type AS type,
-            mc.year AS year,
-            mc.term AS term,
-            mc.begin_week AS beginWeek,
-            mc.end_week AS endWeek,
-            mc.department AS department,
-            t.name AS teacherName,
-            cl.name AS className,
-            mc.cover_url AS coverUrl
+            mc.id,
+            mc.name,
+            mc.credit_hour,
+            mc.credit_num,
+            mc.type,
+            mc.year,
+            mc.term,
+            mc.begin_week,
+            mc.end_week,
+            mc.department,
+            mc.cover_url,
+            t.name
         FROM manager_course mc
             LEFT JOIN manager_teacher_course tc ON mc.id = tc.course_id
             LEFT JOIN manager_teacher t ON t.id = tc.teacher_id
-            LEFT JOIN manager_class_course clc ON mc.id = clc.course_id
-            LEFT JOIN manager_class cl ON cl.id = clc.class_id
     </select>
 
-    <select id="selectPageCourses" resultType="xyz.likailing.cloud.service.manager.entity.vo.AdminCourseVO">
+    <select id="selectPageCourses" resultMap="courseVO">
         SElECT
-            mc.id AS courseId,
-            mc.name AS courseName,
-            mc.credit_hour AS creditHour,
-            mc.credit_num AS creditNum,
-            mc.type AS type,
-            mc.year AS year,
-            mc.term AS term,
-            mc.begin_week AS beginWeek,
-            mc.end_week AS endWeek,
-            mc.department AS department,
-            t.name AS teacherName,
-            cl.name AS className,
-            mc.cover_url AS coverUrl
+            mc.id,
+            mc.name,
+            mc.credit_hour,
+            mc.credit_num,
+            mc.type,
+            mc.year,
+            mc.term,
+            mc.begin_week,
+            mc.end_week,
+            mc.department,
+            mc.cover_url,
+            t.name
         FROM manager_course mc
             LEFT JOIN manager_teacher_course tc ON mc.id = tc.course_id
             LEFT JOIN manager_teacher t ON t.id = tc.teacher_id
-            LEFT JOIN manager_class_course clc ON mc.id = clc.course_id
-            LEFT JOIN manager_class cl ON cl.id = clc.class_id
         ${ew.customSqlSegment}
+    </select>
+
+    <select id="selectCourseById" resultMap="courseVO">
+        SElECT
+            mc.id,
+            mc.name,
+            mc.credit_hour,
+            mc.credit_num,
+            mc.type,
+            mc.year,
+            mc.term,
+            mc.begin_week,
+            mc.end_week,
+            mc.department,
+            mc.cover_url,
+            t.name
+        FROM manager_course mc
+            LEFT JOIN manager_teacher_course tc ON mc.id = tc.course_id
+            LEFT JOIN manager_teacher t ON t.id = tc.teacher_id
+        WHERE mc.id = #{id}
     </select>
 
 </mapper>

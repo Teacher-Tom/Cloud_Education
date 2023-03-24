@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import xyz.likailing.cloud.service.manager.entity.*;
 import xyz.likailing.cloud.service.manager.entity.vo.AdminCourseQueryVO;
-import xyz.likailing.cloud.service.manager.entity.vo.AdminCourseVO;
 import xyz.likailing.cloud.service.manager.entity.vo.CourseQueryVO;
 import xyz.likailing.cloud.service.manager.entity.vo.CourseVO;
 import xyz.likailing.cloud.service.manager.mapper.ClassCourseMapper;
@@ -41,7 +40,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Override
     public List<CourseVO> listYearTermStudent(CourseQueryVO courseQueryVO) {
         QueryWrapper<CourseVO> wrapper = new QueryWrapper<>();
-//        wrapper.orderByAsc("mc.id");
+        wrapper.orderByAsc("mc.id");
         if(!ObjectUtils.isEmpty(courseQueryVO)) {
             String id = courseQueryVO.getId();
             Integer year = courseQueryVO.getYear();
@@ -62,7 +61,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Override
     public List<CourseVO> listYearTermTeacher(CourseQueryVO courseQueryVO) {
         QueryWrapper<CourseVO> wrapper = new QueryWrapper<>();
-//        wrapper.orderByAsc("mc.id");
+        wrapper.orderByAsc("mc.id");
         if(!ObjectUtils.isEmpty(courseQueryVO)) {
             String id = courseQueryVO.getId();
             Integer year = courseQueryVO.getYear();
@@ -81,14 +80,14 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     }
 
     @Override
-    public List<AdminCourseVO> listAll() {
+    public List<CourseVO> listAll() {
         return baseMapper.selectAllCourses();
     }
 
     @Override
-    public IPage<AdminCourseVO> listPage(Long page, Long limit, AdminCourseQueryVO adminCourseQueryVO) {
-        Page<AdminCourseVO> adminCourseVOPage = new Page<>(page, limit);
-        QueryWrapper<AdminCourseVO> wrapper = new QueryWrapper<>();
+    public IPage<CourseVO> listPage(Long page, Long limit, AdminCourseQueryVO adminCourseQueryVO) {
+        Page<CourseVO> courseVOPage = new Page<>(page, limit);
+        QueryWrapper<CourseVO> wrapper = new QueryWrapper<>();
         if(!ObjectUtils.isEmpty(adminCourseQueryVO)) {
             String courseId = adminCourseQueryVO.getCourseId();
             String courseName = adminCourseQueryVO.getCourseName();
@@ -111,26 +110,32 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
                 wrapper.eq("mc.term", term);
             }
         }
-        List<AdminCourseVO> courses = baseMapper.selectPageCourses(adminCourseVOPage, wrapper);
-        adminCourseVOPage.setRecords(courses);
-        return adminCourseVOPage;
+        List<CourseVO> courses = baseMapper.selectPageCourses(courseVOPage, wrapper);
+        courseVOPage.setRecords(courses);
+        return courseVOPage;
     }
 
     @Override
-    public boolean saveCourse(Course course, String teacherId, String classId) {
+    public boolean saveCourse(Course course, List<String> teacherIds, List<String> classIds) {
         int insert = baseMapper.insert(course);
+        if(insert <= 0) return false;
+        String courseId = course.getId();
 
-        TeacherCourse teacherCourse = new TeacherCourse();
-        teacherCourse.setCourseId(course.getId());
-        teacherCourse.setTeacherId(teacherId);
-        teacherCourseMapper.insert(teacherCourse);
+        for (String teacherId : teacherIds) {
+            TeacherCourse teacherCourse = new TeacherCourse();
+            teacherCourse.setCourseId(courseId);
+            teacherCourse.setTeacherId(teacherId);
+            teacherCourseMapper.insert(teacherCourse);
+        }
 
-        ClassCourse classCourse = new ClassCourse();
-        classCourse.setCourseId(course.getId());
-        classCourse.setClassId(classId);
-        classCourseMapper.insert(classCourse);
+        for (String classId : classIds) {
+            ClassCourse classCourse = new ClassCourse();
+            classCourse.setCourseId(courseId);
+            classCourse.setClassId(classId);
+            classCourseMapper.insert(classCourse);
+        }
 
-        return (insert >= 1);
+        return true;
     }
 
     @Override
@@ -150,5 +155,10 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         classCourseMapper.delete(classCourseQueryWrapper);
 
         return (delete >= 1);
+    }
+
+    @Override
+    public CourseVO getCourseById(String id) {
+        return baseMapper.selectCourseById(id);
     }
 }

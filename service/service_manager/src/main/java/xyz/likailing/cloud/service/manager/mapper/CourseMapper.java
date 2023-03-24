@@ -32,8 +32,10 @@ public interface CourseMapper extends BaseMapper<Course> {
     List<CourseVO> selectYTTeaCourses(@Param(Constants.WRAPPER) QueryWrapper<CourseVO> wrapper);
 
     /* 列出全部课程的详细信息 */
-    List<AdminCourseVO> selectAllCourses();
+    List<CourseVO> selectAllCourses();
 
     /* 分页查询课程 */
-    List<AdminCourseVO> selectPageCourses(Page<AdminCourseVO> adminCourseVOPage, @Param(Constants.WRAPPER) QueryWrapper<AdminCourseVO> wrapper);
+    List<CourseVO> selectPageCourses(Page<CourseVO> adminCourseVOPage, @Param(Constants.WRAPPER) QueryWrapper<CourseVO> wrapper);
+
+    CourseVO selectCourseById(String id);
 }
