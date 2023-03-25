@@ -88,7 +88,14 @@ public class OssController {
                 String videoId = ossService.uploadfile(file);
                 file1.setVideoId(videoId);
                 return R.ok().data("file", file1);
-            } else {
+            }else if(type.equals("ppt") || type.equals("pptx")){
+                List<File> files = ossService.uploadPptFile(file, catalogue);
+                if (files.isEmpty()){
+                    return R.error();
+                }
+                return R.ok().data("file_list",files);
+            }
+            else {
                 File file1 = ossService.upload(file, catalogue);
 
                 if (file1.equals("")) {

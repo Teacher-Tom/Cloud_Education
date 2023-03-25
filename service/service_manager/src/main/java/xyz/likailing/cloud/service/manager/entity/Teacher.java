@@ -33,5 +33,7 @@ public class Teacher extends BaseEntity {
 
     private String department;
 
+    private String userId;
+
 
 }

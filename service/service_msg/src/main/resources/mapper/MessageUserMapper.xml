@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.likailing.cloud.service.msg.mapper.MessageUserMapper">
+
+    <resultMap id="BaseResultMap" type="xyz.likailing.cloud.service.msg.entity.MessageUser">
+            <id property="id" column="id" jdbcType="CHAR"/>
+            <result property="userId" column="user_id" jdbcType="CHAR"/>
+            <result property="msgId" column="msg_id" jdbcType="CHAR"/>
+            <result property="hasRead" column="has_read" jdbcType="BIT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,msg_id,
+        has_read
+    </sql>
+    <select id="selectAllMessagesByUserId" resultType="xyz.likailing.cloud.service.msg.entity.Message">
+        SELECT * FROM message m
+                          LEFT JOIN message_user mu
+                                    ON mu.msg_id = m.id
+        WHERE mu.user_id=#{userId}
+    </select>
+    <select id="selectHasReadByUserId" resultType="java.lang.Boolean">
+        select has_read
+        from message_user
+        where user_id = #{userId,jdbcType=CHAR}
+    </select>
+</mapper>

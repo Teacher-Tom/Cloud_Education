@@ -78,5 +78,11 @@ public class UcenterMemberController {
             return R.error();
         }
     }
+    @ApiOperation("创建课程网盘")
+    @PostMapping("create-course")
+    public R createCourseAccount(@RequestParam String courseId,@RequestParam String courseName,@RequestParam String coverUrl){
+        memberService.createCourse(courseId,courseName,coverUrl);
+        return R.ok().message("创建课程网盘成功");
+    }
 }
 

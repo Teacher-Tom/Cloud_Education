@@ -115,11 +115,11 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
         }
         //判断验证码
         //获取redis验证码
-        String redisCode = redisTemplate.opsForValue().get(mobile);
+        /*String redisCode = redisTemplate.opsForValue().get(mobile);
         System.out.println(redisCode);
         if (!code.equals(redisCode)) {
             throw new SpaceException(20001, "验证码错误");
-        }
+        }*/
 
 
         //判断手机号是否重复，表里面存在相同手机号不进行添加
@@ -137,7 +137,43 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
         member.setPassword(MD5.encrypt(password));//密码需要加密的
         baseMapper.insert(member);
     }
+    /**
+     * 创建课程网盘账号
+     * 
+     * @return void
+     * @author likailing
+     * @create 2023/3/25
+     **/
+    public void createCourse(String courseId,String courseName,String coverUrl){
+        //获取注册的数据
+        String mobile = "course"; //手机号
+        String nickname = courseName; //昵称
+        String password = "cloud233"; //密码
+        String avatar = coverUrl;//封面
+        //非空判断
+        if (StringUtils.isEmpty(mobile) || StringUtils.isEmpty(password)
+                || StringUtils.isEmpty(nickname)
+        ) {
+            throw new SpaceException(20001, "不能为空");
+        }
+        //判断验证码
+        //获取redis验证码
+        /*String redisCode = redisTemplate.opsForValue().get(mobile);
+        System.out.println(redisCode);
+        if (!code.equals(redisCode)) {
+            throw new SpaceException(20001, "验证码错误");
+        }*/
 
+
+        //数据添加数据库中
+        UcenterMember member = new UcenterMember();
+        member.setId(courseId);
+        member.setMobile(mobile);
+        member.setNickname(nickname);
+        member.setAvatar(avatar);
+        member.setPassword(MD5.encrypt(password));//密码需要加密的
+        baseMapper.insert(member);
+    }
 //    @Override
 //    public boolean updateMember(UcenterMember ucenterMember) {
 //        String mobile = ucenterMember.getMobile(); //手机号

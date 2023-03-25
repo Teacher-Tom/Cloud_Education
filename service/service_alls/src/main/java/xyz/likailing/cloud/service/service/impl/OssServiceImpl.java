@@ -268,6 +268,7 @@ public class OssServiceImpl implements OssService {
         try {
             // 创建OSS实例。
             OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+
             File file1=new File();
             File file2 = new File();
             //获取上传文件输入流
@@ -300,11 +301,10 @@ public class OssServiceImpl implements OssService {
             //第一个参数  Bucket名称
             //第二个参数  上传到oss文件路径和文件名称   aa/bb/1.jpg
             //第三个参数  上传文件输入流
-            ossClient.putObject(bucketName, originalFilename, inputStream);
+            ossClient.putObject(bucketName, originalFilename, file.getInputStream());
             ossClient.putObject(bucketName,pdfFilename,bufferedInputStream);
             // 关闭OSSClient。
             ossClient.shutdown();
-
             //把上传之后文件路径返回
             //需要把上传到阿里云oss路径手动拼接出来
             //  https://edu-guli-1010.oss-cn-beijing.aliyuncs.com/01.jpg

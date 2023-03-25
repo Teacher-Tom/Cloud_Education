@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.manager.entity.Course;
 import xyz.likailing.cloud.service.manager.entity.vo.*;
+import xyz.likailing.cloud.service.manager.feign.AllsService;
 import xyz.likailing.cloud.service.manager.service.CourseService;
 
 import java.util.List;
@@ -24,6 +25,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/manager/course")
 public class CourseController {
+
+    @Autowired
+    AllsService allsService;
 
     @Autowired
     private CourseService courseService;
@@ -66,7 +70,9 @@ public class CourseController {
         Course course = courseSaveVO.getCourse();
         boolean save = courseService.saveCourse(course, courseSaveVO.getTeacherIds(), courseSaveVO.getClassIds());
         if(save) {
+            allsService.createCourseAccount(course.getId(),course.getName(), course.getCoverUrl());
             return R.ok().data("courseId", course.getId()).message("保存成功");
+
         }
         return R.error().message("保存失败");
     }
