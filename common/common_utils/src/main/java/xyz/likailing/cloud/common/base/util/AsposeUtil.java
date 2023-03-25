@@ -44,18 +44,19 @@ public class AsposeUtil {
      * @param inputStream
      */
     @SneakyThrows
-    public static void ppt2PDF(InputStream inputStream) {
+    public static OutputStream ppt2PDF(InputStream inputStream) {
         // 验证License
         if (!getLicenseq()) {
-            return;
+            return null;
         }
         try {
             Presentation ppt = new Presentation(inputStream);
             ByteArrayOutputStream dstStream = new ByteArrayOutputStream();
-            ppt.save("output.pdf", com.aspose.slides.SaveFormat.Pdf);
+            ppt.save(dstStream, com.aspose.slides.SaveFormat.Pdf);
+            return dstStream;
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        return null;
     }
 }
