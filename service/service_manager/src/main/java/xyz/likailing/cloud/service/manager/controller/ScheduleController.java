@@ -1,5 +1,6 @@
 package xyz.likailing.cloud.service.manager.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
@@ -7,14 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import xyz.likailing.cloud.common.base.result.R;
+import xyz.likailing.cloud.service.manager.entity.Course;
+import xyz.likailing.cloud.service.manager.entity.TermFirstWeek;
 import xyz.likailing.cloud.service.manager.entity.Timetable;
 import xyz.likailing.cloud.service.manager.entity.vo.TimetableVO;
+import xyz.likailing.cloud.service.manager.service.CourseService;
+import xyz.likailing.cloud.service.manager.service.TermFirstWeekService;
 import xyz.likailing.cloud.service.manager.service.TimetableService;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * <p>
@@ -30,6 +32,10 @@ public class ScheduleController {
 
     @Autowired
     private TimetableService timetableService;
+    @Autowired
+    private CourseService courseService;
+    @Autowired
+    private TermFirstWeekService firstWeekService;
 
 //    @ApiOperation("添加临时时序信息列表")
 //    @GetMapping("/temp-list/{userId}")
@@ -63,13 +69,35 @@ public class ScheduleController {
     @ApiOperation("获取批量添加信息对应的临时时序信息列表，多次添加时不会返回之前已经返回过的信息，只有这一次对应的列表")
     @GetMapping("/temp-list")
     public R scheduleTemp(@ApiParam(value = "排课的批量时序信息", required = true) TimetableVO timetableVO) {
+        //检查课程
+        Course course = courseService.getById(timetableVO.getCourseId());
+        if(ObjectUtils.isEmpty(course)) {
+            return R.error().message("该课程不存在");
+        }
+        //获取该课程所在学年学期的第一周周一的日期
+        QueryWrapper<TermFirstWeek> weekQueryWrapper = new QueryWrapper<>();
+        weekQueryWrapper.eq("year", course.getYear()).eq("term", course.getTerm());
+        TermFirstWeek firstWeek = firstWeekService.getOne(weekQueryWrapper);
+        Date firstDay = firstWeek.getFirstDay();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(firstDay);
+
         List<Timetable> tempList = new ArrayList<>();
         Integer beginWeek = timetableVO.getBeginWeek();
         Integer endWeek = timetableVO.getEndWeek();
+        Integer dayOfWeek = timetableVO.getDayOfWeek(); //周一对应 1，周日对应 7
+        //调整到开始周的前一周的对应周几
+        calendar.add(Calendar.WEEK_OF_YEAR, beginWeek - 2);
+        calendar.add(Calendar.DAY_OF_WEEK, dayOfWeek - 1);
         for (int i = beginWeek; i <= endWeek; i++) {
             Timetable timetable = new Timetable();
             BeanUtils.copyProperties(timetableVO, timetable);
             timetable.setWeek(i);
+
+            //计算日期，每周加 1
+            calendar.add(Calendar.WEEK_OF_YEAR, 1);
+            timetable.setDate(calendar.getTime());
+
             tempList.add(timetable);
         }
         return R.ok().data("tempList", tempList);

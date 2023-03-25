@@ -1,5 +1,6 @@
 package xyz.likailing.cloud.service.manager.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import xyz.likailing.cloud.service.base.model.BaseEntity;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -43,6 +44,9 @@ public class Timetable extends BaseEntity {
     private String location;
 
     private String teacherId;
+
+    @TableField("is_outdated")
+    private Boolean outdated;
 
 
 }
