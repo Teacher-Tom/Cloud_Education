@@ -2,6 +2,7 @@ package xyz.likailing.cloud.service.manager.service;
 
 import xyz.likailing.cloud.service.manager.entity.Timetable;
 import com.baomidou.mybatisplus.extension.service.IService;
+import xyz.likailing.cloud.service.manager.entity.vo.TimetableGetVO;
 import xyz.likailing.cloud.service.manager.entity.vo.TimetableVO;
 
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.Set;
  */
 public interface TimetableService extends IService<Timetable> {
 
-    List<Timetable> listCourseTime(String courseId);
+    List<TimetableGetVO> listCourseTime(String courseId);
 
 //    Set<Timetable> getTempList(String userId, TimetableVO timetableVO);
 //

@@ -1,23 +1,18 @@
 package xyz.likailing.cloud.service.manager.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-import org.springframework.util.ObjectUtils;
 import xyz.likailing.cloud.common.base.util.RedisCache;
 import xyz.likailing.cloud.service.manager.entity.Timetable;
-import xyz.likailing.cloud.service.manager.entity.vo.TimetableVO;
+import xyz.likailing.cloud.service.manager.entity.vo.TimetableGetVO;
 import xyz.likailing.cloud.service.manager.mapper.TimetableMapper;
 import xyz.likailing.cloud.service.manager.service.TimetableService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * <p>
@@ -36,10 +31,8 @@ public class TimetableServiceImpl extends ServiceImpl<TimetableMapper, Timetable
     private final String key = "tempSchList";
 
     @Override
-    public List<Timetable> listCourseTime(String courseId) {
-        QueryWrapper<Timetable> wrapper = new QueryWrapper<>();
-        wrapper.eq("course_id", courseId);
-        return baseMapper.selectList(wrapper);
+    public List<TimetableGetVO> listCourseTime(String courseId) {
+        return baseMapper.selectTimetableList(courseId);
     }
 
 //    @Override
