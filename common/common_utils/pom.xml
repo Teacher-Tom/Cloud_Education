@@ -24,7 +24,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.aspose</groupId>
+            <artifactId>aspose-slides</artifactId>
+            <version>15.9.0</version>
+        </dependency>
     </dependencies>
 
     <properties>

@@ -1,43 +1,46 @@
 package xyz.likailing.cloud.service.msg.controller;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.parameters.P;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import xyz.likailing.cloud.common.base.result.R;
-import xyz.likailing.cloud.service.base.exception.CloudException;
-import xyz.likailing.cloud.service.msg.service.WebSocketServer;
+import xyz.likailing.cloud.service.msg.entity.Message;
+import xyz.likailing.cloud.service.msg.entity.vo.MessageVo;
+import xyz.likailing.cloud.service.msg.mapper.MessageUserMapper;
+import xyz.likailing.cloud.service.msg.service.MessageService;
 
-import java.io.IOException;
+import java.util.List;
 
 /**
  * @Author 12042
- * @create 2023/3/20 18:58
+ * @create 2023/3/25 14:19
  */
-@CrossOrigin
-@Api(description = "消息管理")
 @RestController
-@RequestMapping("/api/msg")
-@Slf4j
+@RequestMapping("/msg")
+@CrossOrigin
 public class MsgController {
-
-
-    @GetMapping("/index/{username}")
-    public R socket(@PathVariable String username){
-        return R.ok().message(username);
+    @Autowired
+    MessageService messageService;
+    @Autowired
+    MessageUserMapper messageUserMapper;
+    @ApiOperation("向课程全员发送自定义通知")
+    @PostMapping("send")
+    public R sendMessage(@RequestBody MessageVo msgVo){
+        messageService.sendMessage(msgVo.getCourseId(),msgVo.getTeacherId(),msgVo.getTitle(), msgVo.getContent());
+        return R.ok().message("通知发送成功!");
+    }
+    @ApiOperation("根据id查看某条消息")
+    @GetMapping("check/{msgId}")
+    public R readMessage(@PathVariable String msgId){
+        Message message = messageService.checkMessage(msgId);
+        return R.ok().data("msg",message);
+    }
+    @ApiOperation("根据用户id列出所有消息")
+    @GetMapping("list/user/{userId}")
+    public R listMessageByUserId(@PathVariable String userId){
+        List<Message> messageList = messageService.listMessageByUserId(userId);
+        List<Boolean> hasRead = messageUserMapper.selectHasReadByUserId(userId);
+        return R.ok().data("list",messageList).data("hasReads",hasRead);
     }
 
-    @ApiOperation("推送消息")
-    @ResponseBody
-    @RequestMapping("/push/{username}")
-    public R pushToWeb(@PathVariable String username, String message){
-        try{
-            WebSocketServer.sendInfo(message,username);
-        }catch (IOException e){
-            e.printStackTrace();
-            throw new CloudException("消息通信异常",20001);
-        }
-        return R.ok().message("发送消息成功:"+username);
-    }
 }

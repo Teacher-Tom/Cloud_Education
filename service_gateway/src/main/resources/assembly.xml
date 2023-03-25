@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly>
+    <!-- 不配置会报错：Assembly ID must be present and non-empty -->
+    <id>bin</id>
+    <formats>
+        <!--压缩文件的类型-->
+        <format>tar.gz</format>
+    </formats>
+    <!--指明打包后是否有分发包的最外层,如果不写,默认是true-->
+    <includeBaseDirectory>true</includeBaseDirectory>
+    <fileSets>
+        <!--需要包含的文件与输出的路径-->
+        <fileSet>
+            <!--指明要对src/main/assembly/bin文件夹操作-->
+            <directory>src/main/assembly/bin</directory>
+            <!--指明经过assembly插件打包后bin目录会放置在项目根目录下-->
+            <outputDirectory>bin</outputDirectory>
+            <!--指明bin目录下所有文件的权限为755-->
+            <fileMode>0755</fileMode>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/resources</directory>
+            <includes>
+                <include></include>
+            </includes>
+            <outputDirectory>conf</outputDirectory>
+            <fileMode>0644</fileMode>
+        </fileSet>
+    </fileSets>
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>lib</outputDirectory>
+        </dependencySet>
+    </dependencySets>
+</assembly>

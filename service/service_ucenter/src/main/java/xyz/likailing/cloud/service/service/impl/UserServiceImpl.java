@@ -132,7 +132,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         jwtInfo.setNickName(user.getNickname());
         jwtInfo.setAvatar(user.getAvatar());
         jwtInfo.setRole(user.getRole());
-        String jwtToken = JwtUtils.getJwtToken(jwtInfo,3600);
+        String jwtToken = JwtUtils.getJwtToken(jwtInfo,3600*24);
         //存入redis
         redisCache.setCacheObject("login:"+user.getId(),loginUserDetails);
         return jwtToken;

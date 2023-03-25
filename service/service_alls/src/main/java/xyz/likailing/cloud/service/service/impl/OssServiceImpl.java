@@ -7,6 +7,10 @@ import com.aliyun.vod.upload.impl.UploadVideoImpl;
 import com.aliyun.vod.upload.req.UploadStreamRequest;
 import com.aliyun.vod.upload.resp.UploadStreamResponse;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamSource;
+import xyz.likailing.cloud.common.base.util.AsposeUtil;
+import xyz.likailing.cloud.service.base.exception.CloudException;
 import xyz.likailing.cloud.service.entity.File;
 import xyz.likailing.cloud.service.service.FileService;
 import xyz.likailing.cloud.service.service.OssService;
@@ -18,8 +22,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class OssServiceImpl implements OssService {
@@ -240,7 +247,88 @@ public class OssServiceImpl implements OssService {
             return null;
         }
     }
+    
+    /**
+     * 将ppt文件转为pdf并上传到oss
+     * 
+ * @param file
+ * @param catalogue
+     * @return java.util.List<xyz.likailing.cloud.service.entity.File>
+     * @author likailing
+     * @create 2023/3/25
+     **/
+    
+    public List<File> uploadPptFile(MultipartFile file,String catalogue){
+        // 工具类获取值
+        String endpoint = ConstanPropertiesUtils.END_POIND;
+        String accessKeyId = ConstanPropertiesUtils.ACCESS_KEY_ID;
+        String accessKeySecret = ConstanPropertiesUtils.ACCESS_KEY_SECRET;
+        String bucketName = ConstanPropertiesUtils.BUCKET_NAME;
 
+        try {
+            // 创建OSS实例。
+            OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
 
+            File file1=new File();
+            File file2 = new File();
+            //获取上传文件输入流
+            InputStream inputStream = file.getInputStream();
+            //获取文件名称
+            String originalFilename = file.getOriginalFilename();
+            //获取文件类型
+            String fileType = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String name=originalFilename.substring(0, originalFilename.indexOf("."));
+            String type = fileType.substring(1);
+            if(!type.equals("ppt")&&!type.equals("pptx")){
+                throw new CloudException("文件不是ppt",20001);
+            }
+            //ppt转pdf
+            ByteArrayOutputStream outputStream = (ByteArrayOutputStream)AsposeUtil.ppt2PDF(inputStream);
+            byte[] bytes = outputStream.toByteArray();
+            long pdfFileSize = bytes.length;
+            InputStreamSource source = new ByteArrayResource(bytes);
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(source.getInputStream());
+
+            //2 把文件按照日期进行分类
+            //获取当前日期
+            //   2019/11/12
+            String datePath = new DateTime().toString("yyyy/MM/dd");
+            //拼接
+            //  2019/11/12/ewtqr313401.jpg
+            originalFilename = datePath + "/" + originalFilename;
+            String pdfFilename = datePath + "/" + name + ".pdf";
+            //调用oss方法实现上传
+            //第一个参数  Bucket名称
+            //第二个参数  上传到oss文件路径和文件名称   aa/bb/1.jpg
+            //第三个参数  上传文件输入流
+            ossClient.putObject(bucketName, originalFilename, file.getInputStream());
+            ossClient.putObject(bucketName,pdfFilename,bufferedInputStream);
+            // 关闭OSSClient。
+            ossClient.shutdown();
+            //把上传之后文件路径返回
+            //需要把上传到阿里云oss路径手动拼接出来
+            //  https://edu-guli-1010.oss-cn-beijing.aliyuncs.com/01.jpg
+            String url = "https://" + bucketName + "." + endpoint + "/" + originalFilename;
+            String url2 = "https://" + bucketName + "." + endpoint + "/" + pdfFilename;
+            file1.setName(name);
+            file1.setType(type);
+            file1.setUrl(url);
+            file1.setFDir(catalogue);
+            file1.setSize(file.getSize());
+            file2.setName(name);
+            file2.setType("pdf");
+            file2.setUrl(url2);
+            file2.setFDir(catalogue);
+            file2.setSize(pdfFileSize);
+            List<File> list = new ArrayList<>();
+            list.add(file1);
+            list.add(file2);
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 
 }

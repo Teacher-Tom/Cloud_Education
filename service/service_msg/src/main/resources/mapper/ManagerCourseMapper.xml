@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.likailing.cloud.service.msg.mapper.ManagerCourseMapper">
+
+    <resultMap id="BaseResultMap" type="xyz.likailing.cloud.service.msg.entity.ManagerCourse">
+            <id property="id" column="id" jdbcType="CHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="creditHour" column="credit_hour" jdbcType="INTEGER"/>
+            <result property="creditNum" column="credit_num" jdbcType="INTEGER"/>
+            <result property="type" column="type" jdbcType="BIT"/>
+            <result property="year" column="year" jdbcType="INTEGER"/>
+            <result property="department" column="department" jdbcType="VARCHAR"/>
+            <result property="term" column="term" jdbcType="INTEGER"/>
+            <result property="beginWeek" column="begin_week" jdbcType="INTEGER"/>
+            <result property="endWeek" column="end_week" jdbcType="INTEGER"/>
+            <result property="gmtCreate" column="gmt_create" jdbcType="TIMESTAMP"/>
+            <result property="gmtModified" column="gmt_modified" jdbcType="TIMESTAMP"/>
+            <result property="coverUrl" column="cover_url" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,credit_hour,
+        credit_num,type,year,
+        department,term,begin_week,
+        end_week,gmt_create,gmt_modified,
+        cover_url
+    </sql>
+    <select id="selectClassIdByCourseId" resultType="java.lang.String">
+        SELECT cc.class_id FROM `manager_class_course` cc
+                                    LEFT JOIN manager_class cl ON cl.id = cc.class_id
+                                    LEFT JOIN manager_course co ON co.id = cc.course_id
+        WHERE course_id = #{courseId}
+    </select>
+</mapper>

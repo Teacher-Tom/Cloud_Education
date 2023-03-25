@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 @Api(description = "用户管理")
 @CrossOrigin
 @RestController
-@RequestMapping("/api/ucenter/user")
+@RequestMapping("/ucenter/user")
 @Slf4j
 public class UserController {
     @Autowired

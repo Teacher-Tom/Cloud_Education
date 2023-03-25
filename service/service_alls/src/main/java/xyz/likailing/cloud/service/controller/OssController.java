@@ -8,6 +8,7 @@ import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.vod.model.v20170321.*;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.entity.File;
 import xyz.likailing.cloud.service.entity.UcenterMember;
 import xyz.likailing.cloud.service.excepyionhandler.SpaceException;
@@ -16,7 +17,6 @@ import xyz.likailing.cloud.service.service.OssService;
 import xyz.likailing.cloud.service.service.UcenterMemberService;
 import xyz.likailing.cloud.service.utils.ConstanPropertiesUtils;
 import xyz.likailing.cloud.service.utils.InitVodCilent;
-import xyz.likailing.cloud.service.utils.R;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -88,7 +88,14 @@ public class OssController {
                 String videoId = ossService.uploadfile(file);
                 file1.setVideoId(videoId);
                 return R.ok().data("file", file1);
-            } else {
+            }else if(type.equals("ppt") || type.equals("pptx")){
+                List<File> files = ossService.uploadPptFile(file, catalogue);
+                if (files.isEmpty()){
+                    return R.error();
+                }
+                return R.ok().data("file_list",files);
+            }
+            else {
                 File file1 = ossService.upload(file, catalogue);
 
                 if (file1.equals("")) {

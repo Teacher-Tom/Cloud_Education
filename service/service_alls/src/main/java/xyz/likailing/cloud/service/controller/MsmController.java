@@ -1,8 +1,8 @@
 package xyz.likailing.cloud.service.controller;
 
 
+import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.service.MsmService;
-import xyz.likailing.cloud.service.utils.R;
 import xyz.likailing.cloud.service.utils.RandomUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.redis.core.RedisTemplate;

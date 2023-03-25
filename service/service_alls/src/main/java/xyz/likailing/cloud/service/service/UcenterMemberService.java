@@ -21,6 +21,6 @@ public interface UcenterMemberService extends IService<UcenterMember> {
     //注册的方法
     void register(RegisterVo registerVo);
 
-
+    public void createCourse(String courseId,String courseName,String coverUrl);
 //    boolean updateMember(UcenterMember ucenterMember);
 }

@@ -2,10 +2,11 @@ package xyz.likailing.cloud.service.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.entity.UcenterMember;
 import xyz.likailing.cloud.service.entity.vo.RegisterVo;
 import xyz.likailing.cloud.service.service.UcenterMemberService;
-import xyz.likailing.cloud.service.utils.R;
+
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -76,6 +77,12 @@ public class UcenterMemberController {
         }else{
             return R.error();
         }
+    }
+    @ApiOperation("创建课程网盘")
+    @PostMapping("create-course")
+    public R createCourseAccount(@RequestParam String courseId,@RequestParam String courseName,@RequestParam String coverUrl){
+        memberService.createCourse(courseId,courseName,coverUrl);
+        return R.ok().message("创建课程网盘成功");
     }
 }
 

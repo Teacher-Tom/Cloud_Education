@@ -37,5 +37,7 @@ public class Student extends BaseEntity {
 
     private String classId;
 
+    private String userId;
+
 
 }

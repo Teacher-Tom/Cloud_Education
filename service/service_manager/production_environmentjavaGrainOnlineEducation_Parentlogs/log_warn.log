@@ -102,3 +102,94 @@ You may wish to exclude one of them to ensure predictable runtime behavior
 2023-03-22 13:43:55 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
 2023-03-22 13:44:01 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
 2023-03-22 13:44:01 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-22 20:14:06 |WARN  |main |DuplicateJsonObjectContextCustomizerFactory.java:78 |org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer |
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/C:/Tomcat/apache-maven-3.8.4/maven-repo/org/json/json/20170516/json-20170516.jar!/org/json/JSONObject.class
+	jar:file:/C:/Tomcat/apache-maven-3.8.4/maven-repo/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+2023-03-22 20:14:07 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2023-03-22 20:14:07 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2023-03-22 20:14:13 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-22 20:14:13 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-22 20:15:49 |WARN  |main |DuplicateJsonObjectContextCustomizerFactory.java:78 |org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer |
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/C:/Tomcat/apache-maven-3.8.4/maven-repo/org/json/json/20170516/json-20170516.jar!/org/json/JSONObject.class
+	jar:file:/C:/Tomcat/apache-maven-3.8.4/maven-repo/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+2023-03-22 20:15:50 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2023-03-22 20:15:50 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2023-03-22 20:15:55 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-22 20:15:55 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-22 20:57:43 |WARN  |main |DuplicateJsonObjectContextCustomizerFactory.java:78 |org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer |
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/C:/Tomcat/apache-maven-3.8.4/maven-repo/org/json/json/20170516/json-20170516.jar!/org/json/JSONObject.class
+	jar:file:/C:/Tomcat/apache-maven-3.8.4/maven-repo/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+2023-03-22 20:57:44 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2023-03-22 20:57:44 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2023-03-22 20:57:49 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-22 20:57:49 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-22 21:09:06 |WARN  |main |DuplicateJsonObjectContextCustomizerFactory.java:78 |org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer |
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/C:/Tomcat/apache-maven-3.8.4/maven-repo/org/json/json/20170516/json-20170516.jar!/org/json/JSONObject.class
+	jar:file:/C:/Tomcat/apache-maven-3.8.4/maven-repo/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+2023-03-22 21:09:06 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2023-03-22 21:09:06 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2023-03-22 21:09:12 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-22 21:09:12 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-22 21:13:01 |WARN  |main |DuplicateJsonObjectContextCustomizerFactory.java:78 |org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer |
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/C:/Tomcat/apache-maven-3.8.4/maven-repo/org/json/json/20170516/json-20170516.jar!/org/json/JSONObject.class
+	jar:file:/C:/Tomcat/apache-maven-3.8.4/maven-repo/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+2023-03-22 21:13:02 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2023-03-22 21:13:02 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2023-03-22 21:13:07 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-22 21:13:07 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-22 21:37:29 |WARN  |main |DuplicateJsonObjectContextCustomizerFactory.java:78 |org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer |
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/C:/Tomcat/apache-maven-3.8.4/maven-repo/org/json/json/20170516/json-20170516.jar!/org/json/JSONObject.class
+	jar:file:/C:/Tomcat/apache-maven-3.8.4/maven-repo/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+2023-03-22 21:37:29 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2023-03-22 21:37:30 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2023-03-22 21:37:35 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-22 21:37:35 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-22 23:35:38 |WARN  |main |DuplicateJsonObjectContextCustomizerFactory.java:78 |org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer |
+
+Found multiple occurrences of org.json.JSONObject on the class path:
+
+	jar:file:/C:/Tomcat/apache-maven-3.8.4/maven-repo/org/json/json/20170516/json-20170516.jar!/org/json/JSONObject.class
+	jar:file:/C:/Tomcat/apache-maven-3.8.4/maven-repo/com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar!/org/json/JSONObject.class
+
+You may wish to exclude one of them to ensure predictable runtime behavior
+
+2023-03-22 23:35:38 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2023-03-22 23:35:39 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2023-03-22 23:35:44 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-22 23:35:44 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
