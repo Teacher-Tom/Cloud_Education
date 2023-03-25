@@ -12,6 +12,7 @@ import xyz.likailing.cloud.service.manager.entity.CourseHomework;
 import xyz.likailing.cloud.service.manager.entity.CourseHomeworkContext;
 import xyz.likailing.cloud.service.manager.entity.CourseHomeworkStudent;
 import xyz.likailing.cloud.service.manager.entity.CourseHomeworkSubmit;
+import xyz.likailing.cloud.service.manager.entity.vo.HomeworkCorrectVO;
 import xyz.likailing.cloud.service.manager.entity.vo.StudentHomeworkVO;
 import xyz.likailing.cloud.service.manager.entity.vo.TeacherHomeworkVO;
 import xyz.likailing.cloud.service.manager.service.CourseHomeworkContextService;
@@ -23,7 +24,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author derek
@@ -49,7 +50,7 @@ public class CourseHomeworkController {
     public R saveHomework(@ApiParam("作业基本信息") CourseHomework homework,
                           @ApiParam("作业内容信息") @RequestBody List<CourseHomeworkContext> contexts) {
         String id = homeworkService.saveHomework(homework, contexts);
-        if(id != null) {
+        if (id != null) {
             return R.ok().data("homeworkId", id).message("保存成功");
         }
         return R.error().message("保存失败");
@@ -72,7 +73,7 @@ public class CourseHomeworkController {
         studentQueryWrapper.eq("homework_id", id);
         List<CourseHomeworkStudent> students = homeworkStudentService.list(studentQueryWrapper);
 
-        if(!ObjectUtils.isEmpty(homework)) {
+        if (!ObjectUtils.isEmpty(homework)) {
             return R.ok()
                     .data("homework", homework)
                     .data("studentNumber", students.size())
@@ -81,6 +82,24 @@ public class CourseHomeworkController {
         return R.error().message("数据不存在");
     }
 
+    @ApiOperation("批改学生作业，上传得分和评语")
+    @PostMapping("/correct")
+    public R correct(@ApiParam("批改信息") @RequestBody HomeworkCorrectVO correctVO) {
+        QueryWrapper<CourseHomeworkStudent> wrapper = new QueryWrapper<>();
+        wrapper.eq("homework_id", correctVO.getHomeworkId()).eq("student_id", correctVO.getStudentId());
+        CourseHomeworkStudent homeworkStudent = homeworkStudentService.getOne(wrapper);
+        if (!ObjectUtils.isEmpty(homeworkStudent)) {
+            //更新得分和评语
+            homeworkStudent.setScore(correctVO.getScore());
+            homeworkStudent.setRemark(correctVO.getRemark());
+            homeworkStudent.setCorrected(true); //标记已批改
+            boolean update = homeworkStudentService.updateById(homeworkStudent);
+            if (update) {
+                return R.ok().message("批改成功");
+            }
+        }
+        return R.error().message("数据不存在");
+    }
 
     /* 学生 */
 
@@ -91,14 +110,64 @@ public class CourseHomeworkController {
         return R.ok().data("homeworks", homeworks);
     }
 
+    @ApiOperation("学生提交作业的文本内容，不包含附件")
+    @PostMapping("/submit/{studentId}/{homeworkId}")
+    public R submit(@ApiParam(value = "学生id", required = true) @PathVariable String studentId,
+                    @ApiParam(value = "作业id", required = true) @PathVariable String homeworkId,
+                    @ApiParam("每个小题的内容") @RequestBody List<CourseHomeworkSubmit> submits) {
+        //检查是否已批改
+        QueryWrapper<CourseHomeworkStudent> wrapper = new QueryWrapper<>();
+        wrapper.eq("homework_id", homeworkId).eq("student_id", studentId);
+        CourseHomeworkStudent homeworkStudent = homeworkStudentService.getOne(wrapper);
+        if (!ObjectUtils.isEmpty(homeworkStudent) && homeworkStudent.getCorrected()) {
+            return R.error().message("已批改，不能提交");
+        }
+        //记录作业提交的内容，未批改时可以重复提交
+        boolean saveBatch = submitService.saveBatchSubmits(homeworkId, studentId, submits);
+        if (saveBatch) {
+            if (ObjectUtils.isEmpty(homeworkStudent)) {
+                //在作业完成情况表中记录
+                homeworkStudent = new CourseHomeworkStudent();
+                homeworkStudent.setStudentId(studentId);
+                homeworkStudent.setHomeworkId(homeworkId);
+                boolean save = homeworkStudentService.save(homeworkStudent);
+                if (save) {
+                    return R.ok().message("提交成功");
+                }
+            } else {
+                return R.ok().message("提交成功");
+            }
+        }
+        return R.error().message("提交失败");
+    }
+
     /* 共用 */
+
+    @ApiOperation("根据id获取作业所有题目内容信息")
+    @GetMapping("/get-context/{id}")
+    public R getContext(@ApiParam(value = "作业id", required = true) @PathVariable String id) {
+        //作业基本信息
+        CourseHomework homework = homeworkService.getById(id);
+        //作业详细内容
+        QueryWrapper<CourseHomeworkContext> contextQueryWrapper = new QueryWrapper<>();
+        contextQueryWrapper.eq("homework_id", id);
+        List<CourseHomeworkContext> contexts = contextService.list(contextQueryWrapper);
+        //TODO 作业附件
+
+        if (!ObjectUtils.isEmpty(homework)) {
+            return R.ok()
+                    .data("homework", homework)
+                    .data("contexts", contexts);
+        }
+        return R.error().message("数据不存在");
+    }
 
     @ApiOperation("根据学生和作业id获取作业提交信息，包括作业内容、作业是否提交、提交的答案、以及评分和参考答案等")
     @GetMapping("/get-submit/{id}/{studentId}")
     public R getStudentSubmit(@ApiParam(value = "作业id", required = true) @PathVariable String id,
                               @ApiParam(value = "学生id", required = true) @PathVariable String studentId) {
         //作业基本信息
-        StudentHomeworkVO homework = homeworkService.listStudentHomework(studentId, id);
+        StudentHomeworkVO homework = homeworkService.getStudentHomework(studentId, id);
         //作业详细内容
         QueryWrapper<CourseHomeworkContext> contextQueryWrapper = new QueryWrapper<>();
         contextQueryWrapper.eq("homework_id", id);
@@ -107,10 +176,10 @@ public class CourseHomeworkController {
         QueryWrapper<CourseHomeworkSubmit> submitQueryWrapper = new QueryWrapper<>();
         submitQueryWrapper.eq("homework_id", id).eq("student_id", studentId);
         List<CourseHomeworkSubmit> submits = submitService.list(submitQueryWrapper);
-        //作业附件
-        //学生提交的附件
+        //TODO 作业附件
+        //TODO 学生提交的附件
 
-        if(!ObjectUtils.isEmpty(homework)) {
+        if (!ObjectUtils.isEmpty(homework)) {
             return R.ok()
                     .data("homework", homework)
                     .data("contexts", contexts)

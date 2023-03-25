@@ -20,7 +20,7 @@ import java.io.Serializable;
  */
 @Data
 @Accessors(chain = true)
-@ApiModel(value="CourseHomeworkContext对象", description="")
+@ApiModel(value="CourseHomeworkSubmit对象", description="")
 public class CourseHomeworkSubmit implements Serializable {
 
     private static final long serialVersionUID=1L;

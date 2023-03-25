@@ -65,7 +65,7 @@ public class CourseHomeworkServiceImpl extends ServiceImpl<CourseHomeworkMapper,
     }
 
     @Override
-    public StudentHomeworkVO listStudentHomework(String studentId, String id) {
+    public StudentHomeworkVO getStudentHomework(String studentId, String id) {
         StudentHomeworkVO homework = baseMapper.selectStudentHomework(studentId, id);
         getCorrecting(studentId, id, homework);
         return homework;
