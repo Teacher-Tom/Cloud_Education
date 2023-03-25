@@ -78,6 +78,9 @@ public class ScheduleController {
         QueryWrapper<TermFirstWeek> weekQueryWrapper = new QueryWrapper<>();
         weekQueryWrapper.eq("year", course.getYear()).eq("term", course.getTerm());
         TermFirstWeek firstWeek = firstWeekService.getOne(weekQueryWrapper);
+        if(ObjectUtils.isEmpty(firstWeek)) {
+            return R.error().message("需要先添加对应学年学期的时间信息");
+        }
         Date firstDay = firstWeek.getFirstDay();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(firstDay);
