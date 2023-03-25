@@ -14,13 +14,11 @@
         <result column="end_week" property="endWeek"/>
         <result column="department" property="department"/>
         <result column="cover_url" property="coverUrl"/>
-        <collection property="teacherNames" ofType="string">
-            <result column="t.name"/>
-        </collection>
-        <collection property="classNames" ofType="string" select="getClasses" column="id"/>
+        <collection property="teacherNames" ofType="Teacher"/>
+        <collection property="classNames" ofType="Class" select="getClasses" column="id"/>
     </resultMap>
     <select id="getClasses" resultType="string" parameterType="string">
-        SELECT cl.name FROM manager_class cl
+        SELECT cl.* FROM manager_class cl
             LEFT JOIN manager_class_course cc ON cl.id = cc.class_id
         WHERE cc.course_id = #{id}
     </select>
@@ -38,12 +36,10 @@
         <result column="department" property="department"/>
         <result column="cover_url" property="coverUrl"/>
         <collection property="teacherNames" ofType="string" select="getTeachers" column="id"/>
-        <collection property="classNames" ofType="string">
-            <result column="cl.name"/>
-        </collection>
+        <collection property="classNames" ofType="Class"/>
     </resultMap>
-    <select id="getTeachers" resultType="string" parameterType="string">
-        SELECT t.name FROM manager_teacher t
+    <select id="getTeachers" resultType="Teacher" parameterType="string">
+        SELECT t.* FROM manager_teacher t
             LEFT JOIN manager_teacher_course tc ON t.id = tc.teacher_id
         WHERE tc.course_id = #{id}
     </select>
@@ -61,7 +57,7 @@
             mc.end_week,
             mc.department,
             mc.cover_url,
-            t.name
+            t.*
         FROM manager_course mc
             LEFT JOIN manager_teacher_course tc ON mc.id = tc.course_id
             LEFT JOIN manager_teacher t ON t.id = tc.teacher_id
@@ -84,7 +80,7 @@
             mc.end_week,
             mc.department,
             mc.cover_url,
-            cl.name
+            cl.*
         FROM manager_course mc
             LEFT JOIN manager_teacher_course tc ON mc.id = tc.course_id
             LEFT JOIN manager_teacher t ON t.id = tc.teacher_id
@@ -106,7 +102,7 @@
             mc.end_week,
             mc.department,
             mc.cover_url,
-            t.name
+            t.*
         FROM manager_course mc
             LEFT JOIN manager_teacher_course tc ON mc.id = tc.course_id
             LEFT JOIN manager_teacher t ON t.id = tc.teacher_id
@@ -125,7 +121,7 @@
             mc.end_week,
             mc.department,
             mc.cover_url,
-            t.name
+            t.*
         FROM manager_course mc
             LEFT JOIN manager_teacher_course tc ON mc.id = tc.course_id
             LEFT JOIN manager_teacher t ON t.id = tc.teacher_id
@@ -145,7 +141,7 @@
             mc.end_week,
             mc.department,
             mc.cover_url,
-            t.name
+            t.*
         FROM manager_course mc
             LEFT JOIN manager_teacher_course tc ON mc.id = tc.course_id
             LEFT JOIN manager_teacher t ON t.id = tc.teacher_id
