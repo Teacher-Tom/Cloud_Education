@@ -16,6 +16,7 @@ import xyz.likailing.cloud.service.manager.feign.AllsService;
 import xyz.likailing.cloud.service.manager.mapper.TimetableMapper;
 import xyz.likailing.cloud.service.manager.service.TimetableService;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -101,7 +102,13 @@ public class TimetableController {
 
     @Scheduled(cron = "0 0 0 * * ?") //每天0点执行一次
     public void expire() {
-        Date today = new Date();
+        Date now = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(now);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date today = calendar.getTime();
+
         List<Timetable> expiredList = timetableMapper.selectExpiredTimetable(today);
         List<Timetable> todayList = timetableMapper.selectTodayTimetable(today);
         if (expiredList.isEmpty()) {

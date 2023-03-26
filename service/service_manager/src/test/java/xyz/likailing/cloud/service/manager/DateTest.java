@@ -1,12 +1,15 @@
 package xyz.likailing.cloud.service.manager;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.scheduling.annotation.Scheduled;
 import xyz.likailing.cloud.service.manager.utils.DateUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+@SpringBootTest
 public class DateTest {
 
     @Test
@@ -52,4 +55,5 @@ public class DateTest {
 
         System.out.println(DateUtils.d1BeforeD2(calendar.getTime(), cal1.getTime()));
     }
+
 }
