@@ -57,4 +57,10 @@
         WHERE ms.id = #{studentId} AND ch.id = #{id}
     </select>
 
+    <select id="selectExpiredHomework" parameterType="java.util.Date" resultType="CourseHomework">
+        SELECT *
+        FROM course_homework ch
+        WHERE ch.is_outdated = 0
+            AND <![CDATA[ch.end_time <= #{date}]]>;
+    </select>
 </mapper>

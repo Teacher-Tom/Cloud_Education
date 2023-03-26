@@ -9,6 +9,7 @@
             s.gender AS gender,
             s.major AS major,
             s.department AS department,
+            s.user_id AS userId,
             cl.name AS className
         FROM
             manager_student s,

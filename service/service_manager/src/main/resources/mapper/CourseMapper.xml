@@ -17,7 +17,7 @@
         <collection property="teacherNames" ofType="Teacher"/>
         <collection property="classNames" ofType="Class" select="getClasses" column="id"/>
     </resultMap>
-    <select id="getClasses" resultType="string" parameterType="string">
+    <select id="getClasses" resultType="Class" parameterType="string">
         SELECT cl.* FROM manager_class cl
             LEFT JOIN manager_class_course cc ON cl.id = cc.class_id
         WHERE cc.course_id = #{id}
@@ -35,7 +35,7 @@
         <result column="end_week" property="endWeek"/>
         <result column="department" property="department"/>
         <result column="cover_url" property="coverUrl"/>
-        <collection property="teacherNames" ofType="string" select="getTeachers" column="id"/>
+        <collection property="teacherNames" ofType="Teacher" select="getTeachers" column="id"/>
         <collection property="classNames" ofType="Class"/>
     </resultMap>
     <select id="getTeachers" resultType="Teacher" parameterType="string">

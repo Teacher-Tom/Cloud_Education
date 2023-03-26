@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import xyz.likailing.cloud.service.manager.entity.vo.StudentHomeworkVO;
 import xyz.likailing.cloud.service.manager.entity.vo.TeacherHomeworkVO;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,4 +24,6 @@ public interface CourseHomeworkMapper extends BaseMapper<CourseHomework> {
     List<StudentHomeworkVO> selectByStudentId(String studentId);
 
     StudentHomeworkVO selectStudentHomework(String studentId, String id);
+
+    List<CourseHomework> selectExpiredHomework(Date date);
 }

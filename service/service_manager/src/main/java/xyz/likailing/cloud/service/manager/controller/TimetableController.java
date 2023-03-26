@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.manager.entity.Timetable;
+import xyz.likailing.cloud.service.manager.entity.vo.TimetableGetVO;
 import xyz.likailing.cloud.service.manager.service.TimetableService;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class TimetableController {
     @ApiOperation("根据课程id获取时序信息")
     @GetMapping("/course-time/{courseId}")
     public R getTime(@ApiParam(value = "课程id", required = true) @PathVariable String courseId) {
-        List<Timetable> courseTime = timetableService.listCourseTime(courseId);
+        List<TimetableGetVO> courseTime = timetableService.listCourseTime(courseId);
         if(!ObjectUtils.isEmpty(courseTime)) {
             return R.ok().data("time", courseTime);
         }

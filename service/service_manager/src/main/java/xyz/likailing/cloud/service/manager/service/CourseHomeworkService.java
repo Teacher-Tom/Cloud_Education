@@ -6,6 +6,7 @@ import xyz.likailing.cloud.service.manager.entity.CourseHomeworkContext;
 import xyz.likailing.cloud.service.manager.entity.vo.StudentHomeworkVO;
 import xyz.likailing.cloud.service.manager.entity.vo.TeacherHomeworkVO;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,4 +26,6 @@ public interface CourseHomeworkService extends IService<CourseHomework> {
     List<StudentHomeworkVO> listStudentHomework(String studentId);
 
     StudentHomeworkVO getStudentHomework(String studentId, String id);
+
+    List<CourseHomework> listExpiredHomework();
 }

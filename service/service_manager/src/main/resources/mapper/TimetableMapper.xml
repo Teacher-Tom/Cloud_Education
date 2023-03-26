@@ -13,7 +13,7 @@
             tt.end_index AS endIndex,
             tt.location AS location,
             mt.name AS teacherName,
-            tt.is_outdated AS outdated
+            tt.status AS status
         FROM manager_timetable tt
             LEFT JOIN manager_teacher mt ON mt.id = tt.teacher_id
             LEFT JOIN manager_course mc ON mc.id = tt.course_id

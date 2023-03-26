@@ -3,7 +3,9 @@ package xyz.likailing.cloud.service.manager.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,7 @@ import xyz.likailing.cloud.service.manager.service.CourseHomeworkService;
 import xyz.likailing.cloud.service.manager.service.CourseHomeworkStudentService;
 import xyz.likailing.cloud.service.manager.service.CourseHomeworkSubmitService;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,6 +33,7 @@ import java.util.List;
  * @author derek
  * @since 2023-03-20
  */
+@Slf4j
 @RestController
 @RequestMapping("/manager/course-homework")
 public class CourseHomeworkController {
@@ -186,6 +190,28 @@ public class CourseHomeworkController {
                     .data("submits", submits);
         }
         return R.error().message("数据不存在");
+    }
+
+    /* 过期 */
+
+    @Scheduled(fixedRate = 60000) //距离项目启动每1分钟执行一次
+    public void expire() {
+        //首先拿到所有的过期且outdated=0的条目
+        List<CourseHomework> homeworkList = homeworkService.listExpiredHomework();
+        if (homeworkList.isEmpty()) {
+            log.info("没有需要更新的过期用户");
+            return;
+        }
+        //遍历更新
+        for (CourseHomework homework : homeworkList) {
+            homework.setOutdated(true);
+            boolean update = homeworkService.updateById(homework);
+            if (update) {
+                log.info("{} : 更新成功，已过期", homework.getId());
+            } else {
+                log.info("{} : 更新失败", homework.getId());
+            }
+        }
     }
 
 }

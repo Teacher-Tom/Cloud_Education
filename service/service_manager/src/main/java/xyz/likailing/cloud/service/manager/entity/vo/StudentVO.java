@@ -20,4 +20,6 @@ public class StudentVO implements Serializable {
     private String department;
 
     private String className;
+
+    private String userId;
 }
