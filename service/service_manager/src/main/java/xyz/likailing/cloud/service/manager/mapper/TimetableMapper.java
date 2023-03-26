@@ -3,6 +3,9 @@ package xyz.likailing.cloud.service.manager.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import xyz.likailing.cloud.service.manager.entity.Timetable;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import xyz.likailing.cloud.service.manager.entity.vo.TimetableGetVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +18,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 @Mapper
 public interface TimetableMapper extends BaseMapper<Timetable> {
 
+    List<TimetableGetVO> selectTimetableList(String courseId);
 }

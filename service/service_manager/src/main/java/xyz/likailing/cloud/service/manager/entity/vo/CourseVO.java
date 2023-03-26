@@ -1,6 +1,8 @@
 package xyz.likailing.cloud.service.manager.entity.vo;
 
 import lombok.Data;
+import xyz.likailing.cloud.service.manager.entity.Class;
+import xyz.likailing.cloud.service.manager.entity.Teacher;
 
 import java.io.Serializable;
 import java.util.List;
@@ -32,7 +34,7 @@ public class CourseVO implements Serializable {
 
     private String coverUrl;
 
-    private List<String> teacherNames;
+    private List<Teacher> teachers;
 
-    private List<String> classNames;
+    private List<Class> classes;
 }

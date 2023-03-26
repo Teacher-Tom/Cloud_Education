@@ -2,4 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.likailing.cloud.service.manager.mapper.TimetableMapper">
 
+    <select id="selectTimetableList" resultType="xyz.likailing.cloud.service.manager.entity.vo.TimetableGetVO">
+        SELECT
+            tt.id AS id,
+            mc.name AS courseName,
+            tt.date AS date,
+            tt.week AS week,
+            tt.day_of_week AS dayOfWeek,
+            tt.begin_index AS beginIndex,
+            tt.end_index AS endIndex,
+            tt.location AS location,
+            mt.name AS teacherName,
+            tt.is_outdated AS outdated
+        FROM manager_timetable tt
+            LEFT JOIN manager_teacher mt ON mt.id = tt.teacher_id
+            LEFT JOIN manager_course mc ON mc.id = tt.course_id
+        WHERE tt.course_id = #{courseId}
+        order by tt.date
+    </select>
+
 </mapper>
