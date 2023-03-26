@@ -21,4 +21,18 @@
         order by tt.date
     </select>
 
+    <select id="selectExpiredTimetable" parameterType="java.util.Date" resultType="Timetable">
+        SELECT *
+        FROM manager_timetable mt
+        WHERE (mt.status = 0 OR mt.status = 1)
+          AND <![CDATA[mt.date < #{date}]]>;
+    </select>
+
+    <select id="selectTodayTimetable" parameterType="java.util.Date" resultType="Timetable">
+        SELECT *
+        FROM manager_timetable mt
+        WHERE mt.status = 0
+          AND <![CDATA[mt.date = #{date}]]>;
+    </select>
+
 </mapper>

@@ -1,9 +1,10 @@
 package xyz.likailing.cloud.service.manager.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +13,10 @@ import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.manager.entity.Timetable;
 import xyz.likailing.cloud.service.manager.entity.vo.TimetableGetVO;
 import xyz.likailing.cloud.service.manager.feign.AllsService;
+import xyz.likailing.cloud.service.manager.mapper.TimetableMapper;
 import xyz.likailing.cloud.service.manager.service.TimetableService;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,6 +27,7 @@ import java.util.List;
  * @author derek
  * @since 2023-03-11
  */
+@Slf4j
 @RestController
 @RequestMapping("/admin/manager/timetable")
 public class TimetableController {
@@ -33,6 +37,8 @@ public class TimetableController {
 
     @Autowired
     private TimetableService timetableService;
+    @Autowired
+    private TimetableMapper timetableMapper;
 
     @ApiOperation("根据课程id获取时序信息")
     @GetMapping("/course-time/{courseId}")
@@ -91,6 +97,36 @@ public class TimetableController {
         String catalogue = "/root/timetable";
         R r = allsService.upload(file, catalogue, courseId);
         return r;
+    }
+
+    @Scheduled(cron = "0 0 0 * * ? *") //每天0点执行一次
+    public void expire() {
+        Date today = new Date();
+        List<Timetable> expiredList = timetableMapper.selectExpiredTimetable(today);
+        List<Timetable> todayList = timetableMapper.selectTodayTimetable(today);
+        if (expiredList.isEmpty()) {
+            log.info("没有需要更新的信息");
+            return;
+        }
+        //遍历更新过期时序
+        for (Timetable timetable : expiredList) {
+            timetable.setStatus(2);
+            boolean update = timetableService.updateById(timetable);
+            if (update) {
+                log.info("{} : 更新成功，已过期", timetable.getId());
+            } else {
+                log.info("{} : 更新失败", timetable.getId());
+            }
+        }
+        for (Timetable timetable : todayList) {
+            timetable.setStatus(1);
+            boolean update = timetableService.updateById(timetable);
+            if (update) {
+                log.info("{} : 更新成功", timetable.getId());
+            } else {
+                log.info("{} : 更新失败", timetable.getId());
+            }
+        }
     }
 
 

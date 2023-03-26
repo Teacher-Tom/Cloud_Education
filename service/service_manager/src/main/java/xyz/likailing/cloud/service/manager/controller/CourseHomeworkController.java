@@ -199,7 +199,7 @@ public class CourseHomeworkController {
         //首先拿到所有的过期且outdated=0的条目
         List<CourseHomework> homeworkList = homeworkService.listExpiredHomework();
         if (homeworkList.isEmpty()) {
-            log.info("没有需要更新的过期用户");
+            log.info("没有需要更新的过期信息");
             return;
         }
         //遍历更新
