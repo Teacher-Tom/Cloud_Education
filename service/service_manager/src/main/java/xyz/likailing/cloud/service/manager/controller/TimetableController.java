@@ -99,7 +99,7 @@ public class TimetableController {
         return r;
     }
 
-    @Scheduled(cron = "0 0 0 * * * ?") //每天0点执行一次
+    @Scheduled(cron = "0 0 0 * * ?") //每天0点执行一次
     public void expire() {
         Date today = new Date();
         List<Timetable> expiredList = timetableMapper.selectExpiredTimetable(today);
