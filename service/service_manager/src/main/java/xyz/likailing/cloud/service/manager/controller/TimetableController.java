@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.multipart.MultipartFile;
 import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.manager.entity.Timetable;
 import xyz.likailing.cloud.service.manager.entity.vo.TimetableGetVO;
+import xyz.likailing.cloud.service.manager.feign.AllsService;
 import xyz.likailing.cloud.service.manager.service.TimetableService;
 
 import java.util.List;
@@ -25,6 +27,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/manager/timetable")
 public class TimetableController {
+
+    @Autowired
+    AllsService allsService;
 
     @Autowired
     private TimetableService timetableService;
@@ -78,6 +83,16 @@ public class TimetableController {
         }
         return R.error().message("数据不存在");
     }
+
+    @ApiOperation("根据id上传小节资源")
+    @PostMapping("/upload/{courseId}/{timetableId}")
+    public R uploadById(MultipartFile file, @PathVariable String courseId, @PathVariable String timetableId){
+        // memId即课程id
+        String catalogue = "/root/timetable";
+        R r = allsService.upload(file, catalogue, courseId);
+        return r;
+    }
+
 
 }
 
