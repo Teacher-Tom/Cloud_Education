@@ -10,6 +10,8 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import xyz.likailing.cloud.service.entity.LoginUserDetails;
+import xyz.likailing.cloud.service.exception.CloudException;
+import xyz.likailing.cloud.service.result.ResultCodeEnum;
 import xyz.likailing.cloud.service.utils.JwtInfo;
 import xyz.likailing.cloud.service.utils.JwtUtils;
 import xyz.likailing.cloud.service.utils.RedisCache;
@@ -49,8 +51,8 @@ public class XTAuthenticationConverter extends ServerFormLoginAuthenticationConv
             List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
             //获取权限信息
             if(!JwtUtils.checkJwtTToken(token)){
-                logger.error("用户认证信息为空,返回获取认证信息失败");
-                return Mono.empty();
+                logger.error("token无效");
+                return Mono.error(new CloudException(ResultCodeEnum.INVALID_TOKEN));
             }
             JwtInfo info = JwtUtils.getUserIdByJwtToken(token);
             //从redis中获取用户信息

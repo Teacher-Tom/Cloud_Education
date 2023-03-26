@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.msg.entity.Message;
 import xyz.likailing.cloud.service.msg.entity.vo.MessageVo;
+import xyz.likailing.cloud.service.msg.mapper.MessageMapper;
 import xyz.likailing.cloud.service.msg.mapper.MessageUserMapper;
 import xyz.likailing.cloud.service.msg.service.MessageService;
 
@@ -23,6 +24,11 @@ public class MsgController {
     MessageService messageService;
     @Autowired
     MessageUserMapper messageUserMapper;
+
+    @Autowired
+    MessageMapper messageMapper;
+
+
     @ApiOperation("向课程全员发送自定义通知")
     @PostMapping("send")
     public R sendMessage(@RequestBody MessageVo msgVo){
@@ -41,6 +47,12 @@ public class MsgController {
         List<Message> messageList = messageService.listMessageByUserId(userId);
         List<Boolean> hasRead = messageUserMapper.selectHasReadByUserId(userId);
         return R.ok().data("list",messageList).data("hasReads",hasRead);
+    }
+    @ApiOperation("根据课程id列出所有消息")
+    @GetMapping("list/msg/{courseId}")
+    public R listMessageByCourseId(@PathVariable String courseId){
+        List<Message> messages = messageMapper.selectAllByCourseIdOrderByGmtCreateDesc(courseId);
+        return R.ok().data("list",messages);
     }
 
 }

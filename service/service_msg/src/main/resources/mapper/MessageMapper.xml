@@ -19,4 +19,12 @@
         title,content,author,
         gmt_create
     </sql>
+    <select id="selectAllByCourseIdOrderByGmtCreateDesc" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from message
+        where
+        course_id = #{courseId,jdbcType=VARCHAR}
+        order by gmt_create desc
+    </select>
 </mapper>

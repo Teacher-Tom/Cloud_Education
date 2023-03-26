@@ -48,7 +48,7 @@ spring:
         - id: service_msg
           uri: lb://service-msg
           predicates:
-            - Path=/manager/**
+            - Path=/msg/**
   http:
     encoding:
       charset: utf-8

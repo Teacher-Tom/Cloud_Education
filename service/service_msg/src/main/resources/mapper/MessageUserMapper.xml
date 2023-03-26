@@ -20,6 +20,7 @@
                           LEFT JOIN message_user mu
                                     ON mu.msg_id = m.id
         WHERE mu.user_id=#{userId}
+        order by m.gmt_create desc
     </select>
     <select id="selectHasReadByUserId" resultType="java.lang.Boolean">
         select has_read
