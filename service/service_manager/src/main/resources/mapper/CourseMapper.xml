@@ -14,8 +14,14 @@
         <result column="end_week" property="endWeek"/>
         <result column="department" property="department"/>
         <result column="cover_url" property="coverUrl"/>
-        <collection property="teacherNames" ofType="Teacher"/>
-        <collection property="classNames" ofType="Class" select="getClasses" column="id"/>
+        <collection property="teachers" ofType="Teacher">
+            <result column="tid" property="id"/>
+            <result column="tname" property="name"/>
+            <result column="tgender" property="gender"/>
+            <result column="tdepartment" property="department"/>
+            <result column="tuser_id" property="userId"/>
+        </collection>
+        <collection property="classes" ofType="Class" select="getClasses" column="id"/>
     </resultMap>
     <select id="getClasses" resultType="Class" parameterType="string">
         SELECT cl.* FROM manager_class cl
@@ -35,8 +41,13 @@
         <result column="end_week" property="endWeek"/>
         <result column="department" property="department"/>
         <result column="cover_url" property="coverUrl"/>
-        <collection property="teacherNames" ofType="Teacher" select="getTeachers" column="id"/>
-        <collection property="classNames" ofType="Class"/>
+        <collection property="teachers" ofType="Teacher" select="getTeachers" column="id"/>
+        <collection property="classes" ofType="Class">
+            <result column="clid" property="id"/>
+            <result column="clname" property="name"/>
+            <result column="cldepartment" property="department"/>
+            <result column="clmajor" property="major"/>
+        </collection>
     </resultMap>
     <select id="getTeachers" resultType="Teacher" parameterType="string">
         SELECT t.* FROM manager_teacher t
@@ -57,7 +68,11 @@
             mc.end_week,
             mc.department,
             mc.cover_url,
-            t.*
+            t.id tid,
+            t.name tname,
+            t.gender tgender,
+            t.department tdepartment,
+            t.user_id tuser_id
         FROM manager_course mc
             LEFT JOIN manager_teacher_course tc ON mc.id = tc.course_id
             LEFT JOIN manager_teacher t ON t.id = tc.teacher_id
@@ -80,7 +95,10 @@
             mc.end_week,
             mc.department,
             mc.cover_url,
-            cl.*
+            cl.id clid,
+            cl.name clname,
+            cl.department cldepartment,
+            cl.major clmajor
         FROM manager_course mc
             LEFT JOIN manager_teacher_course tc ON mc.id = tc.course_id
             LEFT JOIN manager_teacher t ON t.id = tc.teacher_id
@@ -102,7 +120,11 @@
             mc.end_week,
             mc.department,
             mc.cover_url,
-            t.*
+            t.id tid,
+            t.name tname,
+            t.gender tgender,
+            t.department tdepartment,
+            t.user_id tuser_id
         FROM manager_course mc
             LEFT JOIN manager_teacher_course tc ON mc.id = tc.course_id
             LEFT JOIN manager_teacher t ON t.id = tc.teacher_id
@@ -121,7 +143,11 @@
             mc.end_week,
             mc.department,
             mc.cover_url,
-            t.*
+            t.id tid,
+            t.name tname,
+            t.gender tgender,
+            t.department tdepartment,
+            t.user_id tuser_id
         FROM manager_course mc
             LEFT JOIN manager_teacher_course tc ON mc.id = tc.course_id
             LEFT JOIN manager_teacher t ON t.id = tc.teacher_id
@@ -141,7 +167,11 @@
             mc.end_week,
             mc.department,
             mc.cover_url,
-            t.*
+            t.id tid,
+            t.name tname,
+            t.gender tgender,
+            t.department tdepartment,
+            t.user_id tuser_id
         FROM manager_course mc
             LEFT JOIN manager_teacher_course tc ON mc.id = tc.course_id
             LEFT JOIN manager_teacher t ON t.id = tc.teacher_id
