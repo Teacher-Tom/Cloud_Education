@@ -23,7 +23,7 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-@ApiModel(value="CourseHomework对象", description="")
+@ApiModel(value="CourseHomework对象", description="作业基本信息")
 public class CourseHomework implements Serializable {
 
     private static final long serialVersionUID=1L;

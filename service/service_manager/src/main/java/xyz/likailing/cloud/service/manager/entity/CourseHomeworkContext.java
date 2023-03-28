@@ -21,7 +21,7 @@ import java.io.Serializable;
  */
 @Data
 @Accessors(chain = true)
-@ApiModel(value="CourseHomeworkContext对象", description="")
+@ApiModel(value="CourseHomeworkContext对象", description="作业的每一题的内容")
 public class CourseHomeworkContext implements Serializable {
 
     private static final long serialVersionUID=1L;

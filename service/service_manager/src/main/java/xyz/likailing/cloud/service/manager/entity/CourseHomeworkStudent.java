@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 @Data
 @Accessors(chain = true)
-@ApiModel(value="CourseHomeworkStudent对象", description="作业与学生关系表")
+@ApiModel(value="CourseHomeworkStudent对象", description="记录提交过的学生的作业信息，没有提交的没有信息")
 public class CourseHomeworkStudent implements Serializable {
 
     private static final long serialVersionUID=1L;

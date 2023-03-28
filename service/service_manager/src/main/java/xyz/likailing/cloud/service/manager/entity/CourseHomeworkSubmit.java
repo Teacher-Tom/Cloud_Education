@@ -20,7 +20,7 @@ import java.io.Serializable;
  */
 @Data
 @Accessors(chain = true)
-@ApiModel(value="CourseHomeworkSubmit对象", description="")
+@ApiModel(value="CourseHomeworkSubmit对象", description="学生提交的某个作业的某一题的答案内容，不包含附件")
 public class CourseHomeworkSubmit implements Serializable {
 
     private static final long serialVersionUID=1L;

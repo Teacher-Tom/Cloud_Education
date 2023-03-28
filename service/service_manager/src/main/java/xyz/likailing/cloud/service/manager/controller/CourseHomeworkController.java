@@ -49,7 +49,7 @@ public class CourseHomeworkController {
 
     /* 教师 */
 
-    @ApiOperation("保存作业信息")
+    @ApiOperation("保存作业信息，需要提交作业基本信息与每一小题的题目内容，不包含附件")
     @PostMapping("/save")
     public R saveHomework(@ApiParam("作业基本信息") CourseHomework homework,
                           @ApiParam("作业内容信息") @RequestBody List<CourseHomeworkContext> contexts) {
@@ -60,14 +60,14 @@ public class CourseHomeworkController {
         return R.error().message("保存失败");
     }
 
-    @ApiOperation("根据教师id获取作业列表")
+    @ApiOperation("根据教师id获取该教师所教的全部课程的全部作业列表")
     @GetMapping("/list-teacher/{teacherId}")
     public R listByTeacherId(@ApiParam(value = "教师id", required = true) @PathVariable String teacherId) {
         List<TeacherHomeworkVO> homeworks = homeworkService.listTeacherHomework(teacherId);
         return R.ok().data("homeworks", homeworks);
     }
 
-    @ApiOperation("根据id获取作业完成学生信息，只能查询提交了的学生，未提交查询不到")
+    @ApiOperation("根据作业id获取作业完成的学生信息列表，只能查询提交了的学生，未提交查询不到")
     @GetMapping("/get-marked/{id}")
     public R getHomework(@ApiParam(value = "作业id", required = true) @PathVariable String id) {
         //作业基本信息
@@ -86,7 +86,7 @@ public class CourseHomeworkController {
         return R.error().message("数据不存在");
     }
 
-    @ApiOperation("批改学生作业，上传得分和评语")
+    @ApiOperation("批改学生提交的作业，上传得分和评语，需要指定作业和学生的id")
     @PostMapping("/correct")
     public R correct(@ApiParam("批改信息") @RequestBody HomeworkCorrectVO correctVO) {
         QueryWrapper<CourseHomeworkStudent> wrapper = new QueryWrapper<>();
