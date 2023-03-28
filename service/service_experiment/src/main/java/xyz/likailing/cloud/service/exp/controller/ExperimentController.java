@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/exp/course")
 @CrossOrigin
-@Api("课程实验列表操作")
+@Api(description = "课程实验列表操作")
 public class ExperimentController {
 
     @Autowired
@@ -42,6 +42,7 @@ public class ExperimentController {
             return R.error().message("创建失败");
         }
     }
+
     @ApiOperation("删除某个实验")
     @DeleteMapping("/delete-exp/{expId}")
     public R deleteExpById(@PathVariable String expId){
@@ -63,5 +64,11 @@ public class ExperimentController {
         }else {
             return R.error().message("更新失败");
         }
+    }
+    @ApiOperation("根据用户id列出所有实验")
+    @GetMapping("/list-all/{userId}")
+    public R listAllExperiments(@PathVariable String userId){
+        List<Experiment> experimentList = experimentService.listAllExpsByUserId(userId);
+        return R.ok().data("list",experimentList);
     }
 }

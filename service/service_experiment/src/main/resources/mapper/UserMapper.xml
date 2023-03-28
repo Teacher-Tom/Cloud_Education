@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.likailing.cloud.service.exp.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="xyz.likailing.cloud.service.exp.entity.User">
+            <id property="id" column="id" jdbcType="CHAR"/>
+            <result property="username" column="username" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="role" column="role" jdbcType="VARCHAR"/>
+            <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+            <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,username,password,
+        role,avatar,nickname
+    </sql>
+    <select id="selectExpsByStudentId" resultType="xyz.likailing.cloud.service.exp.entity.Experiment">
+        SELECT
+            exp.*
+        FROM
+            manager_student stu
+                INNER JOIN manager_class_course cc ON cc.class_id = stu.class_id
+                INNER JOIN exp_experiment exp ON exp.course_id = cc.course_id
+        WHERE
+            stu.user_id = #{userId}
+        ORDER BY exp.end_time
+    </select>
+    <select id="selectExpsByTeacherId" resultType="xyz.likailing.cloud.service.exp.entity.Experiment">
+        SELECT
+            exp.*
+        FROM
+            manager_teacher tea
+                INNER JOIN manager_teacher_course tc ON tc.teacher_id = tea.id
+                INNER JOIN exp_experiment exp ON exp.course_id = tc.course_id
+        WHERE
+            tea.user_id = #{userId}
+        ORDER BY exp.end_time
+    </select>
+</mapper>

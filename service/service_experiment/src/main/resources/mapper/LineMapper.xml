@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.likailing.cloud.service.exp.mapper.LineMapper">
+
+    <resultMap id="BaseResultMap" type="xyz.likailing.cloud.service.exp.entity.Line">
+            <id property="id" column="id" jdbcType="CHAR"/>
+            <result property="experimentId" column="experiment_id" jdbcType="CHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="fromNodeId" column="from_node_id" jdbcType="CHAR"/>
+            <result property="toNodeId" column="to_node_id" jdbcType="CHAR"/>
+            <result property="label" column="label" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,experiment_id,name,
+        from_node_id,to_node_id,label
+    </sql>
+</mapper>

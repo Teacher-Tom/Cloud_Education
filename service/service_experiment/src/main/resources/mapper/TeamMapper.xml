@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.likailing.cloud.service.exp.mapper.TeamMapper">
+
+    <resultMap id="BaseResultMap" type="xyz.likailing.cloud.service.exp.entity.Team">
+            <id property="id" column="id" jdbcType="CHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="leaderName" column="leader_name" jdbcType="VARCHAR"/>
+            <result property="leaderId" column="leader_id" jdbcType="CHAR"/>
+            <result property="memberNum" column="member_num" jdbcType="INTEGER"/>
+            <result property="courseId" column="course_id" jdbcType="CHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,leader_name,
+        leader_id,member_num,course_id
+    </sql>
+</mapper>

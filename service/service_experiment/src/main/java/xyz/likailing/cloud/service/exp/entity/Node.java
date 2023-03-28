@@ -6,9 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -27,6 +24,11 @@ public class Node implements Serializable {
     /**
      * 
      */
+    private String experimentId;
+
+    /**
+     * 
+     */
     private String name;
 
     /**
@@ -37,15 +39,11 @@ public class Node implements Serializable {
     /**
      * 
      */
-    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
-    @ApiModelProperty("格式：yyyy-MM-dd HH:mm:ss")
     private Date beginTime;
 
     /**
      * 
      */
-    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
-    @ApiModelProperty("格式：yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     @TableField(exist = false)
@@ -64,6 +62,7 @@ public class Node implements Serializable {
         }
         Node other = (Node) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
+            && (this.getExperimentId() == null ? other.getExperimentId() == null : this.getExperimentId().equals(other.getExperimentId()))
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
             && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()))
             && (this.getBeginTime() == null ? other.getBeginTime() == null : this.getBeginTime().equals(other.getBeginTime()))
@@ -75,6 +74,7 @@ public class Node implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+        result = prime * result + ((getExperimentId() == null) ? 0 : getExperimentId().hashCode());
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
         result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
         result = prime * result + ((getBeginTime() == null) ? 0 : getBeginTime().hashCode());
@@ -89,6 +89,7 @@ public class Node implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", experimentId=").append(experimentId);
         sb.append(", name=").append(name);
         sb.append(", type=").append(type);
         sb.append(", beginTime=").append(beginTime);

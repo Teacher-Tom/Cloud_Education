@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.likailing.cloud.service.exp.mapper.BranchMapper">
+
+    <resultMap id="BaseResultMap" type="xyz.likailing.cloud.service.exp.entity.Branch">
+            <id property="id" column="id" jdbcType="CHAR"/>
+            <result property="sourceId" column="source_id" jdbcType="CHAR"/>
+            <result property="toId" column="to_id" jdbcType="CHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,source_id,to_id,
+        description
+    </sql>
+</mapper>

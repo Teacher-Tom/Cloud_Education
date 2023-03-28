@@ -13,4 +13,6 @@ import java.util.List;
 public interface ExperimentService extends IService<Experiment> {
 
     List<Experiment> listByCourseId(String courseId);
+
+    List<Experiment> listAllExpsByUserId(String userId);
 }
