@@ -35,3 +35,4 @@ build/
 .DS_Store
 /.idea/
 /service/service_manager/production_environmentjavaGrainOnlineEducation_Parentlogs/
+/production_environmentjavaGrainOnlineEducation_Parentlogs/
