@@ -2,10 +2,9 @@ package xyz.likailing.cloud.service.manager.controller;
 
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.google.gson.JsonObject;
+
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.BeanUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +13,6 @@ import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.base.model.File;
 import xyz.likailing.cloud.service.manager.feign.AllsService;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 

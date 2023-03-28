@@ -21,6 +21,10 @@ spring:
         dashboard: 123.60.88.31:1004 # dashboard端口
     gateway:
       routes:
+        - id: service_exp
+          uri: lb://service-exp
+          predicates:
+            - Path=/exp/**
         - id: service_ucenter
           uri: lb://service-ucenter
           predicates:
