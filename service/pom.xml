@@ -19,6 +19,7 @@
         <module>service_alls</module>
         <module>service_ucenter</module>
         <module>service_msg</module>
+        <module>service_experiment</module>
     </modules>
 
     <properties>

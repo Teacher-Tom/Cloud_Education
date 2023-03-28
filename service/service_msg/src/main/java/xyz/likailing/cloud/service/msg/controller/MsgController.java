@@ -32,7 +32,7 @@ public class MsgController {
     @ApiOperation("向课程全员发送自定义通知")
     @PostMapping("send")
     public R sendMessage(@RequestBody MessageVo msgVo){
-        messageService.sendMessage(msgVo.getCourseId(),msgVo.getTeacherId(),msgVo.getTitle(), msgVo.getContent());
+        messageService.sendMessage(msgVo.getCourseId(),msgVo.getTeacherUserId(),msgVo.getTitle(), msgVo.getContent());
         return R.ok().message("通知发送成功!");
     }
     @ApiOperation("根据id查看某条消息")

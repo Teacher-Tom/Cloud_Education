@@ -37,19 +37,20 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message>
     @Autowired
     MessageUserMapper messageUserMapper;
     @Override
-    public void sendMessage(String courseId, String teacherId, String title, String content) {
-        if (StringUtils.isEmpty(courseId) ||StringUtils.isEmpty(teacherId) ||StringUtils.isEmpty(title)
+    public void sendMessage(String courseId, String teacherUserId, String title, String content) {
+        if (StringUtils.isEmpty(courseId) ||StringUtils.isEmpty(teacherUserId) ||StringUtils.isEmpty(title)
                 || StringUtils.isEmpty(content)){
             throw new CloudException(ResultCodeEnum.PARAM_ERROR);
         }
+
         //查询教师名
         QueryWrapper<ManagerTeacher> queryWrapper = new QueryWrapper();
-        queryWrapper.eq("id",teacherId);
+        queryWrapper.eq("user_id",teacherUserId);
         ManagerTeacher managerTeacher = teacherMapper.selectOne(queryWrapper);
         //将通知存入库
         Message message = new Message();
         message.setCourseId(courseId);
-        message.setTeacherId(teacherId);
+        message.setTeacherId(teacherUserId);
         message.setAuthor(managerTeacher.getName());
         message.setTitle(title);
         message.setContent(content);

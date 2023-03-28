@@ -10,7 +10,7 @@ import lombok.Data;
 public class MessageVo {
     String courseId;
 
-    String teacherId;
+    String teacherUserId;
 
     String title;
 
