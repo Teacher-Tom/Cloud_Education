@@ -29,6 +29,5 @@ public class TimetableGetVO implements Serializable {
 
     private String teacherName;
 
-    @TableField("is_outdated")
-    private Boolean outdated;
+    private Integer status;
 }

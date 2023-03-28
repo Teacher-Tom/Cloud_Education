@@ -15,6 +15,7 @@ import xyz.likailing.cloud.service.manager.service.CourseHomeworkService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -69,6 +70,11 @@ public class CourseHomeworkServiceImpl extends ServiceImpl<CourseHomeworkMapper,
         StudentHomeworkVO homework = baseMapper.selectStudentHomework(studentId, id);
         getCorrecting(studentId, id, homework);
         return homework;
+    }
+
+    @Override
+    public List<CourseHomework> listExpiredHomework() {
+        return baseMapper.selectExpiredHomework(new Date());
     }
 
     /**

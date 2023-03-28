@@ -5,6 +5,7 @@ import xyz.likailing.cloud.service.manager.entity.Timetable;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import xyz.likailing.cloud.service.manager.entity.vo.TimetableGetVO;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,4 +20,8 @@ import java.util.List;
 public interface TimetableMapper extends BaseMapper<Timetable> {
 
     List<TimetableGetVO> selectTimetableList(String courseId);
+
+    List<Timetable> selectExpiredTimetable(Date date);
+
+    List<Timetable> selectTodayTimetable(Date today);
 }

@@ -45,8 +45,7 @@ public class Timetable extends BaseEntity {
 
     private String teacherId;
 
-    @TableField("is_outdated")
-    private Boolean outdated;
+    private Integer status;
 
 
 }

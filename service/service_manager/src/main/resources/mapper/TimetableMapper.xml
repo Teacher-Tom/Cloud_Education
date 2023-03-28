@@ -13,12 +13,26 @@
             tt.end_index AS endIndex,
             tt.location AS location,
             mt.name AS teacherName,
-            tt.is_outdated AS outdated
+            tt.status AS status
         FROM manager_timetable tt
             LEFT JOIN manager_teacher mt ON mt.id = tt.teacher_id
             LEFT JOIN manager_course mc ON mc.id = tt.course_id
         WHERE tt.course_id = #{courseId}
         order by tt.date
+    </select>
+
+    <select id="selectExpiredTimetable" parameterType="java.util.Date" resultType="Timetable">
+        SELECT *
+        FROM manager_timetable mt
+        WHERE (mt.status = 0 OR mt.status = 1)
+          AND <![CDATA[mt.date < #{date}]]>;
+    </select>
+
+    <select id="selectTodayTimetable" parameterType="java.util.Date" resultType="Timetable">
+        SELECT *
+        FROM manager_timetable mt
+        WHERE mt.status = 0
+          AND <![CDATA[mt.date = #{date}]]>;
     </select>
 
 </mapper>
