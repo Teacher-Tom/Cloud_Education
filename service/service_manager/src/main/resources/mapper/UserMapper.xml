@@ -3,11 +3,11 @@
 <mapper namespace="xyz.likailing.cloud.service.manager.mapper.UserMapper">
 
 
-    <select id="getRoleIdByUserId" resultType="java.lang.String">
-        SELECT ur.role_id
-        FROM `user` u
-            LEFT JOIN `user_role` ur ON u.id = ur.user_id
+    <select id="getRoleByUserId" resultType="java.lang.String">
+        SELECT r.name
+        FROM `role` r, `user_role` ur
         WHERE
-            u.id = #{id}
+            r.id = ur.role_id
+            AND ur.user_id = #{id}
     </select>
 </mapper>
