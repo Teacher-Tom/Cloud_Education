@@ -1,7 +1,10 @@
 package xyz.likailing.cloud.service.manager.service;
 
+import xyz.likailing.cloud.service.base.model.File;
 import xyz.likailing.cloud.service.manager.entity.CourseResource;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +15,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2023-03-20
  */
 public interface CourseResourceService extends IService<CourseResource> {
+
+    List<File> getPPTByTimetableId(String timetableId);
+
+    List<String> getVideoUrlByTimetableId(String timetableId);
+
+    List<File> getSharedFilesByTimetableId(String timetableId);
+
 
 }

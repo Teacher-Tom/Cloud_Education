@@ -45,6 +45,9 @@ public interface AllsService {
     @PostMapping("/educenter/member/create-course")
     public R createCourseAccount(@RequestParam String courseId,@RequestParam String courseName,@RequestParam String coverUrl);
 
+    @GetMapping("/educenter/file/getFileInfo/{id}")
+    public R getfileInfo(@PathVariable String id) ;
+
 
 
 }

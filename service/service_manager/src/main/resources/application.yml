@@ -2,6 +2,11 @@ server:
   port: 8002 # 服务端口
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+
   profiles:
     active: dev # 环境设置
   application:
