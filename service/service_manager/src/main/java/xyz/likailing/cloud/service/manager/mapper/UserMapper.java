@@ -12,10 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface UserMapper extends BaseMapper<User> {
 
-    String getRoleIdByUserId(@Param("id") String id);
-
-
-
+    String getRoleByUserId(@Param("id") String id);
 }
 
 

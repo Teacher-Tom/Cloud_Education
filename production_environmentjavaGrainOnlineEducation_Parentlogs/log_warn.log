@@ -1613,3 +1613,19 @@ Caused by: javax.net.ssl.SSLHandshakeException: No appropriate protocol (protoco
  java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
  java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
  java.lang.Thread.run(Thread.java:748)
+2023-03-28 17:00:22 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2023-03-28 17:00:22 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2023-03-28 17:00:26 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-28 17:00:26 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-28 17:02:26 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2023-03-28 17:02:26 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2023-03-28 17:02:29 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-28 17:02:29 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-28 17:06:54 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2023-03-28 17:06:54 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2023-03-28 17:06:57 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-28 17:06:57 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-28 17:07:57 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2023-03-28 17:07:57 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2023-03-28 17:08:00 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-03-28 17:08:00 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
