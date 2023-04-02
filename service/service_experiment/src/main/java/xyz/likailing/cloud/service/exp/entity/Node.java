@@ -46,6 +46,10 @@ public class Node implements Serializable {
      */
     private Date endTime;
 
+    private String left;
+
+    private String top;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 

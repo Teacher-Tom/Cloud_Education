@@ -10,7 +10,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity xyz.likailing.cloud.service.exp.entity.Node
 */
 public interface NodeMapper extends BaseMapper<Node> {
-
 }
 
 

@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.common.base.result.ResultCodeEnum;
 import xyz.likailing.cloud.service.base.exception.CloudException;
+import xyz.likailing.cloud.service.exp.entity.Branch;
 import xyz.likailing.cloud.service.exp.entity.Line;
 import xyz.likailing.cloud.service.exp.entity.Node;
+import xyz.likailing.cloud.service.exp.entity.vo.BranchVo;
+import xyz.likailing.cloud.service.exp.service.BranchService;
 import xyz.likailing.cloud.service.exp.service.LineService;
 import xyz.likailing.cloud.service.exp.service.NodeService;
 
@@ -31,6 +34,9 @@ public class FlowChartController {
 
     @Autowired
     private LineService lineService;
+
+    @Autowired
+    private BranchService branchService;
 
     @ApiOperation("添加节点")
     @PostMapping("/node")
@@ -131,6 +137,16 @@ public class FlowChartController {
         List<Line> lines = lineService.getAllLinesByExpId(expId);
         return R.ok().data("list",lines);
     }
-
+    @ApiOperation("查询分支节点及其关联的所有节点和连线")
+    @GetMapping("/node/branch/{nodeId}")
+    public R getBranchNodeWithLinkedNodes(@PathVariable String nodeId){
+        Node branchNode = nodeService.getById(nodeId);
+        if (branchNode.getType() != 3){
+            throw new CloudException("不是分支节点",20001);
+        }
+        BranchVo branchVo = branchService.getBranchAndLinkedNodesBySourceId(nodeId);
+        R branchInfo = R.ok().data("branchInfo", branchVo);
+        return branchInfo;
+    }
 
 }

@@ -9,10 +9,19 @@
             <result property="sourceId" column="source_id" jdbcType="CHAR"/>
             <result property="toId" column="to_id" jdbcType="CHAR"/>
             <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="length" column="length" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,source_id,to_id,
-        description
+        description,length
     </sql>
+    <select id="getAllBySourceIdOrderByToId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from exp_branch
+        where
+        source_id = #{sourceId,jdbcType=VARCHAR}
+        order by toId
+    </select>
 </mapper>

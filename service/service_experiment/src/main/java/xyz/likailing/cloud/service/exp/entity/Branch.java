@@ -35,6 +35,11 @@ public class Branch implements Serializable {
      */
     private String description;
 
+    /**
+     * 分支链条长度
+     */
+    private Integer length;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
@@ -53,7 +58,8 @@ public class Branch implements Serializable {
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getSourceId() == null ? other.getSourceId() == null : this.getSourceId().equals(other.getSourceId()))
             && (this.getToId() == null ? other.getToId() == null : this.getToId().equals(other.getToId()))
-            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()));
+            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
+            && (this.getLength() == null ? other.getLength() == null : this.getLength().equals(other.getLength()));
     }
 
     @Override
@@ -64,6 +70,7 @@ public class Branch implements Serializable {
         result = prime * result + ((getSourceId() == null) ? 0 : getSourceId().hashCode());
         result = prime * result + ((getToId() == null) ? 0 : getToId().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
+        result = prime * result + ((getLength() == null) ? 0 : getLength().hashCode());
         return result;
     }
 
@@ -77,6 +84,7 @@ public class Branch implements Serializable {
         sb.append(", sourceId=").append(sourceId);
         sb.append(", toId=").append(toId);
         sb.append(", description=").append(description);
+        sb.append(", length=").append(length);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

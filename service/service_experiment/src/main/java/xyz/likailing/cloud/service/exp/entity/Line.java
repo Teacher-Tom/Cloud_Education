@@ -45,6 +45,9 @@ public class Line implements Serializable {
      */
     private String label;
 
+
+    private Integer type;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 

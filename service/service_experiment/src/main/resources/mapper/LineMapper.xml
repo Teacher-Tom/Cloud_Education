@@ -17,4 +17,12 @@
         id,experiment_id,name,
         from_node_id,to_node_id,label
     </sql>
+    <select id="getAllByFromNodeIdOrderByToNodeId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from exp_line
+        where
+        from_node_id = #{fromNodeId,jdbcType=VARCHAR}
+        order by toNodeId
+    </select>
 </mapper>

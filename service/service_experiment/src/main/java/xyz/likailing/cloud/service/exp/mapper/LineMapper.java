@@ -1,4 +1,6 @@
 package xyz.likailing.cloud.service.exp.mapper;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 import xyz.likailing.cloud.service.exp.entity.Line;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -10,7 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity xyz.likailing.cloud.service.exp.entity.Line
 */
 public interface LineMapper extends BaseMapper<Line> {
-
+    List<Line> getAllByFromNodeIdOrderByToNodeId(@Param("fromNodeId") String fromNodeId);
 }
 
 
