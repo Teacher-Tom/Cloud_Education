@@ -12,7 +12,7 @@ import xyz.likailing.cloud.service.entity.vo.RegisterVo;
 * @createDate 2023-03-22 10:31:21
 */
 public interface UserService extends IService<User>, UserDetailsService {
-    public void register(RegisterVo registerVo);
+    public User register(RegisterVo registerVo);
 
     String login(LoginVo loginVo);
 

@@ -48,7 +48,7 @@ public class CourseResourceController {
         String catalogue = "/root";
         R upload = allsService.upload(file, catalogue, memid);
         Map<String, Object> data = upload.getData();
-        File file1 = JSON.parseObject(JSON.toJSONString(data.get("file")),File.class);
+        File file1 = JSON.parseObject(JSON.toJSONString(data.get("userInfo")),File.class);
         R r = allsService.addFile(file1);
         file1 = JSON.parseObject(JSON.toJSONString(r.getData().get("file")),File.class);
         CourseResource courseResource = new CourseResource();

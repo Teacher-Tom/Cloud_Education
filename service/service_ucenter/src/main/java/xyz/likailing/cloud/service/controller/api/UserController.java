@@ -11,6 +11,7 @@ import xyz.likailing.cloud.common.base.result.ResultCodeEnum;
 import xyz.likailing.cloud.common.base.util.JwtInfo;
 import xyz.likailing.cloud.common.base.util.JwtUtils;
 import xyz.likailing.cloud.service.base.exception.CloudException;
+import xyz.likailing.cloud.service.entity.User;
 import xyz.likailing.cloud.service.entity.vo.LoginVo;
 import xyz.likailing.cloud.service.entity.vo.RegisterVo;
 import xyz.likailing.cloud.service.service.UserService;
@@ -33,8 +34,8 @@ public class UserController {
     @ApiOperation(value = "用户注册")
     @PostMapping("register")
     public R register(@RequestBody RegisterVo registerVo){
-        userService.register(registerVo);
-        return R.ok().message("注册成功");
+        User user = userService.register(registerVo);
+        return R.ok().message("注册成功").data("user",user);
     }
     @ApiOperation(value = "用户登录")
     @PostMapping("login")
@@ -54,6 +55,8 @@ public class UserController {
             throw new CloudException(ResultCodeEnum.FETCH_USERINFO_ERROR);
         }
     }
+
+
 
 
     @GetMapping("test")

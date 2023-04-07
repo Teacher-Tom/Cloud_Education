@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 27/03/2023 18:26:41
+ Date: 07/04/2023 16:39:57
 */
 
 SET NAMES utf8mb4;
@@ -110,7 +110,7 @@ CREATE TABLE `course_homework`  (
 -- ----------------------------
 -- Records of course_homework
 -- ----------------------------
-INSERT INTO `course_homework` VALUES ('1638550521385598978', '第一章作业一', '2023-03-22 00:00:00', '2023-03-30 00:00:00', 0, NULL, '1001', '1', 1, NULL);
+INSERT INTO `course_homework` VALUES ('1638550521385598978', '第一章作业一', '2023-03-22 00:00:00', '2023-03-30 00:00:00', 1, NULL, '1001', '1', 1, NULL);
 INSERT INTO `course_homework` VALUES ('1638803499988389890', '作业一', '2023-04-01 00:00:00', '2023-04-08 00:00:00', 0, NULL, '1002', '1', 1, NULL);
 
 -- ----------------------------
@@ -201,11 +201,190 @@ CREATE TABLE `course_resource`  (
   `timetable_id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `is_global` tinyint(1) NOT NULL COMMENT '是否为全局资源（即小节资源和全局资源）',
   `course_id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `gmt_create` datetime NULL DEFAULT NULL,
+  `type` int(11) NOT NULL COMMENT '资源类型：0pdf,1视频，2共享，3其他',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of course_resource
+-- ----------------------------
+INSERT INTO `course_resource` VALUES ('1640689356298833921', '1640689355808067585', NULL, 1, '1001', '2023-03-28 20:16:40', 0);
+INSERT INTO `course_resource` VALUES ('1640689356940562433', '1640689356554653698', NULL, 1, '1001', '2023-03-28 20:16:40', 0);
+INSERT INTO `course_resource` VALUES ('1640691310714519554', '1640691310378897410', NULL, 1, '1001', '2023-03-28 20:24:26', 0);
+INSERT INTO `course_resource` VALUES ('1640697533073543169', '1640697532763099138', '1639497438248652802', 0, '1001', '2023-03-28 20:49:09', 0);
+INSERT INTO `course_resource` VALUES ('1640697533585248257', '1640697533341913089', '1639497438248652802', 0, '1001', '2023-03-28 20:49:09', 0);
+INSERT INTO `course_resource` VALUES ('1640701292528840705', '1640701292239409154', '1639497438248652802', 0, '1001', '2023-03-28 21:04:06', 1);
+INSERT INTO `course_resource` VALUES ('1640704816172077057', '1640704815849033729', '1639497438248652802', 0, '1001', '2023-03-28 21:18:06', 1);
+INSERT INTO `course_resource` VALUES ('1640705311473242113', '1640705311225696258', '1639497438248652802', 0, '1001', '2023-03-28 21:20:04', 2);
+INSERT INTO `course_resource` VALUES ('1640720261151264770', '1640720260777922561', NULL, 1, '1001', '2023-03-28 22:19:28', 3);
+
+-- ----------------------------
+-- Table structure for exp_branch
+-- ----------------------------
+DROP TABLE IF EXISTS `exp_branch`;
+CREATE TABLE `exp_branch`  (
+  `id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `source_id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '分支节点id',
+  `to_id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '目标节点id',
+  `description` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `length` int(8) NOT NULL COMMENT '分支链条长度',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of exp_branch
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for exp_experiment
+-- ----------------------------
+DROP TABLE IF EXISTS `exp_experiment`;
+CREATE TABLE `exp_experiment`  (
+  `id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `course_id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `introduction` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '介绍',
+  `begin_time` datetime NULL DEFAULT NULL COMMENT '开始时间',
+  `end_time` datetime NULL DEFAULT NULL COMMENT '截止时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of exp_experiment
+-- ----------------------------
+INSERT INTO `exp_experiment` VALUES ('1640621237115101185', '1001', '测试实验', '修改介绍', '2023-03-28 00:00:00', '2023-03-28 00:00:00');
+INSERT INTO `exp_experiment` VALUES ('1640622544626454530', '1001', '测试实验2', '测试介绍2', '2023-03-28 07:41:17', '2023-03-28 07:41:17');
+
+-- ----------------------------
+-- Table structure for exp_line
+-- ----------------------------
+DROP TABLE IF EXISTS `exp_line`;
+CREATE TABLE `exp_line`  (
+  `id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `experiment_id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `from_node_id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '起点id',
+  `to_node_id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '终点id',
+  `label` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '连线标签',
+  `type` int(4) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of exp_line
+-- ----------------------------
+INSERT INTO `exp_line` VALUES ('1640653446215692290', '1640621237115101185', '连线名称', '1640645400710111234', '1640645514245726209', '连线标签', 0);
+
+-- ----------------------------
+-- Table structure for exp_node
+-- ----------------------------
+DROP TABLE IF EXISTS `exp_node`;
+CREATE TABLE `exp_node`  (
+  `id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `experiment_id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `type` int(4) NOT NULL COMMENT '节点类型',
+  `begin_time` datetime NULL DEFAULT NULL,
+  `end_time` datetime NULL DEFAULT NULL,
+  `left` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '坐标左',
+  `top` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '坐标上',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of exp_node
+-- ----------------------------
+INSERT INTO `exp_node` VALUES ('1640645400710111234', '1640621237115101185', '开始节点', 0, '2023-03-28 09:21:16', '2023-03-28 09:21:16', '', NULL);
+INSERT INTO `exp_node` VALUES ('1640645514245726209', '1640621237115101185', '任务节点1', 1, '2023-03-28 09:21:16', '2023-03-29 09:21:16', '', NULL);
+
+-- ----------------------------
+-- Table structure for exp_node_detail
+-- ----------------------------
+DROP TABLE IF EXISTS `exp_node_detail`;
+CREATE TABLE `exp_node_detail`  (
+  `id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `node_id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `team_id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `has_finish` bit(1) NOT NULL,
+  `difficulty` int(4) NULL DEFAULT NULL COMMENT '难度评价：1-5星',
+  `finish_time` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of exp_node_detail
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for exp_score
+-- ----------------------------
+DROP TABLE IF EXISTS `exp_score`;
+CREATE TABLE `exp_score`  (
+  `id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `score` int(8) NOT NULL COMMENT '实验成绩',
+  `student_id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '学生id',
+  `course_id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '课程id',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of exp_score
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for exp_task
+-- ----------------------------
+DROP TABLE IF EXISTS `exp_task`;
+CREATE TABLE `exp_task`  (
+  `id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `node_id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点id',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of exp_task
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for exp_task_detail
+-- ----------------------------
+DROP TABLE IF EXISTS `exp_task_detail`;
+CREATE TABLE `exp_task_detail`  (
+  `id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `task_id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务id',
+  `team_id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '队伍id',
+  `has_finish` bit(1) NOT NULL COMMENT '任务是否完成',
+  `submit` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '提交文字',
+  `submit_file_id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '提交附件id',
+  `submit_pic_id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '提交图片url',
+  `score` int(8) NULL DEFAULT NULL COMMENT '成绩',
+  `review` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '评语',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of exp_task_detail
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for exp_team
+-- ----------------------------
+DROP TABLE IF EXISTS `exp_team`;
+CREATE TABLE `exp_team`  (
+  `id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `leader_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `leader_id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '队长的学生id',
+  `member_num` int(11) NOT NULL COMMENT '成员数量',
+  `course_id` char(19) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of exp_team
 -- ----------------------------
 
 -- ----------------------------
@@ -263,7 +442,12 @@ CREATE TABLE `manager_class`  (
 -- Records of manager_class
 -- ----------------------------
 INSERT INTO `manager_class` VALUES ('1', '一班', '1', '1', '2023-03-10 16:08:51', '2023-03-10 16:08:51');
+INSERT INTO `manager_class` VALUES ('10', '软工1班', '计算机与信息学院', '软件工程', '2023-04-05 21:30:59', '2023-04-05 21:30:59');
+INSERT INTO `manager_class` VALUES ('11', '软工2班', '计算机与信息学院', '软件工程', '2023-04-05 21:31:05', '2023-04-05 21:31:05');
 INSERT INTO `manager_class` VALUES ('1111', '计科1班', '计信院', '计算机科学', '2023-03-14 09:53:31', '2023-03-14 09:53:31');
+INSERT INTO `manager_class` VALUES ('13', '软工3班', '计算机与信息学院', '软件工程', '2023-04-05 21:31:11', '2023-04-05 21:31:11');
+INSERT INTO `manager_class` VALUES ('14', '软工4班', '计算机与信息学院', '软件工程', '2023-04-05 21:31:17', '2023-04-05 21:31:17');
+INSERT INTO `manager_class` VALUES ('15', '软工5班', '计算机与信息学院', '软件工程', '2023-04-05 21:31:23', '2023-04-05 21:31:23');
 INSERT INTO `manager_class` VALUES ('2', '二班 ', '2', '2', '2023-03-10 16:09:00', '2023-03-10 16:09:00');
 INSERT INTO `manager_class` VALUES ('3', '软工20_1', '计算机与信息学院', '软件工程', '2023-03-22 15:06:18', '2023-03-22 15:06:18');
 
@@ -282,6 +466,7 @@ CREATE TABLE `manager_class_course`  (
 -- Records of manager_class_course
 -- ----------------------------
 INSERT INTO `manager_class_course` VALUES (1, '2', '1001');
+INSERT INTO `manager_class_course` VALUES (11, '1', '1001');
 INSERT INTO `manager_class_course` VALUES (18, '3', '101');
 INSERT INTO `manager_class_course` VALUES (19, '1', '123');
 INSERT INTO `manager_class_course` VALUES (20, '3', '1639479136591618050');
@@ -352,6 +537,11 @@ CREATE TABLE `manager_student`  (
 -- ----------------------------
 -- Records of manager_student
 -- ----------------------------
+INSERT INTO `manager_student` VALUES ('1111', '1', '1637078812736172034', '燕双鹰', 0, '软工', '计信院', '2023-03-28 16:19:46', '2023-03-28 08:42:30');
+INSERT INTO `manager_student` VALUES ('1643614723108769794', '10', '1643499960294969345', '秦岭', 1, '软件工程', '计算机与信息学院', '2023-04-05 22:01:02', '2023-04-05 22:01:02');
+INSERT INTO `manager_student` VALUES ('1643625427270373378', '10', '1643624940198432769', '秦中岭', 1, '软件工程', '计算机与信息学院', '2023-04-05 22:43:34', '2023-04-05 22:43:34');
+INSERT INTO `manager_student` VALUES ('1643625740391944194', '11', '1643625740178034690', '秦岭123', 1, '软件工程', '计算机与信息学院', '2023-04-05 22:44:48', '2023-04-05 22:44:48');
+INSERT INTO `manager_student` VALUES ('1643637324484972545', '10', '1643637324254285825', '秦岭', 1, '软件工程', '计算机与信息学院', '2023-04-05 23:30:50', '2023-04-05 23:30:50');
 
 -- ----------------------------
 -- Table structure for manager_sub_chapter
@@ -392,6 +582,7 @@ CREATE TABLE `manager_teacher`  (
 -- Records of manager_teacher
 -- ----------------------------
 INSERT INTO `manager_teacher` VALUES ('1', '林凡', 1, '计算机与信息学院', '2023-03-22 15:00:10', '2023-03-25 07:39:53', '1637078895506567170');
+INSERT INTO `manager_teacher` VALUES ('1643636756915949570', 'teacherwang', 1, '计算机与信息学院', '2023-04-05 23:28:35', '2023-04-05 23:28:35', '1643636756685262850');
 
 -- ----------------------------
 -- Table structure for manager_teacher_course
@@ -436,8 +627,8 @@ CREATE TABLE `manager_timetable`  (
 -- Records of manager_timetable
 -- ----------------------------
 INSERT INTO `manager_timetable` VALUES ('1639497438248652802', '1001', '2023-03-21', 6, 2, 3, 4, '博学楼B208', '1', '2023-03-25 13:20:24', '2023-03-26 21:11:00', 2);
-INSERT INTO `manager_timetable` VALUES ('1639497438844243969', '1001', '2023-03-28', 7, 2, 3, 4, '博学楼B208', '1', '2023-03-25 13:20:24', '2023-03-25 13:20:24', 0);
-INSERT INTO `manager_timetable` VALUES ('1639497439112679426', '1001', '2023-04-04', 8, 2, 3, 4, '博学楼B208', '1', '2023-03-25 13:20:25', '2023-03-25 13:20:25', 0);
+INSERT INTO `manager_timetable` VALUES ('1639497438844243969', '1001', '2023-03-28', 7, 2, 3, 4, '博学楼B208', '1', '2023-03-25 13:20:24', '2023-03-29 08:00:00', 2);
+INSERT INTO `manager_timetable` VALUES ('1639497439112679426', '1001', '2023-04-04', 8, 2, 3, 4, '博学楼B208', '1', '2023-03-25 13:20:25', '2023-04-04 08:00:00', 2);
 INSERT INTO `manager_timetable` VALUES ('1639497439309811714', '1001', '2023-04-11', 9, 2, 3, 4, '博学楼B208', '1', '2023-03-25 13:20:25', '2023-03-25 13:20:25', 0);
 INSERT INTO `manager_timetable` VALUES ('1639497439574052865', '1001', '2023-04-18', 10, 2, 3, 4, '博学楼B208', '1', '2023-03-25 13:20:25', '2023-03-25 13:20:25', 0);
 INSERT INTO `manager_timetable` VALUES ('1639497439968317441', '1001', '2023-04-25', 11, 2, 3, 4, '博学楼B208', '1', '2023-03-25 13:20:25', '2023-03-25 13:20:25', 0);
@@ -448,8 +639,8 @@ INSERT INTO `manager_timetable` VALUES ('1639497441088196609', '1001', '2023-05-
 INSERT INTO `manager_timetable` VALUES ('1639497441352437762', '1001', '2023-05-30', 16, 2, 3, 4, '博学楼B208', '1', '2023-03-25 13:20:25', '2023-03-25 13:20:25', 0);
 INSERT INTO `manager_timetable` VALUES ('1639497441616678914', '1001', '2023-06-06', 17, 2, 3, 4, '博学楼B208', '1', '2023-03-25 13:20:25', '2023-03-25 13:20:25', 0);
 INSERT INTO `manager_timetable` VALUES ('1639497442082246658', '1001', '2023-03-23', 6, 4, 3, 4, '致用楼217', '1', '2023-03-25 13:20:25', '2023-03-26 21:11:00', 2);
-INSERT INTO `manager_timetable` VALUES ('1639497442409402369', '1001', '2023-03-30', 7, 4, 3, 4, '致用楼217', '1', '2023-03-25 13:20:25', '2023-03-25 13:20:25', 0);
-INSERT INTO `manager_timetable` VALUES ('1639497442740752385', '1001', '2023-04-06', 8, 4, 3, 4, '致用楼217', '1', '2023-03-25 13:20:25', '2023-03-25 13:20:25', 0);
+INSERT INTO `manager_timetable` VALUES ('1639497442409402369', '1001', '2023-03-30', 7, 4, 3, 4, '致用楼217', '1', '2023-03-25 13:20:25', '2023-03-30 08:00:00', 2);
+INSERT INTO `manager_timetable` VALUES ('1639497442740752385', '1001', '2023-04-06', 8, 4, 3, 4, '致用楼217', '1', '2023-03-25 13:20:25', '2023-04-06 08:00:00', 2);
 INSERT INTO `manager_timetable` VALUES ('1639497443000799233', '1001', '2023-04-13', 9, 4, 3, 4, '致用楼217', '1', '2023-03-25 13:20:25', '2023-03-25 13:20:25', 0);
 INSERT INTO `manager_timetable` VALUES ('1639497443395063810', '1001', '2023-04-20', 10, 4, 3, 4, '致用楼217', '1', '2023-03-25 13:20:26', '2023-03-25 13:20:26', 0);
 INSERT INTO `manager_timetable` VALUES ('1639497443793522689', '1001', '2023-04-27', 11, 4, 3, 4, '致用楼217', '1', '2023-03-25 13:20:26', '2023-03-25 13:20:26', 0);
@@ -483,6 +674,7 @@ INSERT INTO `message` VALUES ('1639534457641054210', '1001', '1', '测试标题'
 INSERT INTO `message` VALUES ('1639540037818560513', '101', '2', '通知2', '内容内容', '张三', '2023-03-25 16:09:41');
 INSERT INTO `message` VALUES ('1639540848430723074', '101', '2', '通知2', '内容内容', '张三', '2023-03-25 16:12:54');
 INSERT INTO `message` VALUES ('1639541196469874689', '1001', '2', '通知3', '内容内容', '张三', '2023-03-25 16:14:17');
+INSERT INTO `message` VALUES ('1640364736853086210', '101', '1637078895506567170', '这是消息标题', '这是消息内容', '林凡', '2023-03-27 22:46:44');
 
 -- ----------------------------
 -- Table structure for message_user
@@ -588,6 +780,16 @@ INSERT INTO `user` VALUES ('1639613159821357057', '老王', '$2a$10$zWC5JFVdiTAO
 INSERT INTO `user` VALUES ('1639621375419224066', 'tea', '$2a$10$/nRZIxK7zPTWbuV8j7HZQudJIWIH/637V9QTUR7eqyfhuvBylsRg6', '学生', 'https://cloud-file-230201-1.oss-cn-hangzhou.aliyuncs.com/avatar/2023/02/01/QQ%E5%9B%BE%E7%89%8720221017125912.jpg', 'fish');
 INSERT INTO `user` VALUES ('1639621655611314178', 'teacher', '$2a$10$uU7Y7Q6uxQtclzN.oXSnje1rfMtF72BfVxPMZsxgWViKu4IKqeLRK', 'teacher', 'https://cloud-file-230201-1.oss-cn-hangzhou.aliyuncs.com/avatar/2023/02/01/QQ%E5%9B%BE%E7%89%8720221017125912.jpg', 'dish');
 INSERT INTO `user` VALUES ('1639648119090057218', 'testhyj666', '$2a$10$ioZhvfdJySaLGf4pRvzayu0BnKlwV2gc6WaO3LCkjMUBfzApjQzi.', '学生', 'https://cloud-file-230201-1.oss-cn-hangzhou.aliyuncs.com/avatar/2023/02/01/QQ%E5%9B%BE%E7%89%8720221017125912.jpg', 'hyj666');
+INSERT INTO `user` VALUES ('1642907022162661377', '23456', '$2a$10$INR45bWll0Uydw8c3LM80eUG.GicWJkxR7gVOJbvbO/pdmIFkqZZS', '学生', 'https://cloud-file-230201-1.oss-cn-hangzhou.aliyuncs.com/avatar/2023/02/01/QQ%E5%9B%BE%E7%89%8720221017125912.jpg', 'nickname');
+INSERT INTO `user` VALUES ('1643499960294969345', 'hyj666', '$2a$10$.g7P73uZ1slF9Yjao6Y4jeSFBbzkhEoys3KWT358dv4Qi9QOgQLI2', '学生', 'https://cloud-file-230201-1.oss-cn-hangzhou.aliyuncs.com/avatar/2023/02/01/QQ%E5%9B%BE%E7%89%8720221017125912.jpg', 'hyj666');
+INSERT INTO `user` VALUES ('1643617203611033602', 'lii', '$2a$10$Ec45vxAyxomTvCTCIaQS/eKrXXcpNL7Gg9iBLTayOQ7rMDIko1ZUa', 'student', 'https://cloud-file-230201-1.oss-cn-hangzhou.aliyuncs.com/avatar/2023/02/01/QQ%E5%9B%BE%E7%89%8720221017125912.jpg', 'lii');
+INSERT INTO `user` VALUES ('1643619504804073473', '12345', '$2a$10$3JjCWMiKudndPq5zzdzsG.7TKClgSlF3lYakt4N0VFtNcNwliOvgS', 'student', 'https://cloud-file-230201-1.oss-cn-hangzhou.aliyuncs.com/avatar/2023/02/01/QQ%E5%9B%BE%E7%89%8720221017125912.jpg', 'xyz');
+INSERT INTO `user` VALUES ('1643622154203303937', '2000', '$2a$10$tAWXiAqBPk72hUQyetmwYeAFx56lXjo9tuENzjhcmaJLLzlbkSe8u', 'student', 'https://cloud-file-230201-1.oss-cn-hangzhou.aliyuncs.com/avatar/2023/02/01/QQ%E5%9B%BE%E7%89%8720221017125912.jpg', '秦小岭');
+INSERT INTO `user` VALUES ('1643624141338710018', '2002', '$2a$10$AuufrbL4GXzx8aJxMgTeiunJ1U1BEatTKm3TOtpuh1BjawHrydKSO', 'student', 'https://cloud-file-230201-1.oss-cn-hangzhou.aliyuncs.com/avatar/2023/02/01/QQ%E5%9B%BE%E7%89%8720221017125912.jpg', '秦中岭');
+INSERT INTO `user` VALUES ('1643624940198432769', '2003', '$2a$10$zKa6jLEVlnkP7UkgfzEX5eBpCMsPTafLQam9GTR4yIJwqkIqWcF2K', 'student', 'https://cloud-file-230201-1.oss-cn-hangzhou.aliyuncs.com/avatar/2023/02/01/QQ%E5%9B%BE%E7%89%8720221017125912.jpg', '秦中岭');
+INSERT INTO `user` VALUES ('1643625740178034690', '2004', '$2a$10$YPLW.5fAgDWVTXgMXsjQP.HsQNKq3BmFZx.9gIrIzEfu5onulQucC', 'student', 'https://cloud-file-230201-1.oss-cn-hangzhou.aliyuncs.com/avatar/2023/02/01/QQ%E5%9B%BE%E7%89%8720221017125912.jpg', '秦岭123');
+INSERT INTO `user` VALUES ('1643636756685262850', '2005', '$2a$10$veaeFMtLKh0C4s6S/t3PqO8s.C93etm.2ypInOLOyV0RLZiHfYkTe', 'teacher', 'https://cloud-file-230201-1.oss-cn-hangzhou.aliyuncs.com/avatar/2023/02/01/QQ%E5%9B%BE%E7%89%8720221017125912.jpg', 'teacherwang');
+INSERT INTO `user` VALUES ('1643637324254285825', '2008', '$2a$10$6mtnghEX9x6PGO8.xzYUzuDQr5L7Cx8Gl6vBBHsqklZvJ9YKjIw8G', 'student', 'https://cloud-file-230201-1.oss-cn-hangzhou.aliyuncs.com/avatar/2023/02/01/QQ%E5%9B%BE%E7%89%8720221017125912.jpg', '秦岭');
 
 -- ----------------------------
 -- Table structure for user_role
@@ -616,6 +818,20 @@ INSERT INTO `user_role` VALUES ('1639613159959769089', '1639613159821357057', '4
 INSERT INTO `user_role` VALUES ('1639621375452778498', '1639621375419224066', '1');
 INSERT INTO `user_role` VALUES ('1639621655649062913', '1639621655611314178', '3');
 INSERT INTO `user_role` VALUES ('1639648119123611650', '1639648119090057218', '1');
+INSERT INTO `user_role` VALUES ('1642907022208798721', '1642907022162661377', '1');
+INSERT INTO `user_role` VALUES ('1643499960336912385', '1643499960294969345', '1');
+INSERT INTO `user_role` VALUES ('1643617203699113986', '1643617203611033602', '2');
+INSERT INTO `user_role` VALUES ('1643619504883765250', '1643619504804073473', '2');
+INSERT INTO `user_role` VALUES ('1643622154232664066', '1643622154203303937', '2');
+INSERT INTO `user_role` VALUES ('1643622666977939458', '1643622666944385025', '2');
+INSERT INTO `user_role` VALUES ('1643623444811616258', '1643623444778061825', '2');
+INSERT INTO `user_role` VALUES ('1643624141376458754', '1643624141338710018', '2');
+INSERT INTO `user_role` VALUES ('1643624940236181506', '1643624940198432769', '2');
+INSERT INTO `user_role` VALUES ('1643625740207394817', '1643625740178034690', '2');
+INSERT INTO `user_role` VALUES ('1643636756718817282', '1643636756685262850', '3');
+INSERT INTO `user_role` VALUES ('1643637324287840257', '1643637324254285825', '2');
 INSERT INTO `user_role` VALUES ('2', '1637036809054887937', '1');
+INSERT INTO `user_role` VALUES ('3', '1637078895506567170', '3');
+INSERT INTO `user_role` VALUES ('4', '1637078812736172034', '2');
 
 SET FOREIGN_KEY_CHECKS = 1;

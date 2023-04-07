@@ -4,12 +4,15 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import xyz.likailing.cloud.common.base.result.R;
+import xyz.likailing.cloud.common.base.util.JwtInfo;
+import xyz.likailing.cloud.common.base.util.JwtUtils;
 import xyz.likailing.cloud.service.msg.entity.Message;
 import xyz.likailing.cloud.service.msg.entity.vo.MessageVo;
 import xyz.likailing.cloud.service.msg.mapper.MessageMapper;
 import xyz.likailing.cloud.service.msg.mapper.MessageUserMapper;
 import xyz.likailing.cloud.service.msg.service.MessageService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -29,6 +32,7 @@ public class MsgController {
     MessageMapper messageMapper;
 
 
+
     @ApiOperation("向课程全员发送自定义通知")
     @PostMapping("send")
     public R sendMessage(@RequestBody MessageVo msgVo){
@@ -42,8 +46,10 @@ public class MsgController {
         return R.ok().data("msg",message);
     }
     @ApiOperation("根据用户id列出所有消息")
-    @GetMapping("list/user/{userId}")
-    public R listMessageByUserId(@PathVariable String userId){
+    @GetMapping("list/user")
+    public R listMessageByUserId(HttpServletRequest request){
+        JwtInfo jwtInfo = JwtUtils.getUserIdByJwtToken(request);
+        String userId = jwtInfo.getId();
         List<Message> messageList = messageService.listMessageByUserId(userId);
         List<Boolean> hasRead = messageUserMapper.selectHasReadByUserId(userId);
         return R.ok().data("list",messageList).data("hasReads",hasRead);

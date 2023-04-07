@@ -51,7 +51,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Autowired
     private AuthorityMapper authorityMapper;
     @Override
-    public void register(RegisterVo registerVo) {
+    public User register(RegisterVo registerVo) {
         String nickname = registerVo.getNickname();
         String username = registerVo.getUsername();
         String password = registerVo.getPassword();
@@ -101,7 +101,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         userRole.setUserId(user.getId());
         userRole.setRoleId(role_id);
         userRoleMapper.insert(userRole);
-
+        return user;
     }
 
     @Override

@@ -148,5 +148,17 @@ public class FlowChartController {
         R branchInfo = R.ok().data("branchInfo", branchVo);
         return branchInfo;
     }
+    @ApiOperation("存储节点列表")
+    @PostMapping("/node/save/list")
+    public R saveNodeList(@RequestBody List<Node> nodes){
+        return null;
+    }
+
+    @ApiOperation("存储连线列表")
+    @PostMapping("/line/save/list")
+    public R saveLineList(@RequestBody List<Line> lines){
+        return null;
+    }
+
 
 }

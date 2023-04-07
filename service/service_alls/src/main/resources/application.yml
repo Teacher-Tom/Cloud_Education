@@ -16,7 +16,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: CloudEdu233
-    url: jdbc:mysql://123.60.88.31:1001/space?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&useSSL=true
+    url: jdbc:mysql://60.204.141.214:30101/space?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&useSSL=true
     username: root
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
@@ -25,7 +25,7 @@ spring:
     active: dev
   redis:
     database: 0
-    host: 123.60.88.31
+    host: 60.204.141.214
     password: cloud233
     lettuce:
       pool:
@@ -33,7 +33,7 @@ spring:
         max-idle: 5
         max-wait: -1
         min-idle: 0
-    port: 1002
+    port: 30102
     timeout: 1800000
   servlet:
     multipart:
