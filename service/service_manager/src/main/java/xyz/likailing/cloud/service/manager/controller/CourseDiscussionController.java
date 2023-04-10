@@ -12,10 +12,13 @@ import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.manager.entity.CourseDiscussion;
 import xyz.likailing.cloud.service.manager.entity.CourseDiscussionReply;
 import xyz.likailing.cloud.service.manager.entity.Student;
+import xyz.likailing.cloud.service.manager.entity.User;
 import xyz.likailing.cloud.service.manager.entity.vo.DiscussionVO;
 import xyz.likailing.cloud.service.manager.service.CourseDiscussionReplyService;
 import xyz.likailing.cloud.service.manager.service.CourseDiscussionService;
+import xyz.likailing.cloud.service.manager.service.UserService;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,6 +37,8 @@ public class CourseDiscussionController {
     private CourseDiscussionService discussionService;
     @Autowired
     private CourseDiscussionReplyService replyService;
+    @Autowired
+    private UserService userService;
 
     @ApiOperation("获取某个资源讨论区的全部评论列表")
     @GetMapping("/list-all/{resourceId}")
@@ -52,6 +57,8 @@ public class CourseDiscussionController {
     @ApiOperation("用户对资源的某一页发表讨论")
     @PostMapping("/issue")
     public R issue(@ApiParam(value = "讨论对象", required = true) @RequestBody CourseDiscussion courseDiscussion) {
+        courseDiscussion.setSendTime(new Date());
+        courseDiscussion.setLikes(0);
         boolean save = discussionService.save(courseDiscussion);
         if(save) {
             return R.ok().data("discussionId", courseDiscussion.getId()).message("发布成功");
@@ -60,11 +67,18 @@ public class CourseDiscussionController {
     }
 
     @ApiOperation("用户对某一个讨论进行回复")
-    @PutMapping("/reply")
+    @PostMapping("/reply")
     public R reply(@ApiParam("学生用户对象") @RequestBody CourseDiscussionReply discussionReply) {
+        discussionReply.setSendTime(new Date());
+        discussionReply.setLikes(0);
+        User user = userService.getById(discussionReply.getUserId());
+        if(ObjectUtils.isEmpty(user)) {
+            return R.error().message("用户不存在");
+        }
+        discussionReply.setUsername(user.getUsername());
         boolean save = replyService.save(discussionReply);
         if(save) {
-            return R.ok().data("discussionId", discussionReply.getId()).message("发布成功");
+            return R.ok().data("replyId", discussionReply.getId()).message("发布成功");
         }
         return R.error().message("发布失败");
     }
