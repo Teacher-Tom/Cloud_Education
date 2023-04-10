@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.likailing.cloud.service.manager.mapper.CourseDiscussionMapper">
+
+    <resultMap id="DiscussionVO" type="xyz.likailing.cloud.service.manager.entity.vo.DiscussionVO">
+        <result property="id" column="id"/>
+        <result property="resourceId" column="resource_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="content" column="content"/>
+        <result property="page" column="page"/>
+        <result property="sendTime" column="send_time"/>
+        <result property="likes" column="likes"/>
+        <result property="userName" column="uun"/>
+        <collection property="replies" ofType="xyz.likailing.cloud.service.manager.entity.CourseDiscussionReply">
+            <result property="id" column="rid"/>
+            <result property="userId" column="ruser_id"/>
+            <result property="discussionId" column="rdiscussion_id"/>
+            <result property="username" column="rusername"/>
+            <result property="content" column="rcontent"/>
+            <result property="sendTime" column="rsend_time"/>
+            <result property="likes" column="rlikes"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectAll" resultMap="DiscussionVO">
+        SELECT
+            d.id,
+            d.resource_id,
+            d.user_id,
+            d.content,
+            d.page,
+            d.send_time,
+            d.likes,
+            r.id rid,
+            r.discussion_id rdiscussion_id,
+            r.user_id ruser_id,
+            r.content rcontent,
+            r.username rusername,
+            r.send_time rsend_time,
+            r.likes rlikes,
+            u.username uun
+        FROM course_discussion d
+            LEFT JOIN course_discussion_reply r ON r.discussion_id = d.id
+            LEFT JOIN user u ON u.id = d.user_id
+        WHERE d.resource_id = #{resourceId}
+    </select>
+
+    <select id="selectPageAll" resultMap="DiscussionVO">
+        SELECT
+            d.id,
+            d.resource_id,
+            d.user_id,
+            d.content,
+            d.page,
+            d.send_time,
+            d.likes,
+            r.id rid,
+            r.discussion_id rdiscussion_id,
+            r.user_id ruser_id,
+            r.content rcontent,
+            r.username rusername,
+            r.send_time rsend_time,
+            r.likes rlikes,
+            u.username uun
+        FROM course_discussion d
+            LEFT JOIN course_discussion_reply r ON r.discussion_id = d.id
+            LEFT JOIN user u ON u.id = d.user_id
+        WHERE d.resource_id = #{resourceId} AND d.page = #{page}
+    </select>
+
+</mapper>

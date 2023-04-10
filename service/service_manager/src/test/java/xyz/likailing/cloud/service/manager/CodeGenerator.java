@@ -58,7 +58,7 @@ public class CodeGenerator {
         PackageConfig pc = new PackageConfig();
         pc.setModuleName(moduleName); //模块名
         pc.setParent("xyz.likailing.cloud.service");
-        pc.setController("controller");
+        //pc.setController("controller");
         pc.setEntity("entity");
         pc.setService("service");
         pc.setMapper("mapper");

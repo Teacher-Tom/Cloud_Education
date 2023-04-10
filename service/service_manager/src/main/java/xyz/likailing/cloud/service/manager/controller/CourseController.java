@@ -79,8 +79,9 @@ public class CourseController {
 
     @ApiOperation("更新课程信息")
     @PutMapping("/update")
-    public R updateById(@ApiParam("课程信息") @RequestBody Course course) {
-        boolean update = courseService.updateById(course);
+    public R updateById(@ApiParam("课程信息") @RequestBody CourseSaveVO courseSaveVO) {
+        Course course = courseSaveVO.getCourse();
+        boolean update = courseService.updateCourse(course, courseSaveVO.getTeacherIds(), courseSaveVO.getClassIds());
         if(update) {
             return R.ok().message("更新成功");
         }

@@ -11,13 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author derek
- * @since 2023-03-14
+ * @since 2023-04-10
  */
 @RestController
-@RequestMapping("/manager/chapter")
-public class ChapterController {
-
-
+@RequestMapping("/manager/course-message")
+public class CourseMessageController {
 
 }
 

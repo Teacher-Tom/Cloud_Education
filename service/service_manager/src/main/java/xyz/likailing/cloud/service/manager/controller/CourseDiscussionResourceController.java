@@ -7,17 +7,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- *  前端控制器
+ * 每条讨论下附带的图片、文件、链接资源 前端控制器
  * </p>
  *
  * @author derek
- * @since 2023-03-14
+ * @since 2023-04-10
  */
 @RestController
-@RequestMapping("/manager/chapter")
-public class ChapterController {
-
-
+@RequestMapping("/manager/course-discussion-resource")
+public class CourseDiscussionResourceController {
 
 }
 

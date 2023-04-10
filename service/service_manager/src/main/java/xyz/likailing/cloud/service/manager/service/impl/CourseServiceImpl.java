@@ -17,6 +17,7 @@ import xyz.likailing.cloud.service.manager.service.CourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -161,4 +162,60 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     public CourseVO getCourseById(String id) {
         return baseMapper.selectCourseById(id);
     }
+
+    @Override
+    public boolean updateCourse(Course course, List<String> teacherIds, List<String> classIds) {
+        int update = baseMapper.updateById(course);
+        if(update <= 0) return false;
+
+        String id = course.getId();
+        QueryWrapper<TeacherCourse> teacherCourseQueryWrapper = new QueryWrapper<>();
+        teacherCourseQueryWrapper.eq("course_id", id);
+        List<TeacherCourse> teacherCourses = teacherCourseMapper.selectList(teacherCourseQueryWrapper);
+        List<String> hasTeacher = new ArrayList<>();
+        //删除需要删除的
+        for (TeacherCourse teacherCourse : teacherCourses) {
+            String teacherId = teacherCourse.getTeacherId();
+            if(!teacherIds.contains(teacherId)) {
+                QueryWrapper<TeacherCourse> tempWrapper = new QueryWrapper<>();
+                tempWrapper.eq("course_id", id).eq("teacher_id", teacherId);
+                teacherCourseMapper.delete(tempWrapper);
+            }
+            hasTeacher.add(teacherId);
+        }
+        //添加需要新添加的
+        teacherIds.removeAll(hasTeacher);
+        for (String teacherId : teacherIds) {
+            TeacherCourse teacherCourse = new TeacherCourse();
+            teacherCourse.setCourseId(id);
+            teacherCourse.setTeacherId(teacherId);
+            teacherCourseMapper.insert(teacherCourse);
+        }
+
+        QueryWrapper<ClassCourse> classCourseQueryWrapper = new QueryWrapper<>();
+        classCourseQueryWrapper.eq("course_id", id);
+        List<ClassCourse> classCourses = classCourseMapper.selectList(classCourseQueryWrapper);
+        List<String> hasClass = new ArrayList<>();
+        //删除需要删除的
+        for (ClassCourse classCourse : classCourses) {
+            String classId = classCourse.getClassId();
+            if(!classIds.contains(classId)) {
+                QueryWrapper<ClassCourse> tempWrapper = new QueryWrapper<>();
+                tempWrapper.eq("course_id", id).eq("class_id", classId);
+                classCourseMapper.delete(tempWrapper);
+            }
+            hasClass.add(classId);
+        }
+        //添加需要新添加的
+        classIds.removeAll(hasClass);
+        for (String classId : classIds) {
+            ClassCourse classCourse = new ClassCourse();
+            classCourse.setCourseId(id);
+            classCourse.setClassId(classId);
+            classCourseMapper.insert(classCourse);
+        }
+
+        return true;
+    }
+
 }

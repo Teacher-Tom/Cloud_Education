@@ -3,10 +3,7 @@ package xyz.likailing.cloud.service.manager.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import xyz.likailing.cloud.service.manager.entity.Course;
 import com.baomidou.mybatisplus.extension.service.IService;
-import xyz.likailing.cloud.service.manager.entity.vo.AdminCourseQueryVO;
-import xyz.likailing.cloud.service.manager.entity.vo.AdminCourseVO;
-import xyz.likailing.cloud.service.manager.entity.vo.CourseQueryVO;
-import xyz.likailing.cloud.service.manager.entity.vo.CourseVO;
+import xyz.likailing.cloud.service.manager.entity.vo.*;
 
 import java.util.List;
 
@@ -33,4 +30,6 @@ public interface CourseService extends IService<Course> {
     boolean removeCourseById(String id);
 
     CourseVO getCourseById(String id);
+
+    boolean updateCourse(Course course, List<String> teacherIds, List<String> classIds);
 }
