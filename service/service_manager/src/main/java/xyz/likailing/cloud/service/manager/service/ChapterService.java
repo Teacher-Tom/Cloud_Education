@@ -2,6 +2,9 @@ package xyz.likailing.cloud.service.manager.service;
 
 import xyz.likailing.cloud.service.manager.entity.Chapter;
 import com.baomidou.mybatisplus.extension.service.IService;
+import xyz.likailing.cloud.service.manager.entity.vo.ChapterVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ChapterService extends IService<Chapter> {
 
+    List<ChapterVO> getCourseChapter(String courseId);
 }

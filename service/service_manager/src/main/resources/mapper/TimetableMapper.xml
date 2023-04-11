@@ -2,18 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.likailing.cloud.service.manager.mapper.TimetableMapper">
 
-    <select id="selectTimetableList" resultType="xyz.likailing.cloud.service.manager.entity.vo.TimetableGetVO">
+    <resultMap id="TimetableVO" type="xyz.likailing.cloud.service.manager.entity.vo.TimetableGetVO">
+        <result column="id" property="id"/>
+        <result column="cname" property="courseName"/>
+        <result column="date" property="date"/>
+        <result column="week" property="week"/>
+        <result column="day_of_week" property="dayOfWeek"/>
+        <result column="begin_index" property="beginIndex"/>
+        <result column="end_index" property="endIndex"/>
+        <result column="location" property="location"/>
+        <result column="teacher_id" property="teacherId"/>
+        <result column="tname" property="teacherName"/>
+        <result column="status" property="status"/>
+        <collection property="subChapters" ofType="SubChapter" select="subs" column="id"/>
+    </resultMap>
+    <select id="subs" resultType="SubChapter">
+        SELECT *
+        FROM manager_sub_chapter sc
+            LEFT JOIN manager_chapter_timetable mct ON mct.sub_chapter_id = sc.id
+        WHERE mct.timetable_id = #{id}
+    </select>
+
+    <select id="selectTimetableList" resultMap="TimetableVO">
         SELECT
-            tt.id AS id,
-            mc.name AS courseName,
-            tt.date AS date,
-            tt.week AS week,
-            tt.day_of_week AS dayOfWeek,
-            tt.begin_index AS beginIndex,
-            tt.end_index AS endIndex,
-            tt.location AS location,
-            mt.name AS teacherName,
-            tt.status AS status
+            tt.id,
+            mc.name cname,
+            tt.date,
+            tt.week,
+            tt.day_of_week,
+            tt.begin_index,
+            tt.end_index,
+            tt.location,
+            tt.teacher_id,
+            mt.name tname,
+            tt.status
         FROM manager_timetable tt
             LEFT JOIN manager_teacher mt ON mt.id = tt.teacher_id
             LEFT JOIN manager_course mc ON mc.id = tt.course_id

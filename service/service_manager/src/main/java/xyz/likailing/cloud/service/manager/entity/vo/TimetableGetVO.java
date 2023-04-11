@@ -2,9 +2,11 @@ package xyz.likailing.cloud.service.manager.entity.vo;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
+import xyz.likailing.cloud.service.manager.entity.SubChapter;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class TimetableGetVO implements Serializable {
@@ -27,7 +29,11 @@ public class TimetableGetVO implements Serializable {
 
     private String location;
 
+    private String teacherId;
+
     private String teacherName;
 
     private Integer status;
+
+    private List<SubChapter> subChapters;
 }
