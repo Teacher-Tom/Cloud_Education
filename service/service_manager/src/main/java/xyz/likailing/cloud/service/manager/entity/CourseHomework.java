@@ -1,6 +1,7 @@
 package xyz.likailing.cloud.service.manager.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import org.springframework.format.annotation.DateTimeFormat;
 import xyz.likailing.cloud.service.base.model.BaseEntity;
 import com.baomidou.mybatisplus.annotation.IdType;
 
@@ -33,8 +34,9 @@ public class CourseHomework implements Serializable {
 
     private String name;
 
+    @DateTimeFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private Date beginTime;
-
+    @DateTimeFormat( pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     @TableField("is_outdated")
@@ -48,7 +50,7 @@ public class CourseHomework implements Serializable {
 
     private String timetableId;
 
-    private String isGlobal;
+    private Boolean isGlobal;
 
 
 }

@@ -15,7 +15,6 @@ import java.util.List;
 @Data
 public class NodeInfoVo {
     private Node node;
-    private NodeDetail nodeDetail;
     private List<Task> taskList;
     private List<Branch> branchList;
 }

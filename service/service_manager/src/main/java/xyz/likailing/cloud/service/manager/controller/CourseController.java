@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.manager.entity.Course;
 import xyz.likailing.cloud.service.manager.entity.CourseDescription;
@@ -148,6 +149,8 @@ public class CourseController {
         }
         return R.error().message("数据不存在");
     }
+
+
 
 }
 

@@ -61,7 +61,7 @@ ribbon:
   MaxAutoRetries: 0 # 同一实例最大重试次数，不包括首次调用，默认0
   MaxAutoRetriesNextServer: 1 # 重试其他实例的最大重试次数，不包括首次所选的server，默认1
   ConnectTimeout: 10000 # 连接建立的超时时长，默认1秒
-  ReadTimeout: 10000  # 处理请求的超时时间，默认1秒
+  ReadTimeout: 30000  # 处理请求的超时时间，默认1秒
 #hystrix的超时时间
 hystrix:
   command:
@@ -71,7 +71,7 @@ hystrix:
           enabled: true
         isolation:
           thread:
-            timeoutInMilliseconds: 10000
+            timeoutInMilliseconds: 30000
 feign:
   sentinel:
     enabled: true

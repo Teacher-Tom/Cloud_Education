@@ -45,7 +45,7 @@ public class Node implements Serializable {
      * 
      */
     private Date endTime;
-
+    @TableField(value = "`left`")
     private String left;
 
     private String top;

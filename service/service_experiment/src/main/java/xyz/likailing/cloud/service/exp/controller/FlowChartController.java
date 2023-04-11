@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.common.base.result.ResultCodeEnum;
 import xyz.likailing.cloud.service.base.exception.CloudException;
-import xyz.likailing.cloud.service.exp.entity.Branch;
-import xyz.likailing.cloud.service.exp.entity.Line;
-import xyz.likailing.cloud.service.exp.entity.Node;
+import xyz.likailing.cloud.service.exp.entity.*;
 import xyz.likailing.cloud.service.exp.entity.vo.BranchVo;
 import xyz.likailing.cloud.service.exp.entity.vo.NodeInfoVo;
 import xyz.likailing.cloud.service.exp.service.BranchService;
@@ -161,11 +159,29 @@ public class FlowChartController {
         return null;
     }
 
-    @ApiOperation("查询某个节点的所有信息")
+    @ApiOperation("查询某个节点的所有信息、分支、任务")
     @GetMapping("/node/info/{nodeId}")
     public R getAllInfoByNodeId(@PathVariable String nodeId){
         NodeInfoVo nodeInfoVo = nodeService.getNodeInfoByNodeId(nodeId);
-        return R.ok();
+        return R.ok().data("nodeInfo",nodeInfoVo);
     }
+    @ApiOperation("保存各学生的节点信息")
+    @PostMapping("/node/detail")
+    public R saveNodeDetail(@RequestBody NodeDetail nodeDetail){
+        return null;
+    }
+
+    @ApiOperation("修改各学生的节点信息")
+    @PutMapping("/node/detail/{nodeId}/{studentId}")
+    public R updateNodeDetail(@PathVariable String nodeId,@RequestBody NodeDetail nodeDetail){
+        return null;
+    }
+
+    @ApiOperation("删除各学生的节点信息")
+    @DeleteMapping("/node/detail/{nodeId}")
+    public R deleteNodeDetail(@PathVariable String nodeId){
+        return null;
+    }
+
 
 }
