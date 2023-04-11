@@ -43,6 +43,7 @@
             LEFT JOIN course_discussion_reply r ON r.discussion_id = d.id
             LEFT JOIN user u ON u.id = d.user_id
         WHERE d.resource_id = #{resourceId}
+        order by d.likes desc, r.likes desc
     </select>
 
     <select id="selectPageAll" resultMap="DiscussionVO">
@@ -66,6 +67,7 @@
             LEFT JOIN course_discussion_reply r ON r.discussion_id = d.id
             LEFT JOIN user u ON u.id = d.user_id
         WHERE d.resource_id = #{resourceId} AND d.page = #{page}
+        order by d.likes desc, r.likes desc
     </select>
 
 </mapper>

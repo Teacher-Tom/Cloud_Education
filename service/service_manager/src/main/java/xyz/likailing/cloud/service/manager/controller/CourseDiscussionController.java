@@ -83,7 +83,7 @@ public class CourseDiscussionController {
         return R.error().message("发布失败");
     }
 
-    @ApiOperation("用户对资源的某一页发表讨论点赞")
+    @ApiOperation("用户对讨论点赞")
     @PutMapping("/like-issue/{discussionId}")
     public R likeIssue(@ApiParam(value = "讨论id", required = true) @PathVariable String discussionId) {
         CourseDiscussion discussion = discussionService.getById(discussionId);
@@ -95,7 +95,19 @@ public class CourseDiscussionController {
         return R.error().message("点赞失败");
     }
 
-    @ApiOperation("用户对某一个讨论进行回复点赞")
+    @ApiOperation("用户对讨论取消点赞")
+    @DeleteMapping("/dislike-issue/{discussionId}")
+    public R dislikeIssue(@ApiParam(value = "讨论id", required = true) @PathVariable String discussionId) {
+        CourseDiscussion discussion = discussionService.getById(discussionId);
+        discussion.setLikes(Math.max(discussion.getLikes() - 1, 0));
+        boolean update = discussionService.updateById(discussion);
+        if(update) {
+            return R.ok().message("取消成功");
+        }
+        return R.error().message("取消失败");
+    }
+
+    @ApiOperation("用户对某一个回复点赞")
     @PutMapping("/like-reply/{replyId}")
     public R likeReply(@ApiParam(value = "回复id", required = true) @PathVariable String replyId) {
         CourseDiscussionReply reply = replyService.getById(replyId);
@@ -105,6 +117,18 @@ public class CourseDiscussionController {
             return R.ok().message("点赞成功");
         }
         return R.error().message("点赞失败");
+    }
+
+    @ApiOperation("用户对某一个回复取消点赞")
+    @DeleteMapping("/dislike-reply/{replyId}")
+    public R dislikeReply(@ApiParam(value = "回复id", required = true) @PathVariable String replyId) {
+        CourseDiscussionReply reply = replyService.getById(replyId);
+        reply.setLikes(Math.max(reply.getLikes() - 1, 0));
+        boolean update = replyService.updateById(reply);
+        if(update) {
+            return R.ok().message("取消成功");
+        }
+        return R.error().message("取消失败");
     }
 
 //    @ApiOperation("根据id查询讨论")

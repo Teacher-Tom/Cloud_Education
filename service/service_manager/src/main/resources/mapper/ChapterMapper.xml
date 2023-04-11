@@ -26,6 +26,7 @@
         FROM manager_timetable mt
             LEFT JOIN manager_chapter_timetable ct ON ct.timetable_id = mt.id
         WHERE ct.sub_chapter_id = #{sid}
+        order by mt.date
     </select>
 
     <select id="selectCourseChapter" resultMap="ChapterVO">
@@ -39,7 +40,7 @@
         FROM manager_chapter mc
             LEFT JOIN manager_sub_chapter sc ON sc.chapter_id = mc.id
         WHERE mc.course_id = #{courseId}
-        order by mc.number
+        order by mc.number, sc.number
     </select>
 
 </mapper>
