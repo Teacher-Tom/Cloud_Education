@@ -48,6 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/v2/api-docs",
                         "/v3/api-docs",
                         "/webjars/**").permitAll()
+                .pathMatchers("/exp/webssh").permitAll()
                 .pathMatchers(HttpMethod.OPTIONS).permitAll()
                 .anyExchange().permitAll()
                 .and()

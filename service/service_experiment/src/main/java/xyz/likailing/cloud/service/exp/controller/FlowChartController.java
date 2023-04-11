@@ -12,6 +12,7 @@ import xyz.likailing.cloud.service.exp.entity.Branch;
 import xyz.likailing.cloud.service.exp.entity.Line;
 import xyz.likailing.cloud.service.exp.entity.Node;
 import xyz.likailing.cloud.service.exp.entity.vo.BranchVo;
+import xyz.likailing.cloud.service.exp.entity.vo.NodeInfoVo;
 import xyz.likailing.cloud.service.exp.service.BranchService;
 import xyz.likailing.cloud.service.exp.service.LineService;
 import xyz.likailing.cloud.service.exp.service.NodeService;
@@ -160,5 +161,11 @@ public class FlowChartController {
         return null;
     }
 
+    @ApiOperation("查询某个节点的所有信息")
+    @GetMapping("/node/info/{nodeId}")
+    public R getAllInfoByNodeId(@PathVariable String nodeId){
+        NodeInfoVo nodeInfoVo = nodeService.getNodeInfoByNodeId(nodeId);
+        return R.ok();
+    }
 
 }

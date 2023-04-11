@@ -12,6 +12,9 @@ import xyz.likailing.cloud.common.base.util.JwtUtils;
 import xyz.likailing.cloud.service.base.exception.CloudException;
 import xyz.likailing.cloud.service.exp.constant.ConstantPool;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -26,7 +29,7 @@ public class WebSocketInterceptor implements HandshakeInterceptor {
             ServletServerHttpRequest request = (ServletServerHttpRequest) serverHttpRequest;
             //生成一个UUID，这里由于是独立的项目，没有用户模块，所以可以用随机的UUID
             //但是如果要集成到自己的项目中，需要将其改为自己识别用户的标识
-            String token = request.getServletRequest().getHeader("token");
+            String token = request.getServletRequest().getParameter("token");
             if (StringUtils.isEmpty(token)){
                 throw new CloudException("请先登录",20001);
             }

@@ -71,4 +71,6 @@ public class ExperimentController {
         List<Experiment> experimentList = experimentService.listAllExpsByUserId(userId);
         return R.ok().data("list",experimentList);
     }
+
+
 }

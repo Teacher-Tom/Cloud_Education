@@ -3,6 +3,7 @@ package xyz.likailing.cloud.service.exp.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import xyz.likailing.cloud.service.exp.entity.Node;
+import xyz.likailing.cloud.service.exp.entity.vo.NodeInfoVo;
 import xyz.likailing.cloud.service.exp.service.NodeService;
 import xyz.likailing.cloud.service.exp.mapper.NodeMapper;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,13 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, Node>
         queryWrapper.eq("experiment_id",expId);
         List<Node> nodes = baseMapper.selectList(queryWrapper);
         return nodes;
+    }
+
+    @Override
+    public NodeInfoVo getNodeInfoByNodeId(String nodeId) {
+        NodeInfoVo nodeInfoVo = new NodeInfoVo();
+        QueryWrapper<Node> queryWrapper = new QueryWrapper<>();
+        return null;
     }
 }
 
