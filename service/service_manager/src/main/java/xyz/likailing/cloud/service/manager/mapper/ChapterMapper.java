@@ -2,6 +2,9 @@ package xyz.likailing.cloud.service.manager.mapper;
 
 import xyz.likailing.cloud.service.manager.entity.Chapter;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import xyz.likailing.cloud.service.manager.entity.vo.ChapterVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface ChapterMapper extends BaseMapper<Chapter> {
 
+    List<ChapterVO> selectCourseChapter(String courseId);
 }

@@ -41,7 +41,7 @@ public class ChapterTimetable implements Serializable {
     private String subChapterId;
 
     @ApiModelProperty(value = "时间表小节id")
-    private Integer timetableId;
+    private String timetableId;
 
 
 }
