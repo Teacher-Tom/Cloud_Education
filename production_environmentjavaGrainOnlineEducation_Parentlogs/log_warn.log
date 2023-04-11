@@ -1907,3 +1907,27 @@ java.io.IOException: The server sockets created using the LocalRMIServerSocketFa
 2023-04-10 23:00:18 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
 2023-04-10 23:00:21 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
 2023-04-10 23:00:21 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-04-11 08:25:00 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2023-04-11 08:25:01 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2023-04-11 08:25:04 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-04-11 08:25:04 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-04-11 08:40:06 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2023-04-11 08:40:06 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2023-04-11 08:40:10 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-04-11 08:40:10 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-04-11 13:59:09 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'nacos-discovery' contains invalid characters, please migrate to a valid format.
+2023-04-11 13:59:09 |WARN  |main |EndpointId.java:155 |org.springframework.boot.actuate.endpoint.EndpointId |Endpoint ID 'service-registry' contains invalid characters, please migrate to a valid format.
+2023-04-11 13:59:13 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-04-11 13:59:13 |WARN  |main |URLConfigurationSource.java:121 |com.netflix.config.sources.URLConfigurationSource |No URLs will be polled as dynamic configuration sources.
+2023-04-11 14:00:08 |WARN  |RMI TCP Accept-0 |Log.java:237 |sun.rmi.transport.tcp |RMI TCP Accept-0: accept loop for ServerSocket[addr=0.0.0.0/0.0.0.0,localport=57731] throws
+java.io.IOException: The server sockets created using the LocalRMIServerSocketFactory only accept connections from clients running on the host where the RMI remote objects have been exported.
+	at sun.management.jmxremote.LocalRMIServerSocketFactory$1.accept(LocalRMIServerSocketFactory.java:114)
+	at sun.rmi.transport.tcp.TCPTransport$AcceptLoop.executeAcceptLoop(TCPTransport.java:405)
+	at sun.rmi.transport.tcp.TCPTransport$AcceptLoop.run(TCPTransport.java:377)
+	at java.lang.Thread.run(Thread.java:750)
+2023-04-11 14:00:20 |WARN  |pool-2-thread-2 |PoolBase.java:179 |com.zaxxer.hikari.pool.PoolBase |HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@2df0ada7 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2023-04-11 14:00:25 |WARN  |pool-2-thread-2 |PoolBase.java:179 |com.zaxxer.hikari.pool.PoolBase |HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@489991c (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2023-04-11 14:00:30 |WARN  |pool-2-thread-2 |PoolBase.java:179 |com.zaxxer.hikari.pool.PoolBase |HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@3de7fe8b (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2023-04-11 14:00:35 |WARN  |pool-2-thread-2 |PoolBase.java:179 |com.zaxxer.hikari.pool.PoolBase |HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@6e76f510 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2023-04-11 14:00:40 |WARN  |pool-2-thread-2 |PoolBase.java:179 |com.zaxxer.hikari.pool.PoolBase |HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@52515135 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2023-04-11 14:00:45 |WARN  |pool-2-thread-2 |PoolBase.java:179 |com.zaxxer.hikari.pool.PoolBase |HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@53bccaee (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.

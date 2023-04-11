@@ -1,5 +1,6 @@
 package xyz.likailing.cloud.service.manager.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -8,8 +9,10 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.manager.entity.Course;
+import xyz.likailing.cloud.service.manager.entity.CourseDescription;
 import xyz.likailing.cloud.service.manager.entity.vo.*;
 import xyz.likailing.cloud.service.manager.feign.AllsService;
+import xyz.likailing.cloud.service.manager.service.CourseDescriptionService;
 import xyz.likailing.cloud.service.manager.service.CourseService;
 
 import java.util.List;
@@ -31,6 +34,8 @@ public class CourseController {
 
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private CourseDescriptionService descriptionService;
 
     @ApiOperation("获取对应学生的学年学期的全部课程列表")
     @GetMapping("/list-student")
@@ -96,6 +101,42 @@ public class CourseController {
             return R.ok().data("course", course);
         }
         return R.error().message("数据不存在");
+    }
+
+    @ApiOperation("根据课程id查询课程描述")
+    @GetMapping("/get-desc/{id}")
+    public R getDescriptionById(@ApiParam(value = "课程id", required = true) @PathVariable String id) {
+        QueryWrapper<CourseDescription> wrapper = new QueryWrapper<>();
+        wrapper.eq("course_id", id);
+        CourseDescription description = descriptionService.getOne(wrapper);
+        if(!ObjectUtils.isEmpty(description)) {
+            return R.ok().data("description", description);
+        }
+        return R.error().message("数据不存在");
+    }
+
+    @ApiOperation("新增课程描述信息")
+    @PostMapping("/add-desc")
+    public R addDesc(@ApiParam(value = "课程描述", required = true) @RequestBody CourseDescription courseDescription) {
+        QueryWrapper<CourseDescription> wrapper = new QueryWrapper<>();
+        wrapper.eq("course_id", courseDescription.getCourseId());
+        CourseDescription description = descriptionService.getOne(wrapper);
+        //该课程描述已存在，进行覆盖
+        if(!ObjectUtils.isEmpty(description)) {
+            description.setDescription(courseDescription.getDescription());
+            boolean update = descriptionService.updateById(description);
+            if(update) {
+                return R.ok().data("descId", description.getId()).message("该课程描述已存在，成功覆盖");
+            }
+            return R.error().message("该课程描述已存在，覆盖失败");
+        }
+        boolean save = descriptionService.save(courseDescription);
+        if(save) {
+            //allsService.createCourseAccount(course.getId(),course.getName(), course.getCoverUrl());
+            return R.ok().data("descId", courseDescription.getId()).message("保存成功");
+
+        }
+        return R.error().message("保存失败");
     }
 
     @ApiOperation("根据id删除课程信息")

@@ -68,7 +68,7 @@ public class CourseDiscussionController {
 
     @ApiOperation("用户对某一个讨论进行回复")
     @PostMapping("/reply")
-    public R reply(@ApiParam("学生用户对象") @RequestBody CourseDiscussionReply discussionReply) {
+    public R reply(@ApiParam("回复对象") @RequestBody CourseDiscussionReply discussionReply) {
         discussionReply.setSendTime(new Date());
         discussionReply.setLikes(0);
         User user = userService.getById(discussionReply.getUserId());
@@ -81,6 +81,30 @@ public class CourseDiscussionController {
             return R.ok().data("replyId", discussionReply.getId()).message("发布成功");
         }
         return R.error().message("发布失败");
+    }
+
+    @ApiOperation("用户对资源的某一页发表讨论点赞")
+    @PutMapping("/like-issue/{discussionId}")
+    public R likeIssue(@ApiParam(value = "讨论id", required = true) @PathVariable String discussionId) {
+        CourseDiscussion discussion = discussionService.getById(discussionId);
+        discussion.setLikes(discussion.getLikes() + 1);
+        boolean update = discussionService.updateById(discussion);
+        if(update) {
+            return R.ok().message("点赞成功");
+        }
+        return R.error().message("点赞失败");
+    }
+
+    @ApiOperation("用户对某一个讨论进行回复点赞")
+    @PutMapping("/like-reply/{replyId}")
+    public R likeReply(@ApiParam(value = "回复id", required = true) @PathVariable String replyId) {
+        CourseDiscussionReply reply = replyService.getById(replyId);
+        reply.setLikes(reply.getLikes() + 1);
+        boolean update = replyService.updateById(reply);
+        if(update) {
+            return R.ok().message("点赞成功");
+        }
+        return R.error().message("点赞失败");
     }
 
 //    @ApiOperation("根据id查询讨论")
