@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -84,9 +85,13 @@ public class CourseDiscussionController {
     }
 
     @ApiOperation("用户对讨论点赞")
+    @Transactional
     @PutMapping("/like-issue/{discussionId}")
     public R likeIssue(@ApiParam(value = "讨论id", required = true) @PathVariable String discussionId) {
         CourseDiscussion discussion = discussionService.getById(discussionId);
+        if(ObjectUtils.isEmpty(discussion)) {
+            return R.error().message("该讨论不存在");
+        }
         discussion.setLikes(discussion.getLikes() + 1);
         boolean update = discussionService.updateById(discussion);
         if(update) {
@@ -96,9 +101,13 @@ public class CourseDiscussionController {
     }
 
     @ApiOperation("用户对讨论取消点赞")
+    @Transactional
     @DeleteMapping("/dislike-issue/{discussionId}")
     public R dislikeIssue(@ApiParam(value = "讨论id", required = true) @PathVariable String discussionId) {
         CourseDiscussion discussion = discussionService.getById(discussionId);
+        if(ObjectUtils.isEmpty(discussion)) {
+            return R.error().message("该讨论不存在");
+        }
         discussion.setLikes(Math.max(discussion.getLikes() - 1, 0));
         boolean update = discussionService.updateById(discussion);
         if(update) {
@@ -108,9 +117,13 @@ public class CourseDiscussionController {
     }
 
     @ApiOperation("用户对某一个回复点赞")
+    @Transactional
     @PutMapping("/like-reply/{replyId}")
     public R likeReply(@ApiParam(value = "回复id", required = true) @PathVariable String replyId) {
         CourseDiscussionReply reply = replyService.getById(replyId);
+        if(ObjectUtils.isEmpty(reply)) {
+            return R.error().message("该回复不存在");
+        }
         reply.setLikes(reply.getLikes() + 1);
         boolean update = replyService.updateById(reply);
         if(update) {
@@ -120,9 +133,13 @@ public class CourseDiscussionController {
     }
 
     @ApiOperation("用户对某一个回复取消点赞")
+    @Transactional
     @DeleteMapping("/dislike-reply/{replyId}")
     public R dislikeReply(@ApiParam(value = "回复id", required = true) @PathVariable String replyId) {
         CourseDiscussionReply reply = replyService.getById(replyId);
+        if(ObjectUtils.isEmpty(reply)) {
+            return R.error().message("该回复不存在");
+        }
         reply.setLikes(Math.max(reply.getLikes() - 1, 0));
         boolean update = replyService.updateById(reply);
         if(update) {
