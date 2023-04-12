@@ -23,5 +23,9 @@ public interface TimetableMapper extends BaseMapper<Timetable> {
 
     List<Timetable> selectExpiredTimetable(Date date);
 
-    List<Timetable> selectTodayTimetable(Date today);
+    List<Timetable> selectTodayTimetable();
+
+    int updateExpiredTimetable();
+
+    int updateTodayTimetable();
 }

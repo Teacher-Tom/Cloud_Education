@@ -47,14 +47,23 @@
         SELECT *
         FROM manager_timetable mt
         WHERE (mt.status = 0 OR mt.status = 1)
-          AND <![CDATA[mt.date < #{date}]]>;
+          AND <![CDATA[mt.date < CURDATE()]]>;
     </select>
 
     <select id="selectTodayTimetable" parameterType="java.util.Date" resultType="Timetable">
         SELECT *
         FROM manager_timetable mt
         WHERE mt.status = 0
-          AND <![CDATA[mt.date = #{date}]]>;
+          AND mt.date = CURDATE()
     </select>
+
+    <update id="updateExpiredTimetable">
+        UPDATE manager_timetable mt SET mt.status = 2
+        WHERE (mt.status = 0 OR mt.status = 1) AND <![CDATA[mt.date < CURDATE()]]>;
+    </update>
+
+    <update id="updateTodayTimetable">
+        UPDATE manager_timetable mt SET mt.status = 1 WHERE mt.date = CURDATE()
+    </update>
 
 </mapper>

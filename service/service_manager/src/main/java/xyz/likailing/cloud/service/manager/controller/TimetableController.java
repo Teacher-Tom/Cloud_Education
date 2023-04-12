@@ -16,8 +16,6 @@ import xyz.likailing.cloud.service.manager.feign.AllsService;
 import xyz.likailing.cloud.service.manager.mapper.TimetableMapper;
 import xyz.likailing.cloud.service.manager.service.TimetableService;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -100,40 +98,55 @@ public class TimetableController {
         return r;
     }
 
-    @Scheduled(cron = "0 0 0 * * ?") //每天0点执行一次
+    @Scheduled(cron = "0 1 0 * * ?") //每天 0点 1分执行一次
     public void expire() {
-        Date now = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(now);
-        calendar.set(Calendar.MILLISECOND, 0);
-        calendar.set(Calendar.SECOND, 0);
-        Date today = calendar.getTime();
+        //更新过期的时序
+        int updateExpiredTimetable = timetableMapper.updateExpiredTimetable();
+        if(updateExpiredTimetable >= 1) {
+            log.info("更新过期时序成功");
+        } else {
+            log.info("没有过期更新");
+        }
 
-        List<Timetable> expiredList = timetableMapper.selectExpiredTimetable(today);
-        List<Timetable> todayList = timetableMapper.selectTodayTimetable(today);
-        if (expiredList.isEmpty()) {
-            log.info("没有需要更新的信息");
-            return;
+        //更新当天的时序
+        int updateTodayTimetable = timetableMapper.updateTodayTimetable();
+        if(updateTodayTimetable >= 1) {
+            log.info("更新当天时序成功");
+        } else {
+            log.info("没有当天更新");
         }
-        //遍历更新过期时序
-        for (Timetable timetable : expiredList) {
-            timetable.setStatus(2);
-            boolean update = timetableService.updateById(timetable);
-            if (update) {
-                log.info("{} : 更新成功，已过期", timetable.getId());
-            } else {
-                log.info("{} : 更新失败", timetable.getId());
-            }
-        }
-        for (Timetable timetable : todayList) {
-            timetable.setStatus(1);
-            boolean update = timetableService.updateById(timetable);
-            if (update) {
-                log.info("{} : 更新成功", timetable.getId());
-            } else {
-                log.info("{} : 更新失败", timetable.getId());
-            }
-        }
+
+//        Date now = new Date();
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(now);
+//        calendar.set(Calendar.MILLISECOND, 0);
+//        calendar.set(Calendar.SECOND, 0);
+//        Date today = calendar.getTime();
+//        List<Timetable> expiredList = timetableMapper.selectExpiredTimetable(today);
+//        if (expiredList.isEmpty()) {
+//            log.info("没有需要更新的信息");
+//            return;
+//        }
+//        //遍历更新过期时序
+//        for (Timetable timetable : expiredList) {
+//            timetable.setStatus(2);
+//            boolean update = timetableService.updateById(timetable);
+//            if (update) {
+//                log.info("{} : 更新成功，已过期", timetable.getId());
+//            } else {
+//                log.info("{} : 更新失败", timetable.getId());
+//            }
+//        }
+//        List<Timetable> todayList = timetableMapper.selectTodayTimetable();
+//        for (Timetable timetable : todayList) {
+//            timetable.setStatus(1);
+//            boolean update = timetableService.updateById(timetable);
+//            if (update) {
+//                log.info("{} : 更新成功", timetable.getId());
+//            } else {
+//                log.info("{} : 更新失败", timetable.getId());
+//            }
+//        }
     }
 
 
