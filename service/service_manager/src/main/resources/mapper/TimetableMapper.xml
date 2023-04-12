@@ -43,6 +43,13 @@
         order by tt.date
     </select>
 
+    <select id="selectSubTimetables" resultType="Timetable">
+        SELECT *
+        FROM manager_timetable mt
+            LEFT JOIN manager_chapter_timetable mct ON mct.timetable_id = mt.id
+        WHERE mct.sub_chapter_id = #{subId}
+    </select>
+
     <select id="selectExpiredTimetable" parameterType="java.util.Date" resultType="Timetable">
         SELECT *
         FROM manager_timetable mt

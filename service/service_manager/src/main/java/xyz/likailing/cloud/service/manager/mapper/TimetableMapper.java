@@ -28,4 +28,6 @@ public interface TimetableMapper extends BaseMapper<Timetable> {
     int updateExpiredTimetable();
 
     int updateTodayTimetable();
+
+    List<Timetable> selectSubTimetables(String subId);
 }

@@ -27,4 +27,6 @@ public interface TimetableService extends IService<Timetable> {
 //    boolean removeTempElement(String userId, Timetable timetable);
 
     boolean saveTempList(List<Timetable> allList);
+
+    List<Timetable> getSubTimetables(String subId);
 }

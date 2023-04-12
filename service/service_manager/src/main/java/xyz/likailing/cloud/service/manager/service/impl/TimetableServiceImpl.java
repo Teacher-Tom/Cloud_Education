@@ -88,4 +88,9 @@ public class TimetableServiceImpl extends ServiceImpl<TimetableMapper, Timetable
         return (insert > 0);
     }
 
+    @Override
+    public List<Timetable> getSubTimetables(String subId) {
+        return baseMapper.selectSubTimetables(subId);
+    }
+
 }

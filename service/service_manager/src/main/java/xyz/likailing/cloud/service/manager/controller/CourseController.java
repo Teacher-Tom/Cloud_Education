@@ -78,7 +78,6 @@ public class CourseController {
         if(save) {
             allsService.createCourseAccount(course.getId(),course.getName(), course.getCoverUrl());
             return R.ok().data("courseId", course.getId()).message("保存成功");
-
         }
         return R.error().message("保存失败");
     }
@@ -133,9 +132,7 @@ public class CourseController {
         }
         boolean save = descriptionService.save(courseDescription);
         if(save) {
-            //allsService.createCourseAccount(course.getId(),course.getName(), course.getCoverUrl());
             return R.ok().data("descId", courseDescription.getId()).message("保存成功");
-
         }
         return R.error().message("保存失败");
     }

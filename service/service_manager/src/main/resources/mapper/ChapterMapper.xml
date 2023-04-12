@@ -10,37 +10,17 @@
             <result property="number" column="number"/>
         </association>
         <collection property="children" ofType="xyz.likailing.cloud.service.manager.entity.vo.ChildChapter">
-            <association property="subChapter" javaType="SubChapter">
-                <result property="id" column="sid"/>
-                <result property="courseId" column="scourse_id"/>
-                <result property="chapterId" column="schapter_id"/>
-                <result property="name" column="sname"/>
-                <result property="number" column="snumber"/>
-            </association>
-            <collection property="timetables" ofType="Timetable" select="times" column="sid"/>
+            <association property="subChapter" javaType="SubChapter"/>
+            <collection property="timetables" ofType="Timetable"/>
         </collection>
     </resultMap>
-    <select id="times" resultType="Timetable">
-        SELECT
-            *
-        FROM manager_timetable mt
-            LEFT JOIN manager_chapter_timetable ct ON ct.timetable_id = mt.id
-        WHERE ct.sub_chapter_id = #{sid}
-        order by mt.date
-    </select>
 
     <select id="selectCourseChapter" resultMap="ChapterVO">
         SELECT
-            mc.*,
-            sc.id sid,
-            sc.course_id scourse_id,
-            sc.chapter_id schapter_id,
-            sc.name sname,
-            sc.number snumber
-        FROM manager_chapter mc
-            LEFT JOIN manager_sub_chapter sc ON sc.chapter_id = mc.id
-        WHERE mc.course_id = #{courseId}
-        order by mc.number, sc.number
+            *
+        FROM manager_chapter
+        WHERE course_id = #{courseId}
+        order by number
     </select>
 
 </mapper>
