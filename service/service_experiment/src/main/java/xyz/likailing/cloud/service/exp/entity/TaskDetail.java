@@ -1,6 +1,5 @@
 package xyz.likailing.cloud.service.exp.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -28,7 +27,7 @@ public class TaskDetail implements Serializable {
     /**
      * 队伍id
      */
-    private String teamId;
+    private String studentId;
 
     /**
      * 任务是否完成
@@ -77,7 +76,7 @@ public class TaskDetail implements Serializable {
         TaskDetail other = (TaskDetail) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getTaskId() == null ? other.getTaskId() == null : this.getTaskId().equals(other.getTaskId()))
-            && (this.getTeamId() == null ? other.getTeamId() == null : this.getTeamId().equals(other.getTeamId()))
+            && (this.getStudentId() == null ? other.getStudentId() == null : this.getStudentId().equals(other.getStudentId()))
             && (this.getHasFinish() == null ? other.getHasFinish() == null : this.getHasFinish().equals(other.getHasFinish()))
             && (this.getSubmit() == null ? other.getSubmit() == null : this.getSubmit().equals(other.getSubmit()))
             && (this.getSubmitFileId() == null ? other.getSubmitFileId() == null : this.getSubmitFileId().equals(other.getSubmitFileId()))
@@ -92,7 +91,7 @@ public class TaskDetail implements Serializable {
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getTaskId() == null) ? 0 : getTaskId().hashCode());
-        result = prime * result + ((getTeamId() == null) ? 0 : getTeamId().hashCode());
+        result = prime * result + ((getStudentId() == null) ? 0 : getStudentId().hashCode());
         result = prime * result + ((getHasFinish() == null) ? 0 : getHasFinish().hashCode());
         result = prime * result + ((getSubmit() == null) ? 0 : getSubmit().hashCode());
         result = prime * result + ((getSubmitFileId() == null) ? 0 : getSubmitFileId().hashCode());
@@ -110,7 +109,7 @@ public class TaskDetail implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", taskId=").append(taskId);
-        sb.append(", teamId=").append(teamId);
+        sb.append(", teamId=").append(studentId);
         sb.append(", hasFinish=").append(hasFinish);
         sb.append(", submit=").append(submit);
         sb.append(", submitFileId=").append(submitFileId);

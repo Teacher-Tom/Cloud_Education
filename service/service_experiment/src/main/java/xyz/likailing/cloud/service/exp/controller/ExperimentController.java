@@ -71,4 +71,11 @@ public class ExperimentController {
         List<Experiment> experimentList = experimentService.listAllExpsByUserId(userId);
         return R.ok().data("list",experimentList);
     }
+    @ApiOperation("查询实验课成绩")
+    @GetMapping("/score/{studenId}/{courseId}")
+    public R getCourseScore(@PathVariable String studenId,@PathVariable String courseId){
+        return null;
+    }
+
+
 }

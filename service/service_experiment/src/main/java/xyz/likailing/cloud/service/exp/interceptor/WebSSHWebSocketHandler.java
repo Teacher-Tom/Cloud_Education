@@ -42,6 +42,7 @@ public class WebSSHWebSocketHandler implements WebSocketHandler {
 
     @Override
     public void handleTransportError(WebSocketSession webSocketSession, Throwable throwable) throws Exception {
+        throwable.printStackTrace();
         logger.error("数据传输错误");
     }
 

@@ -1,6 +1,5 @@
 package xyz.likailing.cloud.service.exp.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -31,7 +30,7 @@ public class NodeDetail implements Serializable {
     /**
      * 
      */
-    private String teamId;
+    private String studentId;
 
     /**
      * 
@@ -66,7 +65,7 @@ public class NodeDetail implements Serializable {
         NodeDetail other = (NodeDetail) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getNodeId() == null ? other.getNodeId() == null : this.getNodeId().equals(other.getNodeId()))
-            && (this.getTeamId() == null ? other.getTeamId() == null : this.getTeamId().equals(other.getTeamId()))
+            && (this.getStudentId() == null ? other.getStudentId() == null : this.getStudentId().equals(other.getStudentId()))
             && (this.getHasFinish() == null ? other.getHasFinish() == null : this.getHasFinish().equals(other.getHasFinish()))
             && (this.getDifficulty() == null ? other.getDifficulty() == null : this.getDifficulty().equals(other.getDifficulty()))
             && (this.getFinishTime() == null ? other.getFinishTime() == null : this.getFinishTime().equals(other.getFinishTime()));
@@ -78,7 +77,7 @@ public class NodeDetail implements Serializable {
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getNodeId() == null) ? 0 : getNodeId().hashCode());
-        result = prime * result + ((getTeamId() == null) ? 0 : getTeamId().hashCode());
+        result = prime * result + ((getStudentId() == null) ? 0 : getStudentId().hashCode());
         result = prime * result + ((getHasFinish() == null) ? 0 : getHasFinish().hashCode());
         result = prime * result + ((getDifficulty() == null) ? 0 : getDifficulty().hashCode());
         result = prime * result + ((getFinishTime() == null) ? 0 : getFinishTime().hashCode());
@@ -93,7 +92,7 @@ public class NodeDetail implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", nodeId=").append(nodeId);
-        sb.append(", teamId=").append(teamId);
+        sb.append(", teamId=").append(studentId);
         sb.append(", hasFinish=").append(hasFinish);
         sb.append(", difficulty=").append(difficulty);
         sb.append(", finishTime=").append(finishTime);

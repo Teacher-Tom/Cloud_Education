@@ -47,6 +47,9 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message>
         QueryWrapper<ManagerTeacher> queryWrapper = new QueryWrapper();
         queryWrapper.eq("user_id",teacherUserId);
         ManagerTeacher managerTeacher = teacherMapper.selectOne(queryWrapper);
+        if (managerTeacher == null){
+            throw new CloudException("没有查询到该教师",20001);
+        }
         //将通知存入库
         Message message = new Message();
         message.setCourseId(courseId);

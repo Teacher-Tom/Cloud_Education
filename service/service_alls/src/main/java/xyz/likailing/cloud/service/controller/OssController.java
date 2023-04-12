@@ -9,6 +9,7 @@ import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.vod.model.v20170321.*;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import xyz.likailing.cloud.common.base.result.R;
+import xyz.likailing.cloud.service.base.exception.CloudException;
 import xyz.likailing.cloud.service.entity.File;
 import xyz.likailing.cloud.service.entity.UcenterMember;
 import xyz.likailing.cloud.service.excepyionhandler.SpaceException;
@@ -55,6 +56,9 @@ public class OssController {
         QueryWrapper<UcenterMember> wrapper = new QueryWrapper<>();
         wrapper.eq("id", memid);
         UcenterMember one = memberService.getOne(wrapper);
+        if(one == null){
+            throw new CloudException("云盘账户不存在",20001);
+        }
         long neicun = one.getNeicun();
         long size = file.getSize();
         long result=neicun+ size;
@@ -227,5 +231,41 @@ public class OssController {
         return R.ok().data("urlList", urlList);
     }
 
+    @ApiOperation("上传课程封面，返回url")
+    @PostMapping("/upload-cover")
+    public R uploadCourseCover(@RequestParam(value = "file") @RequestPart MultipartFile file){
+        String memid = "1";
+        String catalogue = "/root/cover";
+        QueryWrapper<UcenterMember> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", memid);
+        UcenterMember one = memberService.getOne(wrapper);
+        if(one == null){
+            throw new CloudException("云盘账户不存在",20001);
+        }
+        long neicun = one.getNeicun();
+        long size = file.getSize();
+        long result=neicun+ size;
+        if (result<1073741824){
+            UcenterMember member=new UcenterMember();
+            member.setNeicun(result);
+            member.setId(memid);
+            boolean b = memberService.updateById(member);
+            System.out.println(b);
+            //获取文件名称
+            String fileName = file.getOriginalFilename();
+            //获取文件类型
+            String fileType = fileName.substring(fileName.lastIndexOf("."));
+            String type = fileType.substring(1);
+                File file1 = ossService.upload(file, catalogue);
+                if (file1.equals("")) {
+                    return R.error();
+                }
+                return R.ok().data("url", file1.getUrl());
+
+        }else {
+            throw new SpaceException(20001,"内存溢出");
+        }
+
+    }
 
 }

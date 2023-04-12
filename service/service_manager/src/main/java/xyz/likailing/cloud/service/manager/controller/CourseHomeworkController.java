@@ -15,8 +15,10 @@ import xyz.likailing.cloud.service.manager.entity.CourseHomeworkContext;
 import xyz.likailing.cloud.service.manager.entity.CourseHomeworkStudent;
 import xyz.likailing.cloud.service.manager.entity.CourseHomeworkSubmit;
 import xyz.likailing.cloud.service.manager.entity.vo.HomeworkCorrectVO;
+import xyz.likailing.cloud.service.manager.entity.vo.MessageVo;
 import xyz.likailing.cloud.service.manager.entity.vo.StudentHomeworkVO;
 import xyz.likailing.cloud.service.manager.entity.vo.TeacherHomeworkVO;
+import xyz.likailing.cloud.service.manager.feign.MsgService;
 import xyz.likailing.cloud.service.manager.service.CourseHomeworkContextService;
 import xyz.likailing.cloud.service.manager.service.CourseHomeworkService;
 import xyz.likailing.cloud.service.manager.service.CourseHomeworkStudentService;
@@ -47,6 +49,9 @@ public class CourseHomeworkController {
     @Autowired
     private CourseHomeworkSubmitService submitService;
 
+    @Autowired
+    private MsgService msgService;
+
     /* 教师 */
 
     @ApiOperation("保存作业信息，需要提交作业基本信息与每一小题的题目内容，不包含附件")
@@ -55,7 +60,15 @@ public class CourseHomeworkController {
                           @ApiParam("作业内容信息") @RequestBody List<CourseHomeworkContext> contexts) {
         String id = homeworkService.saveHomework(homework, contexts);
         if (id != null) {
-            return R.ok().data("homeworkId", id).message("保存成功");
+            // 发送作业通知
+            MessageVo messageVo = new MessageVo();
+            messageVo.setCourseId(homework.getCourseId());
+            messageVo.setTeacherUserId(homework.getTeacherId());
+            messageVo.setTitle("作业通知");
+            String content = "老师发布了一则新的作业:"+homework.getName();
+            messageVo.setContent(content);
+            msgService.sendMessage(messageVo);
+            return R.ok().data("homeworkId", id).message("保存成功，作业通知已发送");
         }
         return R.error().message("保存失败");
     }

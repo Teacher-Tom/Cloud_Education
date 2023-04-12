@@ -2,6 +2,7 @@ package xyz.likailing.cloud.service.exp.service;
 
 import xyz.likailing.cloud.service.exp.entity.Node;
 import com.baomidou.mybatisplus.extension.service.IService;
+import xyz.likailing.cloud.service.exp.entity.vo.NodeInfoVo;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ import java.util.List;
 public interface NodeService extends IService<Node> {
 
     List<Node> getAllNodesByExpId(String expId);
+
+    NodeInfoVo getNodeInfoByNodeId(String nodeId);
 }
