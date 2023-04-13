@@ -32,6 +32,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/manager/course-discussion")
+@CrossOrigin
 public class CourseDiscussionController {
 
     @Autowired

@@ -33,6 +33,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/manager/chapter")
+@CrossOrigin
 public class ChapterController {
 
     @Autowired

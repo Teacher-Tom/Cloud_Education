@@ -28,6 +28,7 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/admin/manager/schedule")
+@CrossOrigin
 public class ScheduleController {
 
     @Autowired

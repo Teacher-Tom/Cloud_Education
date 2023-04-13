@@ -18,9 +18,15 @@ public interface CourseResourceService extends IService<CourseResource> {
 
     List<File> getPPTByTimetableId(String timetableId);
 
+    List<CourseResource> getPPTResourceByTimetableId(String timetableId);
+
     List<String> getVideoUrlByTimetableId(String timetableId);
 
+    List<CourseResource> getVideoResourceByTimetableId(String timetableId);
+
     List<File> getSharedFilesByTimetableId(String timetableId);
+
+    List<CourseResource> getSharedFilesResourceByTimetableId(String timetableId);
 
 
 }

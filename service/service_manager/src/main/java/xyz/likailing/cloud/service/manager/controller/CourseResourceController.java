@@ -33,6 +33,7 @@ import java.util.Objects;
  */
 @RestController
 @RequestMapping("/manager/course-resource")
+@CrossOrigin
 public class CourseResourceController {
 
     @Autowired
@@ -248,21 +249,24 @@ public class CourseResourceController {
     @GetMapping("get-timetable/ppt/{timetableId}")
     public R getTimetablePPT(@PathVariable String timetableId){
         List<File> files = courseResourceService.getPPTByTimetableId(timetableId);
-        return R.ok().data("files",files);
+        List<CourseResource> resources = courseResourceService.getPPTResourceByTimetableId(timetableId);
+        return R.ok().data("resource",resources).data("files",files);
     }
 
     @ApiOperation("获取小节的视频地址")
     @GetMapping("get-timetable/video/{timetableId}")
     public R getTimetableVideo(@PathVariable String timetableId){
         List<String> urls = courseResourceService.getVideoUrlByTimetableId(timetableId);
-        return R.ok().data("urls",urls);
+        List<CourseResource> resource = courseResourceService.getVideoResourceByTimetableId(timetableId);
+        return R.ok().data("urls",urls).data("resources",resource);
     }
 
     @ApiOperation("获取小节的共享资源")
     @GetMapping("get-timetable/share/{timetableId}")
     public R getTimetableShare(@PathVariable String timetableId){
         List<File> files = courseResourceService.getSharedFilesByTimetableId(timetableId);
-        return R.ok().data("files",files);
+        List<CourseResource> resources = courseResourceService.getSharedFilesResourceByTimetableId(timetableId);
+        return R.ok().data("resources",resources).data("files",files);
     }
 
 

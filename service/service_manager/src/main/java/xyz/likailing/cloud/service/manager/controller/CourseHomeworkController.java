@@ -10,15 +10,15 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import xyz.likailing.cloud.common.base.result.R;
-import xyz.likailing.cloud.service.manager.entity.CourseHomework;
-import xyz.likailing.cloud.service.manager.entity.CourseHomeworkContext;
-import xyz.likailing.cloud.service.manager.entity.CourseHomeworkStudent;
-import xyz.likailing.cloud.service.manager.entity.CourseHomeworkSubmit;
+import xyz.likailing.cloud.service.base.exception.CloudException;
+import xyz.likailing.cloud.service.manager.entity.*;
 import xyz.likailing.cloud.service.manager.entity.vo.HomeworkCorrectVO;
 import xyz.likailing.cloud.service.manager.entity.vo.MessageVo;
 import xyz.likailing.cloud.service.manager.entity.vo.StudentHomeworkVO;
 import xyz.likailing.cloud.service.manager.entity.vo.TeacherHomeworkVO;
+import xyz.likailing.cloud.service.manager.feign.AllsService;
 import xyz.likailing.cloud.service.manager.feign.MsgService;
+import xyz.likailing.cloud.service.manager.mapper.TeacherMapper;
 import xyz.likailing.cloud.service.manager.service.CourseHomeworkContextService;
 import xyz.likailing.cloud.service.manager.service.CourseHomeworkService;
 import xyz.likailing.cloud.service.manager.service.CourseHomeworkStudentService;
@@ -38,8 +38,11 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/manager/course-homework")
+@CrossOrigin
 public class CourseHomeworkController {
 
+    @Autowired
+    private TeacherMapper teacherMapper;
     @Autowired
     private CourseHomeworkService homeworkService;
     @Autowired
@@ -52,18 +55,25 @@ public class CourseHomeworkController {
     @Autowired
     private MsgService msgService;
 
+    @Autowired
+    private AllsService allsService;
+
     /* 教师 */
 
-    @ApiOperation("保存作业信息，需要提交作业基本信息与每一小题的题目内容，不包含附件")
+    @ApiOperation("保存作业信息，需要提交作业基本信息与每一小题的题目内容，不包含附件，发送作业通知")
     @PostMapping("/save")
     public R saveHomework(@ApiParam("作业基本信息") CourseHomework homework,
                           @ApiParam("作业内容信息") @RequestBody List<CourseHomeworkContext> contexts) {
         String id = homeworkService.saveHomework(homework, contexts);
         if (id != null) {
             // 发送作业通知
+            Teacher teacher = teacherMapper.selectById(homework.getTeacherId());
+            if (teacher == null){
+                throw new CloudException("没有查询到该id的老师",20001);
+            }
             MessageVo messageVo = new MessageVo();
             messageVo.setCourseId(homework.getCourseId());
-            messageVo.setTeacherUserId(homework.getTeacherId());
+            messageVo.setTeacherUserId(teacher.getUserId());
             messageVo.setTitle("作业通知");
             String content = "老师发布了一则新的作业:"+homework.getName();
             messageVo.setContent(content);
@@ -72,6 +82,7 @@ public class CourseHomeworkController {
         }
         return R.error().message("保存失败");
     }
+
 
     @ApiOperation("根据教师id获取该教师所教的全部课程的全部作业列表")
     @GetMapping("/list-teacher/{teacherId}")

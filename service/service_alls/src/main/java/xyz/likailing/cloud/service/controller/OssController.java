@@ -52,7 +52,7 @@ public class OssController {
     //判断上传的文件类型
     @ApiOperation(value = "上传文件")
     @PostMapping("upload/{memid}")
-    public R upload(MultipartFile file, @RequestParam String catalogue, @PathVariable String memid) {
+    public R upload(@RequestParam(value = "file") @RequestPart MultipartFile file, @RequestParam String catalogue, @PathVariable String memid) {
         QueryWrapper<UcenterMember> wrapper = new QueryWrapper<>();
         wrapper.eq("id", memid);
         UcenterMember one = memberService.getOne(wrapper);

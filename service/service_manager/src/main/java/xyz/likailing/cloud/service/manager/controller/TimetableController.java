@@ -29,6 +29,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/admin/manager/timetable")
+@CrossOrigin
 public class TimetableController {
 
     @Autowired

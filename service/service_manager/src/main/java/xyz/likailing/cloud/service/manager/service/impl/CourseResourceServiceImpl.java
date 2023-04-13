@@ -46,6 +46,16 @@ public class CourseResourceServiceImpl extends ServiceImpl<CourseResourceMapper,
     }
 
     @Override
+    public List<CourseResource> getPPTResourceByTimetableId(String timetableId) {
+        QueryWrapper<CourseResource> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("timetable_id",timetableId);
+        queryWrapper.eq("type",0);
+        List<CourseResource> resources = baseMapper.selectList(queryWrapper);
+        return resources;
+    }
+
+
+    @Override
     public List<String> getVideoUrlByTimetableId(String timetableId) {
         QueryWrapper<CourseResource> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("timetable_id",timetableId);
@@ -73,6 +83,15 @@ public class CourseResourceServiceImpl extends ServiceImpl<CourseResourceMapper,
     }
 
     @Override
+    public List<CourseResource> getVideoResourceByTimetableId(String timetableId) {
+        QueryWrapper<CourseResource> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("timetable_id",timetableId);
+        queryWrapper.eq("type",1);
+        List<CourseResource> resources = baseMapper.selectList(queryWrapper);
+        return resources;
+    }
+
+    @Override
     public List<File> getSharedFilesByTimetableId(String timetableId) {
         QueryWrapper<CourseResource> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("timetable_id",timetableId);
@@ -86,5 +105,14 @@ public class CourseResourceServiceImpl extends ServiceImpl<CourseResourceMapper,
             result.addAll(files);
         }
         return result;
+    }
+
+    @Override
+    public List<CourseResource> getSharedFilesResourceByTimetableId(String timetableId) {
+        QueryWrapper<CourseResource> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("timetable_id",timetableId);
+        queryWrapper.eq("type",2);
+        List<CourseResource> resources = baseMapper.selectList(queryWrapper);
+        return resources;
     }
 }
