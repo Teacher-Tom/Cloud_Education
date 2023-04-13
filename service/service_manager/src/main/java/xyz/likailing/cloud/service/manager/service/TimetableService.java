@@ -29,4 +29,6 @@ public interface TimetableService extends IService<Timetable> {
     boolean saveTempList(List<Timetable> allList);
 
     List<Timetable> getSubTimetables(String subId);
+
+    boolean addChapter(String id, List<String> subs);
 }
