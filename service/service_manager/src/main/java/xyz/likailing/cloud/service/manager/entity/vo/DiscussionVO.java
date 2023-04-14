@@ -21,7 +21,7 @@ public class DiscussionVO implements Serializable {
 
     private String userId;
 
-    private String userName;
+    private String nickname;
 
     private String content;
 

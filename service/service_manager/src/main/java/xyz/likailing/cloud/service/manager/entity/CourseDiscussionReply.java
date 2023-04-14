@@ -34,7 +34,7 @@ public class CourseDiscussionReply implements Serializable {
 
     private String discussionId;
 
-    private String username;
+    private String nickname;
 
     private String content;
 

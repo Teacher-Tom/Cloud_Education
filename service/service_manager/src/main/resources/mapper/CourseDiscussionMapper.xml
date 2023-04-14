@@ -10,12 +10,12 @@
         <result property="page" column="page"/>
         <result property="sendTime" column="send_time"/>
         <result property="likes" column="likes"/>
-        <result property="userName" column="uun"/>
+        <result property="nickname" column="unk"/>
         <collection property="replies" ofType="xyz.likailing.cloud.service.manager.entity.CourseDiscussionReply">
             <result property="id" column="rid"/>
             <result property="userId" column="ruser_id"/>
             <result property="discussionId" column="rdiscussion_id"/>
-            <result property="username" column="rusername"/>
+            <result property="nickname" column="rusername"/>
             <result property="content" column="rcontent"/>
             <result property="sendTime" column="rsend_time"/>
             <result property="likes" column="rlikes"/>
@@ -35,10 +35,10 @@
             r.discussion_id rdiscussion_id,
             r.user_id ruser_id,
             r.content rcontent,
-            r.username rusername,
+            r.nickname rusername,
             r.send_time rsend_time,
             r.likes rlikes,
-            u.username uun
+            u.nickname unk
         FROM course_discussion d
             LEFT JOIN course_discussion_reply r ON r.discussion_id = d.id
             LEFT JOIN user u ON u.id = d.user_id
@@ -59,10 +59,10 @@
             r.discussion_id rdiscussion_id,
             r.user_id ruser_id,
             r.content rcontent,
-            r.username rusername,
+            r.nickname rusername,
             r.send_time rsend_time,
             r.likes rlikes,
-            u.username uun
+            u.nickname unk
         FROM course_discussion d
             LEFT JOIN course_discussion_reply r ON r.discussion_id = d.id
             LEFT JOIN user u ON u.id = d.user_id

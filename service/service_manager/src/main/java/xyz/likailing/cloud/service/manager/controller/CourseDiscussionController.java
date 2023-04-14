@@ -77,7 +77,7 @@ public class CourseDiscussionController {
         if(ObjectUtils.isEmpty(user)) {
             return R.error().message("用户不存在");
         }
-        discussionReply.setUsername(user.getUsername());
+        discussionReply.setNickname(user.getNickname());
         boolean save = replyService.save(discussionReply);
         if(save) {
             return R.ok().data("replyId", discussionReply.getId()).message("发布成功");
