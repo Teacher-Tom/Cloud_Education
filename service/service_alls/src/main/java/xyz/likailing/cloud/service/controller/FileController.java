@@ -6,6 +6,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import xyz.likailing.cloud.common.base.result.R;
+import xyz.likailing.cloud.service.base.exception.CloudException;
 import xyz.likailing.cloud.service.entity.File;
 import xyz.likailing.cloud.service.entity.TreeNode;
 import xyz.likailing.cloud.service.entity.UserDir;
@@ -210,5 +211,27 @@ public class FileController {
             return R.error();
         }
     }
+    @ApiOperation("收藏文件到自己的网盘中")
+    @PostMapping("save/{fileId}/{userId}")
+    public R saveFileToMySpace(@PathVariable String fileId, @PathVariable String userId){
+        // 查找File信息
+        File file = service.getById(fileId);
+        if (file == null){
+            throw new CloudException("没有找到该文件",20001);
+        }
+        // 修改memid为userid
+        file.setMemId(userId);
+        file.setId(null);
+        file.setFDir("/root/star");
+        file.setCollection(1);
+        // 新增文件信息
+        boolean save = service.save(file);
+        if (save){
+            return R.ok().message("收藏成功").data("file",file);
+        }
+        return R.error().message("收藏失败");
+    }
+
+
 }
 

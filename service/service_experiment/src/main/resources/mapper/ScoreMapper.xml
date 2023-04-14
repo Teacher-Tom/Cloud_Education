@@ -8,11 +8,11 @@
             <id property="id" column="id" jdbcType="CHAR"/>
             <result property="score" column="score" jdbcType="INTEGER"/>
             <result property="studentId" column="student_id" jdbcType="CHAR"/>
-            <result property="courseId" column="course_id" jdbcType="CHAR"/>
+            <result property="expId" column="course_id" jdbcType="CHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,score,student_id,
-        course_id
+        exp_id
     </sql>
 </mapper>

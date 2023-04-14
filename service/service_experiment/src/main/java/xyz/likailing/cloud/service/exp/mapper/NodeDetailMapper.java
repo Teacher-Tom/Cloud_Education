@@ -21,6 +21,12 @@ public interface NodeDetailMapper extends BaseMapper<NodeDetail> {
     int countByHasFinishAndNodeId(@Param("hasFinish") Boolean hasFinish, @Param("nodeId") String nodeId);
 
     int countByNodeId(@Param("nodeId") String nodeId);
+
+    int countByDifficultyIsNotNullAndNodeIdAndDifficultyGreaterThan(@Param("nodeId") String nodeId, @Param("difficulty") Integer difficulty);
+
+    Float selectDifficultyByNodeIdAndDifficultyGreaterThan(@Param("nodeId") String nodeId, @Param("difficulty") Integer difficulty);
+
+    List<String> selectStudentIdByCourseId(@Param("courseId") String courseId);
 }
 
 

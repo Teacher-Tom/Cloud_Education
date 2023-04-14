@@ -1,6 +1,5 @@
 package xyz.likailing.cloud.service.exp.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -33,7 +32,7 @@ public class Score implements Serializable {
     /**
      * 课程id
      */
-    private String courseId;
+    private String expId;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -53,7 +52,7 @@ public class Score implements Serializable {
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getScore() == null ? other.getScore() == null : this.getScore().equals(other.getScore()))
             && (this.getStudentId() == null ? other.getStudentId() == null : this.getStudentId().equals(other.getStudentId()))
-            && (this.getCourseId() == null ? other.getCourseId() == null : this.getCourseId().equals(other.getCourseId()));
+            && (this.getExpId() == null ? other.getExpId() == null : this.getExpId().equals(other.getExpId()));
     }
 
     @Override
@@ -63,7 +62,7 @@ public class Score implements Serializable {
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getScore() == null) ? 0 : getScore().hashCode());
         result = prime * result + ((getStudentId() == null) ? 0 : getStudentId().hashCode());
-        result = prime * result + ((getCourseId() == null) ? 0 : getCourseId().hashCode());
+        result = prime * result + ((getExpId() == null) ? 0 : getExpId().hashCode());
         return result;
     }
 
@@ -76,7 +75,7 @@ public class Score implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", score=").append(score);
         sb.append(", studentId=").append(studentId);
-        sb.append(", courseId=").append(courseId);
+        sb.append(", courseId=").append(expId);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

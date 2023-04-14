@@ -10,4 +10,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface ScoreService extends IService<Score> {
 
+    int getByStudentIdAndExpId(String studenId, String expId);
+
+    Boolean saveScoreByStudentIdAndExpId(String studenId, String expId, Integer score);
 }

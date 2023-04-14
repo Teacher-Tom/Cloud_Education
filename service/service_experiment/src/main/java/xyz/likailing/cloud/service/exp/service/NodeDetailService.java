@@ -18,4 +18,10 @@ public interface NodeDetailService extends IService<NodeDetail> {
     Integer updateFinish(String nodeId, String studentId);
 
     Double calculateFinishRate(String nodeId);
+
+    Double calculateAvgDifficulty(String nodeId);
+
+    Integer countRateNumber(String nodeId);
+
+    int initNodeDetail(String nodeId);
 }

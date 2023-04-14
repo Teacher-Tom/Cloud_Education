@@ -2,8 +2,10 @@ package xyz.likailing.cloud.service.exp.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jdk.nashorn.internal.runtime.logging.Logger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.common.base.result.ResultCodeEnum;
@@ -162,6 +164,15 @@ public class FlowChartController {
     public R saveLineList(@RequestBody List<Line> lines){
         return null;
     }*/
+    @ApiOperation("初始化实验节点的所有学生完成情况，包括所有参加这个课程的学生")
+    @GetMapping("/node/init/{nodeId}")
+    public R initNodeDetail(@PathVariable String nodeId){
+        if (StringUtils.isEmpty(nodeId)){
+            throw new CloudException("节点id为空",20001);
+        }
+        int count = nodeDetailService.initNodeDetail(nodeId);
+        return R.ok().message("初始化了"+count+"个学生的信息");
+    }
 
     @ApiOperation("查询某个节点的所有信息、分支、任务")
     @GetMapping("/node/info/{nodeId}")
@@ -206,8 +217,13 @@ public class FlowChartController {
         Double rate = nodeDetailService.calculateFinishRate(nodeId);
         return R.ok().data("finish_rate",rate);
     }
-
-
+    @ApiOperation("计算某节点平均难度评价与评价人数")
+    @GetMapping("/node/diff-avg/{nodeId}")
+    public R calculateAverageDifficultyByNodeId(@PathVariable String nodeId){
+        Double avg = nodeDetailService.calculateAvgDifficulty(nodeId);
+        Integer count = nodeDetailService.countRateNumber(nodeId);
+        return R.ok().data("avg",avg).data("count",count);
+    }
 
 
 }
