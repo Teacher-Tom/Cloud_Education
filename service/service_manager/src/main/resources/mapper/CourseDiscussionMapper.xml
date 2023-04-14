@@ -15,7 +15,7 @@
             <result property="id" column="rid"/>
             <result property="userId" column="ruser_id"/>
             <result property="discussionId" column="rdiscussion_id"/>
-            <result property="username" column="rusername"/>
+            <result property="nickname" column="rusername"/>
             <result property="content" column="rcontent"/>
             <result property="sendTime" column="rsend_time"/>
             <result property="likes" column="rlikes"/>
