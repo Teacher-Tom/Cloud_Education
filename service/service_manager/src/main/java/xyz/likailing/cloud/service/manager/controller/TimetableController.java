@@ -1,5 +1,6 @@
 package xyz.likailing.cloud.service.manager.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -10,10 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.multipart.MultipartFile;
 import xyz.likailing.cloud.common.base.result.R;
+import xyz.likailing.cloud.service.manager.entity.ChapterTimetable;
 import xyz.likailing.cloud.service.manager.entity.Timetable;
 import xyz.likailing.cloud.service.manager.entity.vo.TimetableGetVO;
 import xyz.likailing.cloud.service.manager.feign.AllsService;
 import xyz.likailing.cloud.service.manager.mapper.TimetableMapper;
+import xyz.likailing.cloud.service.manager.service.ChapterTimetableService;
 import xyz.likailing.cloud.service.manager.service.TimetableService;
 
 import java.util.List;
@@ -37,6 +40,8 @@ public class TimetableController {
 
     @Autowired
     private TimetableService timetableService;
+    @Autowired
+    private ChapterTimetableService chapterTimetableService;
     @Autowired
     private TimetableMapper timetableMapper;
 
@@ -88,6 +93,36 @@ public class TimetableController {
             return R.ok().message("删除成功");
         }
         return R.error().message("数据不存在");
+    }
+
+    @ApiOperation("为时序添加对应的二级章节")
+    @PostMapping("/add-chapter/{id}")
+    public R addChapter(@ApiParam("小节id") @PathVariable String id, @ApiParam("二级章节id") @RequestBody List<String> subs) {
+        Timetable timetable = timetableService.getById(id);
+        if(ObjectUtils.isEmpty(timetable)) {
+            return R.error().message("该小节不存在");
+        }
+        boolean add = timetableService.addChapter(id, subs);
+        if(add) {
+            return R.ok().message("添加成功");
+        }
+        return R.error().message("添加失败");
+    }
+
+    @ApiOperation("为时序删除对应的二级章节")
+    @DeleteMapping("/delete-chapter/{id}/{subId}")
+    public R deleteChapter(@ApiParam("小节id") @PathVariable String id, @ApiParam("二级章节id") @PathVariable String subId) {
+        Timetable timetable = timetableService.getById(id);
+        if(ObjectUtils.isEmpty(timetable)) {
+            return R.error().message("该小节不存在");
+        }
+        QueryWrapper<ChapterTimetable> wrapper = new QueryWrapper<>();
+        wrapper.eq("timetable_id", id).eq("sub_chapter_id", subId);
+        boolean remove = chapterTimetableService.remove(wrapper);
+        if(remove) {
+            return R.ok().message("删除成功");
+        }
+        return R.error().message("删除失败");
     }
 
     @ApiOperation("根据id上传小节资源")

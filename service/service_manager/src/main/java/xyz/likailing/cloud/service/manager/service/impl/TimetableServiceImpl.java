@@ -4,9 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
+import org.springframework.util.ObjectUtils;
 import xyz.likailing.cloud.common.base.util.RedisCache;
+import xyz.likailing.cloud.service.manager.entity.ChapterTimetable;
+import xyz.likailing.cloud.service.manager.entity.SubChapter;
 import xyz.likailing.cloud.service.manager.entity.Timetable;
 import xyz.likailing.cloud.service.manager.entity.vo.TimetableGetVO;
+import xyz.likailing.cloud.service.manager.mapper.ChapterTimetableMapper;
+import xyz.likailing.cloud.service.manager.mapper.SubChapterMapper;
 import xyz.likailing.cloud.service.manager.mapper.TimetableMapper;
 import xyz.likailing.cloud.service.manager.service.TimetableService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -29,6 +34,11 @@ public class TimetableServiceImpl extends ServiceImpl<TimetableMapper, Timetable
     private RedisCache redisCache;
 
     private final String key = "tempSchList";
+
+    @Autowired
+    private ChapterTimetableMapper chapterTimetableMapper;
+    @Autowired
+    private SubChapterMapper subChapterMapper;
 
     @Override
     public List<TimetableGetVO> listCourseTime(String courseId) {
@@ -91,6 +101,25 @@ public class TimetableServiceImpl extends ServiceImpl<TimetableMapper, Timetable
     @Override
     public List<Timetable> getSubTimetables(String subId) {
         return baseMapper.selectSubTimetables(subId);
+    }
+
+    @Override
+    public boolean addChapter(String id, List<String> subs) {
+        Timetable timetable = baseMapper.selectById(id);
+        String courseId = timetable.getCourseId();
+        int insert = 0;
+        for (String sub : subs) {
+            SubChapter subChapter = subChapterMapper.selectById(sub);
+            if(ObjectUtils.isEmpty(subChapter)) continue;
+
+            ChapterTimetable chapterTimetable = new ChapterTimetable();
+            chapterTimetable.setSubChapterId(sub);
+            chapterTimetable.setTimetableId(id);
+            chapterTimetable.setCourseId(courseId);
+            chapterTimetable.setChapterId(subChapter.getChapterId());
+            insert += chapterTimetableMapper.insert(chapterTimetable);
+        }
+        return (insert >= 1);
     }
 
 }
