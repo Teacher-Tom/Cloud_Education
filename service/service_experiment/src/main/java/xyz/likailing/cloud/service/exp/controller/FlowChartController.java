@@ -13,6 +13,7 @@ import xyz.likailing.cloud.service.exp.entity.vo.BranchVo;
 import xyz.likailing.cloud.service.exp.entity.vo.NodeInfoVo;
 import xyz.likailing.cloud.service.exp.service.BranchService;
 import xyz.likailing.cloud.service.exp.service.LineService;
+import xyz.likailing.cloud.service.exp.service.NodeDetailService;
 import xyz.likailing.cloud.service.exp.service.NodeService;
 
 import java.util.List;
@@ -36,6 +37,9 @@ public class FlowChartController {
 
     @Autowired
     private BranchService branchService;
+
+    @Autowired
+    private NodeDetailService nodeDetailService;
 
     @ApiOperation("添加节点")
     @PostMapping("/node")
@@ -147,7 +151,7 @@ public class FlowChartController {
         R branchInfo = R.ok().data("branchInfo", branchVo);
         return branchInfo;
     }
-    @ApiOperation("存储节点列表")
+    /*@ApiOperation("存储节点列表")
     @PostMapping("/node/save/list")
     public R saveNodeList(@RequestBody List<Node> nodes){
         return null;
@@ -157,7 +161,7 @@ public class FlowChartController {
     @PostMapping("/line/save/list")
     public R saveLineList(@RequestBody List<Line> lines){
         return null;
-    }
+    }*/
 
     @ApiOperation("查询某个节点的所有信息、分支、任务")
     @GetMapping("/node/info/{nodeId}")
@@ -165,23 +169,45 @@ public class FlowChartController {
         NodeInfoVo nodeInfoVo = nodeService.getNodeInfoByNodeId(nodeId);
         return R.ok().data("nodeInfo",nodeInfoVo);
     }
-    @ApiOperation("保存各学生的节点信息")
+    @ApiOperation("保存各学生的节点信息，当该节点任务完成后，设置has_finish为true")
     @PostMapping("/node/detail")
     public R saveNodeDetail(@RequestBody NodeDetail nodeDetail){
-        return null;
+        boolean save = nodeDetailService.save(nodeDetail);
+        if (save){
+            return R.ok().message("保存成功").data("nodeDetail",nodeDetail);
+        }else {
+            return R.error().message("保存失败");
+        }
+    }
+    @ApiOperation("学生评价难度")
+    @PutMapping("/node/detail/diff/{nodeId}/{studentId}")
+    public R updateNodeDetailDifficulty(@PathVariable String nodeId, @PathVariable String studentId, @RequestParam Integer difficulty){
+        nodeDetailService.updateDifficulty(nodeId,studentId,difficulty);
+        return R.ok().message("评价成功");
     }
 
-    @ApiOperation("修改各学生的节点信息")
-    @PutMapping("/node/detail/{nodeId}/{studentId}")
-    public R updateNodeDetail(@PathVariable String nodeId,@RequestBody NodeDetail nodeDetail){
-        return null;
+    @ApiOperation("当提交任务后，学生完成节点，设置has_finish为true，设置完成时间")
+    @PutMapping("/node/detail/finish/{nodeId}/{studentId}")
+    public R updateNodeDetailFinish(@PathVariable String nodeId, @PathVariable String studentId){
+        Integer i = nodeDetailService.updateFinish(nodeId,studentId);
+        return R.ok().message("任务完成");
     }
 
-    @ApiOperation("删除各学生的节点信息")
-    @DeleteMapping("/node/detail/{nodeId}")
-    public R deleteNodeDetail(@PathVariable String nodeId){
-        return null;
+    @ApiOperation("获取学生的节点信息，若没有查到则创建一个")
+    @GetMapping("/node/detail/{nodeId}/{studentId}")
+    public R getNodeDetail(@PathVariable String nodeId, @PathVariable String studentId){
+        NodeDetail nodeDetail = nodeDetailService.getByNodeIdAndStudentId(nodeId,studentId);
+        return R.ok().data("nodeDetail",nodeDetail);
     }
+
+    @ApiOperation("计算某节点的完成率")
+    @GetMapping("/node/finish-rate/{nodeId}")
+    public R calculateFinishingRateByNodeId(@PathVariable String nodeId){
+        Double rate = nodeDetailService.calculateFinishRate(nodeId);
+        return R.ok().data("finish_rate",rate);
+    }
+
+
 
 
 }

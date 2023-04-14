@@ -10,4 +10,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface NodeDetailService extends IService<NodeDetail> {
 
+
+    boolean updateDifficulty(String nodeId, String studentId, Integer difficulty);
+
+    NodeDetail getByNodeIdAndStudentId(String nodeId, String studentId);
+
+    Integer updateFinish(String nodeId, String studentId);
+
+    Double calculateFinishRate(String nodeId);
 }

@@ -1,4 +1,6 @@
 package xyz.likailing.cloud.service.exp.mapper;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 import xyz.likailing.cloud.service.exp.entity.NodeDetail;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -10,7 +12,15 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity xyz.likailing.cloud.service.exp.entity.NodeDetail
 */
 public interface NodeDetailMapper extends BaseMapper<NodeDetail> {
+    int updateDifficultyByNodeIdAndStudentId(@Param("difficulty") Integer difficulty, @Param("nodeId") String nodeId, @Param("studentId") String studentId);
 
+    List<NodeDetail> getByNodeIdAndStudentId(@Param("nodeId") String nodeId, @Param("studentId") String studentId);
+
+    int countByHasFinish(@Param("hasFinish") Boolean hasFinish);
+
+    int countByHasFinishAndNodeId(@Param("hasFinish") Boolean hasFinish, @Param("nodeId") String nodeId);
+
+    int countByNodeId(@Param("nodeId") String nodeId);
 }
 
 

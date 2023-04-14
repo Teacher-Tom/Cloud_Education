@@ -52,5 +52,7 @@ public class CourseHomework implements Serializable {
 
     private Boolean isGlobal;
 
+    private String nodeId;
+
 
 }

@@ -28,4 +28,6 @@ public interface CourseHomeworkService extends IService<CourseHomework> {
     StudentHomeworkVO getStudentHomework(String studentId, String id);
 
     List<CourseHomework> listExpiredHomework();
+
+    CourseHomework getByNodeId(String nodeId);
 }

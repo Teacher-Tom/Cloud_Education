@@ -77,6 +77,14 @@ public class CourseHomeworkServiceImpl extends ServiceImpl<CourseHomeworkMapper,
         return baseMapper.selectExpiredHomework(new Date());
     }
 
+    @Override
+    public CourseHomework getByNodeId(String nodeId) {
+        QueryWrapper<CourseHomework> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("node_id",nodeId);
+        CourseHomework homework = baseMapper.selectOne(queryWrapper);
+        return homework;
+    }
+
     /**
      * 为作业对象补充批改信息
      * @param studentId 学生id

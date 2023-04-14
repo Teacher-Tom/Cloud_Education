@@ -77,6 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/v3/api-docs",
                         "/webjars/**").anonymous()
                 .antMatchers("/ucenter/user/register").anonymous()
+                .antMatchers("/ucenter/user/get-login-info").anonymous()
                 .anyRequest().authenticated()
                 .and()
                 .csrf()

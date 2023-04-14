@@ -1,5 +1,6 @@
 package xyz.likailing.cloud.service.manager.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -9,8 +10,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.multipart.MultipartFile;
 import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.base.exception.CloudException;
+import xyz.likailing.cloud.service.base.model.File;
 import xyz.likailing.cloud.service.manager.entity.*;
 import xyz.likailing.cloud.service.manager.entity.vo.HomeworkCorrectVO;
 import xyz.likailing.cloud.service.manager.entity.vo.MessageVo;
@@ -26,6 +29,7 @@ import xyz.likailing.cloud.service.manager.service.CourseHomeworkSubmitService;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -59,10 +63,16 @@ public class CourseHomeworkController {
     private AllsService allsService;
 
     /* 教师 */
+    @ApiOperation("查询某实验节点的作业基本信息")
+    @GetMapping("/get-hmwk-id/{nodeId}/{studentId}")
+    public R getHomeworkIdByNodeId(@PathVariable String nodeId, @PathVariable String studentId){
+            CourseHomework homework = homeworkService.getByNodeId(nodeId);
+            return R.ok().data("homework",homework);
+    }
 
     @ApiOperation("保存作业信息，需要提交作业基本信息与每一小题的题目内容，不包含附件，发送作业通知")
     @PostMapping("/save")
-    public R saveHomework(@ApiParam("作业基本信息") CourseHomework homework,
+    public R saveHomework(@ApiParam("作业基本信息，如果是实验任务需要填入node_id") CourseHomework homework,
                           @ApiParam("作业内容信息") @RequestBody List<CourseHomeworkContext> contexts) {
         String id = homeworkService.saveHomework(homework, contexts);
         if (id != null) {
@@ -138,11 +148,29 @@ public class CourseHomeworkController {
         return R.ok().data("homeworks", homeworks);
     }
 
+    @ApiOperation("提交附件，返回文件信息")
+    @PostMapping("/submit/file")
+    public R uploadFile(@ApiParam("上传附件，可选") @RequestParam(value = "file",required = false) @RequestPart MultipartFile file){
+        if(file != null) {
+            String memid = "1";
+            String catalogue = "/root/homework";
+            R upload = allsService.upload(file, catalogue, memid);
+            Map<String, Object> data = upload.getData();
+            File file1 = JSON.parseObject(JSON.toJSONString(data.get("userInfo")), File.class);
+            R r = allsService.addFile(file1);
+            file1 = JSON.parseObject(JSON.toJSONString(r.getData().get("file")), File.class);
+            return R.ok().data("file",file1);
+        }else {
+            return R.error().message("文件为空");
+        }
+    }
+
     @ApiOperation("学生提交作业的文本内容，不包含附件")
     @PostMapping("/submit/{studentId}/{homeworkId}")
     public R submit(@ApiParam(value = "学生id", required = true) @PathVariable String studentId,
                     @ApiParam(value = "作业id", required = true) @PathVariable String homeworkId,
-                    @ApiParam("每个小题的内容") @RequestBody List<CourseHomeworkSubmit> submits) {
+                    @ApiParam("每个小题的内容,上传附件前请先调用提交附件接口得到file_id") @RequestBody List<CourseHomeworkSubmit> submits
+                    ) {
         //检查是否已批改
         QueryWrapper<CourseHomeworkStudent> wrapper = new QueryWrapper<>();
         wrapper.eq("homework_id", homeworkId).eq("student_id", studentId);
@@ -151,9 +179,12 @@ public class CourseHomeworkController {
             return R.error().message("已批改，不能提交");
         }
         //记录作业提交的内容，未批改时可以重复提交
+
         boolean saveBatch = submitService.saveBatchSubmits(homeworkId, studentId, submits);
+
         if (saveBatch) {
             if (ObjectUtils.isEmpty(homeworkStudent)) {
+
                 //在作业完成情况表中记录
                 homeworkStudent = new CourseHomeworkStudent();
                 homeworkStudent.setStudentId(studentId);

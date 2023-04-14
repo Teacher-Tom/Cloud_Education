@@ -17,4 +17,34 @@
         id,node_id,team_id,
         has_finish,difficulty,finish_time
     </sql>
+    <update id="updateDifficultyByNodeIdAndStudentId">
+        update exp_node_detail
+        set difficulty = #{difficulty,jdbcType=NUMERIC}
+        where node_id = #{nodeId,jdbcType=VARCHAR}
+          AND student_id = #{studentId,jdbcType=VARCHAR}
+    </update>
+    <select id="getByNodeIdAndStudentId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from exp_node_detail
+        where
+        node_id = #{nodeId,jdbcType=VARCHAR}
+        AND student_id = #{studentId,jdbcType=VARCHAR}
+    </select>
+    <select id="countByHasFinish" resultType="int">
+        select count(*)
+        from exp_node_detail
+        where has_finish = #{hasFinish,jdbcType=BOOLEAN}
+    </select>
+    <select id="countByHasFinishAndNodeId" resultType="int">
+        select count(*)
+        from exp_node_detail
+        where has_finish = #{hasFinish,jdbcType=BOOLEAN}
+          AND node_id = #{nodeId,jdbcType=VARCHAR}
+    </select>
+    <select id="countByNodeId" resultType="int">
+        select count(*)
+        from exp_node_detail
+        where node_id = #{nodeId,jdbcType=VARCHAR}
+    </select>
 </mapper>

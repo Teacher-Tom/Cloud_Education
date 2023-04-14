@@ -37,4 +37,6 @@ public class CourseHomeworkSubmit implements Serializable {
     private String submitAnswer;
 
     private Integer score;
+
+    private String fileId;
 }

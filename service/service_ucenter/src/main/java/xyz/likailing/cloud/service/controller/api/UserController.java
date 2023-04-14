@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.common.base.result.ResultCodeEnum;
@@ -17,6 +18,7 @@ import xyz.likailing.cloud.service.entity.vo.RegisterVo;
 import xyz.likailing.cloud.service.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @Author 12042
@@ -45,10 +47,14 @@ public class UserController {
     }
 
     @ApiOperation(value = "根据token获取登录信息")
-    @GetMapping("get-login-info")
-    public R getLoginInfo(HttpServletRequest request){
+    @PostMapping("get-login-info")
+    public R getLoginInfo(@RequestBody Map<String,String> map){
         try{
-            JwtInfo jwtInfo = JwtUtils.getUserIdByJwtToken(request);
+            String token = map.get("token");
+            if(StringUtils.isEmpty(token)){
+                throw new CloudException("没有token",20001);
+            }
+            JwtInfo jwtInfo = JwtUtils.getUserIdByJwtToken(token);
             return R.ok().data("userInfo",jwtInfo);
         }catch (Exception e){
             log.error("解析用户信息失败"+e.getMessage());
