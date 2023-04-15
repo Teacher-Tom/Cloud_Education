@@ -122,4 +122,9 @@ public class TimetableServiceImpl extends ServiceImpl<TimetableMapper, Timetable
         return (insert >= 1);
     }
 
+    @Override
+    public List<SubChapter> getChapter(String id) {
+        return baseMapper.selectChapter(id);
+    }
+
 }

@@ -1,6 +1,7 @@
 package xyz.likailing.cloud.service.manager.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import xyz.likailing.cloud.service.manager.entity.SubChapter;
 import xyz.likailing.cloud.service.manager.entity.Timetable;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import xyz.likailing.cloud.service.manager.entity.vo.TimetableGetVO;
@@ -30,4 +31,6 @@ public interface TimetableMapper extends BaseMapper<Timetable> {
     int updateTodayTimetable();
 
     List<Timetable> selectSubTimetables(String subId);
+
+    List<SubChapter> selectChapter(String id);
 }

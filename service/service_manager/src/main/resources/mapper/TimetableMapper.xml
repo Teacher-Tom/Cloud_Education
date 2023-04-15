@@ -50,6 +50,13 @@
         WHERE mct.sub_chapter_id = #{subId}
     </select>
 
+    <select id="selectChapter" resultType="SubChapter">
+        SELECT *
+        FROM manager_sub_chapter msc
+            LEFT JOIN manager_chapter_timetable mct ON mct.sub_chapter_id = msc.id
+        WHERE mct.timetable_id = #{id}
+    </select>
+
     <select id="selectExpiredTimetable" parameterType="java.util.Date" resultType="Timetable">
         SELECT *
         FROM manager_timetable mt

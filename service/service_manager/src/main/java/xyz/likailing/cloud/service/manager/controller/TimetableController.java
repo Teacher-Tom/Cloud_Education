@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.manager.entity.ChapterTimetable;
+import xyz.likailing.cloud.service.manager.entity.SubChapter;
 import xyz.likailing.cloud.service.manager.entity.Timetable;
 import xyz.likailing.cloud.service.manager.entity.vo.TimetableGetVO;
 import xyz.likailing.cloud.service.manager.feign.AllsService;
@@ -107,6 +108,13 @@ public class TimetableController {
             return R.ok().message("添加成功");
         }
         return R.error().message("添加失败");
+    }
+
+    @ApiOperation("根据id获取时序对应的二级章节")
+    @GetMapping("/get-chapter/{id}")
+    public R getChapter(@ApiParam("小节id") @PathVariable String id) {
+        List<SubChapter> subs = timetableService.getChapter(id);
+        return R.ok().data("subchapters", subs);
     }
 
     @ApiOperation("为时序删除对应的二级章节")

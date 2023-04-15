@@ -1,5 +1,6 @@
 package xyz.likailing.cloud.service.manager.service;
 
+import xyz.likailing.cloud.service.manager.entity.SubChapter;
 import xyz.likailing.cloud.service.manager.entity.Timetable;
 import com.baomidou.mybatisplus.extension.service.IService;
 import xyz.likailing.cloud.service.manager.entity.vo.TimetableGetVO;
@@ -31,4 +32,6 @@ public interface TimetableService extends IService<Timetable> {
     List<Timetable> getSubTimetables(String subId);
 
     boolean addChapter(String id, List<String> subs);
+
+    List<SubChapter> getChapter(String id);
 }
