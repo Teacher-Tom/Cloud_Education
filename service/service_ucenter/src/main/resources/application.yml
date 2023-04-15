@@ -14,7 +14,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 123.60.88.31:1003
+        server-addr: 123.60.88.31:1003 #localhost:8848
     sentinel:
       transport:
         port: 10010  # 跟控制台交流的端口，随便指定一个未使用的即可

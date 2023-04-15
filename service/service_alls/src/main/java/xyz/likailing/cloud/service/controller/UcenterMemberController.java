@@ -90,5 +90,16 @@ public class UcenterMemberController {
         return R.ok().message("创建课程网盘成功");
     }
 
+    @ApiOperation("创建用户云盘账号")
+    @PostMapping("create-account")
+    public R createAccount(@RequestParam String userId, @RequestParam String username,@RequestParam String password,@RequestParam String nickname){
+        UcenterMember member = new UcenterMember();
+        member.setId(userId);
+        member.setMobile(username);
+        member.setPassword(password);
+        member.setNickname(nickname);
+        boolean save = memberService.save(member);
+        return R.ok().message("创建云盘账户成功");
+    }
 }
 

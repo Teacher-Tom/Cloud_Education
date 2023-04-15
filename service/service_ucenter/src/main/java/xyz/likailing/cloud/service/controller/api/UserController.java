@@ -15,9 +15,9 @@ import xyz.likailing.cloud.service.base.exception.CloudException;
 import xyz.likailing.cloud.service.entity.User;
 import xyz.likailing.cloud.service.entity.vo.LoginVo;
 import xyz.likailing.cloud.service.entity.vo.RegisterVo;
+import xyz.likailing.cloud.service.feign.AllsService;
 import xyz.likailing.cloud.service.service.UserService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -33,10 +33,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AllsService allsService;
+
     @ApiOperation(value = "用户注册")
     @PostMapping("register")
     public R register(@RequestBody RegisterVo registerVo){
         User user = userService.register(registerVo);
+        allsService.createAccount(user.getId(),registerVo.getUsername(),registerVo.getPassword(),registerVo.getNickname());
         return R.ok().message("注册成功").data("user",user);
     }
     @ApiOperation(value = "用户登录")

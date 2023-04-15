@@ -2,8 +2,14 @@ package xyz.likailing.cloud.service.exp.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import jdk.nashorn.internal.runtime.regexp.JoniRegExp;
+import org.springframework.beans.factory.annotation.Autowired;
 import xyz.likailing.cloud.service.base.exception.CloudException;
+import xyz.likailing.cloud.service.exp.entity.Experiment;
+import xyz.likailing.cloud.service.exp.entity.Node;
 import xyz.likailing.cloud.service.exp.entity.NodeDetail;
+import xyz.likailing.cloud.service.exp.mapper.ExperimentMapper;
+import xyz.likailing.cloud.service.exp.mapper.NodeMapper;
 import xyz.likailing.cloud.service.exp.service.NodeDetailService;
 import xyz.likailing.cloud.service.exp.mapper.NodeDetailMapper;
 import org.springframework.stereotype.Service;
@@ -20,7 +26,10 @@ import java.util.List;
 public class NodeDetailServiceImpl extends ServiceImpl<NodeDetailMapper, NodeDetail>
     implements NodeDetailService{
 
-
+    @Autowired
+    NodeMapper nodeMapper;
+    @Autowired
+    ExperimentMapper experimentMapper;
     @Override
     public boolean updateDifficulty(String nodeId, String studentId, Integer difficulty) {
         int i = baseMapper.updateDifficultyByNodeIdAndStudentId(difficulty, nodeId, studentId);
@@ -61,6 +70,46 @@ public class NodeDetailServiceImpl extends ServiceImpl<NodeDetailMapper, NodeDet
         int finish = baseMapper.countByHasFinishAndNodeId(true, nodeId);
         int total = baseMapper.countByNodeId(nodeId);
         return ((double)finish)/total;
+    }
+
+    @Override
+    public Double calculateAvgDifficulty(String nodeId) {
+        Float avg = baseMapper.selectDifficultyByNodeIdAndDifficultyGreaterThan(nodeId, 0);
+        if (avg == null){
+            return 0.0;
+        }
+        return new Double(avg);
+    }
+
+    @Override
+    public Integer countRateNumber(String nodeId) {
+        int count = baseMapper.countByDifficultyIsNotNullAndNodeIdAndDifficultyGreaterThan(nodeId, 0);
+        return count;
+    }
+
+    @Override
+    public int initNodeDetail(String nodeId) {
+        // 查询本实验包含的所有学生
+        Node node = nodeMapper.selectById(nodeId);
+        if (node == null){
+            throw new CloudException("没有该节点id",20001);
+        }
+        String experimentId = node.getExperimentId();
+        Experiment experiment = experimentMapper.selectById(experimentId);
+        if (experiment == null){
+            throw new CloudException("实验不存在",20001);
+        }
+        String courseId = experiment.getCourseId();
+        List<String> studentIds = baseMapper.selectStudentIdByCourseId(courseId);
+        // 初始化学生信息
+        for (String studentId : studentIds) {
+            NodeDetail nodeDetail = new NodeDetail();
+            nodeDetail.setNodeId(nodeId);
+            nodeDetail.setStudentId(studentId);
+            nodeDetail.setHasFinish(false);
+            baseMapper.insert(nodeDetail);
+        }
+        return studentIds.size();
     }
 }
 

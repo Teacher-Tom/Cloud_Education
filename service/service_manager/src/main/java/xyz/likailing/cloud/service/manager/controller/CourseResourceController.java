@@ -162,6 +162,8 @@ public class CourseResourceController {
         return R.error().message("上传文件失败");
     }
 
+
+
     @ApiOperation("小节上传视频资源")
     @PostMapping("upload-timetable/video/{courseId}/{timetableId}")
     public R uploadTimetableVideo(@PathVariable String courseId, @PathVariable String timetableId, @RequestParam(value = "file") @RequestPart MultipartFile file){
@@ -245,6 +247,34 @@ public class CourseResourceController {
         }
         return R.error().message("上传文件失败");
     }
+
+    @ApiOperation("小节上传共享资源-链接")
+    @PostMapping("upload-timetable/share/link/{courseId}/{timetableId}")
+    public R uploadTimetableShareLink(@PathVariable String courseId, @PathVariable String timetableId, @RequestParam String url, @RequestParam String filename ){
+        String memid = courseId;
+        String catalogue = "/root/timetable/link";
+        File file1 = new File();
+        file1.setFDir(catalogue);
+        file1.setFiletype("link");
+        file1.setMemId(memid);
+        file1.setName(filename);
+        file1.setUrl(url);
+        file1.setCollection(0);
+        file1.setSize(0);
+        file1.setMemId(memid);
+        file1.setFDir(catalogue);
+        R r = allsService.addFile(file1);
+        file1 = JSON.parseObject(JSON.toJSONString(r.getData().get("file")),File.class);
+        CourseResource courseResource = new CourseResource();
+        courseResource.setCourseId(courseId);
+        courseResource.setFileId(file1.getId());
+        courseResource.setGlobal(false);
+        courseResource.setTimetableId(timetableId);
+        courseResource.setType(2);
+        courseResourceService.save(courseResource);
+        return R.ok().data("resource",courseResource).data("file",file1);
+    }
+
     @ApiOperation("获取小节的ppt")
     @GetMapping("get-timetable/ppt/{timetableId}")
     public R getTimetablePPT(@PathVariable String timetableId){

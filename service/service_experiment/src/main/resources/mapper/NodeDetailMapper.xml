@@ -7,14 +7,14 @@
     <resultMap id="BaseResultMap" type="xyz.likailing.cloud.service.exp.entity.NodeDetail">
             <id property="id" column="id" jdbcType="CHAR"/>
             <result property="nodeId" column="node_id" jdbcType="CHAR"/>
-            <result property="teamId" column="team_id" jdbcType="CHAR"/>
+            <result property="studentId" column="team_id" jdbcType="CHAR"/>
             <result property="hasFinish" column="has_finish" jdbcType="BIT"/>
             <result property="difficulty" column="difficulty" jdbcType="INTEGER"/>
             <result property="finishTime" column="finish_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,node_id,team_id,
+        id,node_id,student_id,
         has_finish,difficulty,finish_time
     </sql>
     <update id="updateDifficultyByNodeIdAndStudentId">
@@ -46,5 +46,23 @@
         select count(*)
         from exp_node_detail
         where node_id = #{nodeId,jdbcType=VARCHAR}
+    </select>
+    <select id="countByDifficultyIsNotNullAndNodeIdAndDifficultyGreaterThan" resultType="int">
+        select count(*)
+        from exp_node_detail
+        where difficulty is not null
+          AND node_id = #{nodeId,jdbcType=VARCHAR}
+          AND difficulty > #{difficulty,jdbcType=NUMERIC}
+    </select>
+    <select id="selectDifficultyByNodeIdAndDifficultyGreaterThan" resultType="float">
+        select avg(difficulty)
+        from exp_node_detail
+        where node_id = #{nodeId,jdbcType=VARCHAR}
+          AND difficulty > #{difficulty,jdbcType=NUMERIC}
+    </select>
+    <select id="selectStudentIdByCourseId" resultType="java.lang.String">
+        SELECT ms.id FROM manager_student ms
+                              LEFT JOIN manager_class_course cc ON cc.class_id = ms.class_id
+        WHERE cc.course_id = #{courseId}
     </select>
 </mapper>

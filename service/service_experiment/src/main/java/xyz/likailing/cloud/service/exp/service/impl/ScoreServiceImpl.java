@@ -15,6 +15,15 @@ import org.springframework.stereotype.Service;
 public class ScoreServiceImpl extends ServiceImpl<ScoreMapper, Score>
     implements ScoreService{
 
+    @Override
+    public int getByStudentIdAndExpId(String studenId, String expId) {
+        return 0;
+    }
+
+    @Override
+    public Boolean saveScoreByStudentIdAndExpId(String studenId, String expId, Integer score) {
+        return null;
+    }
 }
 
 

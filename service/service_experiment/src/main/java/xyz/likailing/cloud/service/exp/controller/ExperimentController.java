@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.service.exp.entity.Experiment;
 import xyz.likailing.cloud.service.exp.service.ExperimentService;
+import xyz.likailing.cloud.service.exp.service.ScoreService;
 
 import java.util.List;
 
@@ -24,6 +25,9 @@ public class ExperimentController {
 
     @Autowired
     private ExperimentService experimentService;
+
+    @Autowired
+    private ScoreService scoreService;
 
     @ApiOperation("根据课程id查询所有实验/大作业")
     @GetMapping("/list-exp/{courseId}")
@@ -71,11 +75,23 @@ public class ExperimentController {
         List<Experiment> experimentList = experimentService.listAllExpsByUserId(userId);
         return R.ok().data("list",experimentList);
     }
-    @ApiOperation("查询实验课成绩")
-    @GetMapping("/score/{studenId}/{courseId}")
-    public R getCourseScore(@PathVariable String studenId,@PathVariable String courseId){
-        return null;
+    @ApiOperation("查询实验成绩(整个实验)")
+    @GetMapping("/score/{studenId}/{expId}")
+    public R getCourseScore(@PathVariable String studenId,@PathVariable String expId){
+        int score = scoreService.getByStudentIdAndExpId(studenId,expId);
+        return R.ok().data("score",score);
     }
+    @ApiOperation("给实验打分")
+    @PostMapping("/score/{studentId}/{expId}")
+    public R setCourseScore(@PathVariable String studenId,@PathVariable String expId,@RequestParam Integer score){
+        Boolean save = scoreService.saveScoreByStudentIdAndExpId(studenId,expId,score);
+        if (save){
+            return R.ok().message("打分成功");
+        }
+        return R.error().message("打分失败");
+    }
+
+
 
 
 }
