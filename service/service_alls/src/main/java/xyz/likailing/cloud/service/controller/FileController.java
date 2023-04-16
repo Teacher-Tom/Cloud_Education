@@ -222,7 +222,7 @@ public class FileController {
         // 修改memid为userid
         file.setMemId(userId);
         file.setId(null);
-        file.setFDir("/root/star");
+        file.setFDir("/root");
         file.setCollection(1);
         // 新增文件信息
         boolean save = service.save(file);

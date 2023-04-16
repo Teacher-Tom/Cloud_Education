@@ -14,7 +14,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 123.60.88.31:1003
+        server-addr: 123.60.88.31:1003 #localhost:8848
     sentinel:
       transport:
         port: 10012  # 跟控制台交流的端口，随便指定一个未使用的即可
@@ -56,7 +56,17 @@ ribbon:
   MaxAutoRetries: 0 # 同一实例最大重试次数，不包括首次调用，默认0
   MaxAutoRetriesNextServer: 1 # 重试其他实例的最大重试次数，不包括首次所选的server，默认1
   ConnectTimeout: 10000 # 连接建立的超时时长，默认1秒
-  ReadTimeout: 10000  # 处理请求的超时时间，默认1秒
+  ReadTimeout: 30000  # 处理请求的超时时间，默认1秒
+#hystrix的超时时间
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000
 
 feign:
   sentinel:
