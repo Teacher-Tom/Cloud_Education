@@ -22,10 +22,7 @@ import xyz.likailing.cloud.service.manager.entity.vo.TeacherHomeworkVO;
 import xyz.likailing.cloud.service.manager.feign.AllsService;
 import xyz.likailing.cloud.service.manager.feign.MsgService;
 import xyz.likailing.cloud.service.manager.mapper.TeacherMapper;
-import xyz.likailing.cloud.service.manager.service.CourseHomeworkContextService;
-import xyz.likailing.cloud.service.manager.service.CourseHomeworkService;
-import xyz.likailing.cloud.service.manager.service.CourseHomeworkStudentService;
-import xyz.likailing.cloud.service.manager.service.CourseHomeworkSubmitService;
+import xyz.likailing.cloud.service.manager.service.*;
 
 import java.util.*;
 
@@ -53,6 +50,8 @@ public class CourseHomeworkController {
     private CourseHomeworkStudentService homeworkStudentService;
     @Autowired
     private CourseHomeworkSubmitService submitService;
+    @Autowired
+    private StudentService studentService;
 
     @Autowired
     private MsgService msgService;
@@ -108,12 +107,19 @@ public class CourseHomeworkController {
         QueryWrapper<CourseHomeworkStudent> studentQueryWrapper = new QueryWrapper<>();
         studentQueryWrapper.eq("homework_id", id);
         List<CourseHomeworkStudent> students = homeworkStudentService.list(studentQueryWrapper);
+        List<Student> studentInfo = new ArrayList<>();
+        for (CourseHomeworkStudent student : students) {
+            Student studentServiceById = studentService.getById(student.getStudentId());
+            if(!ObjectUtils.isEmpty(studentServiceById)) {
+                studentInfo.add(studentServiceById);
+            }
+        }
 
         if (!ObjectUtils.isEmpty(homework)) {
             return R.ok()
                     .data("homework", homework)
                     .data("studentNumber", students.size())
-                    .data("markedStudents", students);
+                    .data("markedStudents", studentInfo);
         }
         return R.error().message("数据不存在");
     }
