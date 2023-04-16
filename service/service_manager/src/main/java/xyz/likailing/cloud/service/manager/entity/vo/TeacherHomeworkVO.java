@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class TeacherHomeworkVO implements Serializable {
@@ -24,6 +25,6 @@ public class TeacherHomeworkVO implements Serializable {
 
     private String timetableId;
 
-    private String className;
+    private List<String> className;
 
 }

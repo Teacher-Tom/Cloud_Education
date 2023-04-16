@@ -2,19 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.likailing.cloud.service.manager.mapper.CourseHomeworkMapper">
 
-    <select id="selectByTeacherId" resultType="xyz.likailing.cloud.service.manager.entity.vo.TeacherHomeworkVO">
+    <resultMap id="TeacherHomework" type="xyz.likailing.cloud.service.manager.entity.vo.TeacherHomeworkVO">
+        <result column="id" property="homeworkId"/>
+        <result column="name" property="name"/>
+        <result column="begin_time" property="beginTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="is_outdated" property="outdated"/>
+        <result column="timetable_id" property="timetableId"/>
+        <result column="cname" property="courseName"/>
+        <collection property="className" ofType="string" select="classes" column="course_id"/>
+    </resultMap>
+    <select id="classes" resultType="string">
+        SELECT mc.name FROM manager_class mc
+            LEFT JOIN manager_class_course cc ON cc.class_id = mc.id
+        WHERE cc.course_id = #{course_id}
+    </select>
+
+    <select id="selectByTeacherId" resultMap="TeacherHomework">
         SELECT
-            ch.id AS homeworkId,
-            ch.name AS name,
-            ch.begin_time AS beginTime,
-            ch.end_time AS endTime,
-            ch.is_outdated AS outdated,
-            mc.name AS courseName,
-            ch.timetable_id AS timetableId,
-            cl.name AS className
+            ch.id,
+            ch.name,
+            ch.begin_time,
+            ch.end_time,
+            ch.is_outdated,
+            ch.course_id,
+            mc.name cname,
+            ch.timetable_id
         FROM course_homework ch
-            LEFT JOIN manager_class_course cc ON ch.course_id = cc.course_id
-            LEFT JOIN manager_class cl ON cl.id = cc.class_id
             LEFT JOIN manager_course mc ON mc.id = ch.course_id
         WHERE ch.teacher_id = #{teacherId}
     </select>
