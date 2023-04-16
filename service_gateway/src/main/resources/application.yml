@@ -53,6 +53,10 @@ spring:
           uri: lb://service-msg
           predicates:
             - Path=/msg/**
+        - id: service_exp
+          uri: lb://service-exp
+          predicates:
+            - Path=/exp/**
   http:
     encoding:
       charset: utf-8

@@ -1,24 +1,28 @@
 package xyz.likailing.cloud.service.exp.controller;
 
+import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import jdk.nashorn.internal.runtime.logging.Logger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import xyz.likailing.cloud.common.base.result.R;
 import xyz.likailing.cloud.common.base.result.ResultCodeEnum;
 import xyz.likailing.cloud.service.base.exception.CloudException;
+import xyz.likailing.cloud.service.base.model.File;
 import xyz.likailing.cloud.service.exp.entity.*;
 import xyz.likailing.cloud.service.exp.entity.vo.BranchVo;
 import xyz.likailing.cloud.service.exp.entity.vo.NodeInfoVo;
-import xyz.likailing.cloud.service.exp.service.BranchService;
-import xyz.likailing.cloud.service.exp.service.LineService;
-import xyz.likailing.cloud.service.exp.service.NodeDetailService;
-import xyz.likailing.cloud.service.exp.service.NodeService;
+import xyz.likailing.cloud.service.exp.feign.AllsService;
+import xyz.likailing.cloud.service.exp.service.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -42,6 +46,12 @@ public class FlowChartController {
 
     @Autowired
     private NodeDetailService nodeDetailService;
+
+    @Autowired
+    private AllsService allsService;
+
+    @Autowired
+    private NodeFileService nodeFileService;
 
     @ApiOperation("添加节点")
     @PostMapping("/node")
@@ -223,6 +233,58 @@ public class FlowChartController {
         Double avg = nodeDetailService.calculateAvgDifficulty(nodeId);
         Integer count = nodeDetailService.countRateNumber(nodeId);
         return R.ok().data("avg",avg).data("count",count);
+    }
+
+    @ApiOperation("上传节点资源")
+    @PostMapping("/node/resource/upload/{courseId}/{nodeId}")
+    public R uploadNodeResource(@PathVariable String courseId, @PathVariable String nodeId, @RequestParam(value = "file") @RequestPart MultipartFile file){
+        String memid = courseId;
+        String catalogue = "/root";
+        R upload = allsService.upload(file, catalogue, memid);
+        Map<String, Object> data = upload.getData();
+        if (data.containsKey("file_list")) {
+            List<File> files = JSON.parseArray(JSON.toJSONString(data.get("file_list")), File.class);
+            List<NodeFile> nodeFiles = new ArrayList<>();
+            for (File file1 : files) {
+                R r = allsService.addFile(file1);
+                file1 = JSON.parseObject(JSON.toJSONString(r.getData().get("file")), File.class);
+                NodeFile nodeFile = new NodeFile();
+                nodeFile.setFileId(file1.getId());
+                nodeFile.setNodeId(nodeId);
+                boolean save = nodeFileService.save(nodeFile);
+                nodeFiles.add(nodeFile);
+            }
+            return R.ok().data("file_list",files).data("nodeFile",nodeFiles);
+        } else if (data.containsKey("file")) {
+            File file1 = JSON.parseObject(JSON.toJSONString(data.get("file")),File.class);
+            file1.setMemId(memid);
+            file1.setFDir(catalogue);
+            R r = allsService.addFile(file1);
+            file1 = JSON.parseObject(JSON.toJSONString(r.getData().get("file")),File.class);
+            NodeFile nodeFile = new NodeFile();
+            nodeFile.setFileId(file1.getId());
+            nodeFile.setNodeId(nodeId);
+            boolean save = nodeFileService.save(nodeFile);
+            if (save){
+                return R.ok().data("file",file1).data("nodeFile",nodeFile);
+            }
+        }
+        return R.error().message("上传文件失败");
+    }
+
+    @ApiOperation("查询节点资源")
+    @GetMapping("/node/resource/{nodeId}")
+    public R getNodeFile(@PathVariable String nodeId){
+        List<NodeFile> nodeFiles = nodeFileService.getByNodeId(nodeId);
+        List<File> file_list = new ArrayList<>();
+        for (NodeFile nodeFile : nodeFiles) {
+            R data = allsService.getfileInfo(nodeFile.getFileId());
+            List<File> files = JSON.parseArray(JSON.toJSONString(data.getData().get("file")), File.class);
+            if(files.size()>0){
+                file_list.add(files.get(0));
+            }
+        }
+        return R.ok().data("files",file_list);
     }
 
 
