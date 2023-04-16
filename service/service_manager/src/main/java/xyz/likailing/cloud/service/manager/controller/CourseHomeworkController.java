@@ -27,9 +27,7 @@ import xyz.likailing.cloud.service.manager.service.CourseHomeworkService;
 import xyz.likailing.cloud.service.manager.service.CourseHomeworkStudentService;
 import xyz.likailing.cloud.service.manager.service.CourseHomeworkSubmitService;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -236,13 +234,24 @@ public class CourseHomeworkController {
         submitQueryWrapper.eq("homework_id", id).eq("student_id", studentId);
         List<CourseHomeworkSubmit> submits = submitService.list(submitQueryWrapper);
         //TODO 作业附件
-        //TODO 学生提交的附件
+        //学生提交的附件
+        Map<String, List<File>> files = new HashMap<>();
+        for (CourseHomeworkSubmit submit : submits) {
+            String fileId = submit.getFileId();
+            if(ObjectUtils.isEmpty(fileId)) {
+                continue; //没有附件
+            }
+            R r = allsService.getfileInfo(fileId);
+            List<File> ts = JSON.parseArray(JSON.toJSONString(r.getData().get("file")), File.class);
+            files.put(submit.getContextId(), ts);
+        }
 
         if (!ObjectUtils.isEmpty(homework)) {
             return R.ok()
                     .data("homework", homework)
                     .data("contexts", contexts)
-                    .data("submits", submits);
+                    .data("submits", submits)
+                    .data("files", files);
         }
         return R.error().message("数据不存在");
     }

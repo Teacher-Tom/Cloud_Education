@@ -26,6 +26,7 @@ public class CourseHomeworkSubmitServiceImpl extends ServiceImpl<CourseHomeworkS
             if(!ObjectUtils.isEmpty(one)) {
                 //已经提交过的题目只更新内容
                 one.setSubmitAnswer(submit.getSubmitAnswer());
+                one.setFileId(submit.getFileId());
                 int update = baseMapper.updateById(one);
                 save = save & (update > 0);
             } else {
