@@ -37,6 +37,10 @@ spring:
           uri: lb://service-alls
           predicates:
             - Path=/educenter/**
+        - id: service_alls-3
+          uri: lb://service-alls
+          predicates:
+            - Path=/eduoss/**
         - id: service_manager-1
           uri: lb://service-manager
           predicates:
