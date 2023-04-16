@@ -70,4 +70,31 @@ public class UserController {
         }
         return R.error().message("用户角色错误");
     }
+
+    @ApiOperation("根据用户id获取该用户的身份id(teacherId/studentId)")
+    @GetMapping("/user-role-id/{id}")
+    public R getUserRoleId(@PathVariable String id) {
+        User user = userService.getById(id);
+        if(Objects.isNull(user)){
+            throw new CloudException("没有找到该id",20001);
+        }
+        String role = userMapper.getRoleByUserId(user.getId());
+        if(!ObjectUtils.isEmpty(role)) {
+            if("student".equals(role)) {
+                QueryWrapper<Student> studentQueryWrapper = new QueryWrapper<>();
+                studentQueryWrapper.eq("user_id", id);
+                Student student = studentService.getOne(studentQueryWrapper);
+                return R.ok().data("studentId", student.getId());
+            }
+            else if("teacher".equals(role)) {
+                QueryWrapper<Teacher> teacherQueryWrapper = new QueryWrapper<>();
+                teacherQueryWrapper.eq("user_id", id);
+                Teacher teacher = teacherService.getOne(teacherQueryWrapper);
+                return R.ok().data("teacherId", teacher.getId());
+            }
+        }else {
+            throw new CloudException("没有找到该用户角色id",20001);
+        }
+        return R.error().message("用户角色错误");
+    }
 }
