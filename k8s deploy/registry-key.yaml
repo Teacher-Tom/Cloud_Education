@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+#自定义名称，后面会用上
+  name: myregistrykey
+  namespace:
+data:
+  .dockerconfigjson: ewoJImF1dGhzIjogewoJCSI2MC4yMDQuMTQxLjIxNDo2Njg4IjogewoJCQkiYXV0aCI6ICJZV1J0YVc0NlkyeHZkV1F5TXpNPSIKCQl9Cgl9LAoJIkh0dHBIZWFkZXJzIjogewoJCSJVc2VyLUFnZW50IjogIkRvY2tlci1DbGllbnQvMTguMDYuMS1jZSAobGludXgpIgoJfQp9
+type: kubernetes.io/dockerconfigjson

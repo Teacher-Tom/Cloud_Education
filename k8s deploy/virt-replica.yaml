@@ -1,0 +1,55 @@
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstanceReplicaSet
+metadata:
+  name: vmi-replicaset-cirros
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      myvmi: myvmi
+  template:
+    metadata:
+      name: test
+      labels:
+        myvmi: myvmi
+    spec:
+      domain:
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: containerdisk
+        resources:
+          requests:
+            memory: 64M
+      volumes:
+      - name: containerdisk
+        containerDisk:
+          image: kubevirt/cirros-container-disk-demo:latest
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: myhpa
+spec:
+  scaleTargetRef:
+    kind: VirtualMachineInstanceReplicaSet
+    name: vmi-replicaset-cirros
+    apiVersion: kubevirt.io/v1
+  minReplicas: 3
+  maxReplicas: 50
+  targetCPUUtilizationPercentage: 60
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vmi-replicaset-cirros-svc
+spec:
+  type: NodePort
+  selector:
+    kubevirt.io/v1alpha3: vmi-replicaset-cirros
+  ports:
+    - protocol: TCP
+      port: 22
+      targetPort: 22
+      nodePort: 30022

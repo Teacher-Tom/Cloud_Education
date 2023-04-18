@@ -1,0 +1,355 @@
+# 创建命名空间
+apiVersion: v1
+kind: Namespace
+metadata:
+   name: cloud
+   labels: 
+     name: cloud
+---
+apiVersion: apps/v1
+#一种定义
+kind: Deployment
+#资源对象的定义，元数据
+metadata:
+#名称
+  name: manager-deploy
+  namespace: cloud
+#容器的详细定义
+spec:
+#标签匹配
+  selector:
+    matchLabels:
+      app: manager
+#pods的副本数量
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: manager
+    spec:
+      imagePullSecrets:
+      #拉取镜像秘钥名称
+      - name: myregistrykey
+      containers:
+        #容器名称
+      - name: manager
+        #镜像地址
+        image: 60.204.141.214:6688/cloud/service_manager:latest
+        imagePullPolicy: Always
+        ports:
+        #容器监听端口
+        - containerPort: 8002
+          protocol: TCP
+          name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: manager-service
+  namespace: cloud
+  labels: 
+     name: manager
+spec:
+  ports:
+    #容器暴露的端口
+  - port: 8002
+    #端口协议    支持tcp和udp，默认为tcp
+    protocol: TCP
+    #需要转发到后端Pod的端口号
+    targetPort: 8002
+    #指定映射到物理机的端口号，也就是外部可以访问
+    nodePort: 30802
+  #当spec.type=NodePort时,同上，除了eureka和zuul，其他服务暂不开放
+  type: NodePort
+  selector:
+    app: manager
+---
+apiVersion: apps/v1
+#一种定义
+kind: Deployment
+#资源对象的定义，元数据
+metadata:
+#名称
+  name: gateway-deploy
+  namespace: cloud
+#容器的详细定义
+spec:
+#标签匹配
+  selector:
+    matchLabels:
+      app: gateway
+#pods的副本数量
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      imagePullSecrets:
+      #拉取镜像秘钥名称
+      - name: myregistrykey
+      containers:
+        #容器名称
+      - name: gateway
+        #镜像地址
+        image: 60.204.141.214:6688/cloud/service_gateway:latest
+        imagePullPolicy: Always
+        ports:
+        #容器监听端口
+        - containerPort: 9000
+          protocol: TCP
+          name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+  namespace: cloud
+  labels: 
+     name: gateway
+spec:
+  ports:
+    #容器暴露的端口
+  - port: 9000
+    #端口协议    支持tcp和udp，默认为tcp
+    protocol: TCP
+    #需要转发到后端Pod的端口号
+    targetPort: 9000
+    #指定映射到物理机的端口号，也就是外部可以访问
+    nodePort: 30900
+  #当spec.type=NodePort时,同上，除了eureka和zuul，其他服务暂不开放
+  type: NodePort
+  selector:
+    app: gateway
+---
+apiVersion: apps/v1
+#一种定义
+kind: Deployment
+#资源对象的定义，元数据
+metadata:
+#名称
+  name: ucenter-deploy
+  namespace: cloud
+#容器的详细定义
+spec:
+#标签匹配
+  selector:
+    matchLabels:
+      app: ucenter
+#pods的副本数量
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: ucenter
+    spec:
+      imagePullSecrets:
+      #拉取镜像秘钥名称
+      - name: myregistrykey
+      containers:
+        #容器名称
+      - name: ucenter
+        #镜像地址
+        image: 60.204.141.214:6688/cloud/service_ucenter:latest
+        imagePullPolicy: Always
+        ports:
+        #容器监听端口
+        - containerPort: 8003
+          protocol: TCP
+          name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ucenter-service
+  namespace: cloud
+  labels: 
+     name: ucenter
+spec:
+  ports:
+    #容器暴露的端口
+  - port: 8003
+    #端口协议    支持tcp和udp，默认为tcp
+    protocol: TCP
+    #需要转发到后端Pod的端口号
+    targetPort: 8003
+    #指定映射到物理机的端口号，也就是外部可以访问
+    nodePort: 30803
+  #当spec.type=NodePort时,同上，除了eureka和zuul，其他服务暂不开放
+  type: NodePort
+  selector:
+    app: ucenter
+---
+apiVersion: apps/v1
+#一种定义
+kind: Deployment
+#资源对象的定义，元数据
+metadata:
+#名称
+  name: alls-deploy
+  namespace: cloud
+#容器的详细定义
+spec:
+#标签匹配
+  selector:
+    matchLabels:
+      app: alls
+#pods的副本数量
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: alls
+    spec:
+      imagePullSecrets:
+      #拉取镜像秘钥名称
+      - name: myregistrykey
+      containers:
+        #容器名称
+      - name: alls
+        #镜像地址
+        image: 60.204.141.214:6688/cloud/service_alls:latest
+        imagePullPolicy: Always
+        ports:
+        #容器监听端口
+        - containerPort: 8001
+          protocol: TCP
+          name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alls-service
+  namespace: cloud
+  labels: 
+     name: alls
+spec:
+  ports:
+    #容器暴露的端口
+  - port: 8001
+    #端口协议    支持tcp和udp，默认为tcp
+    protocol: TCP
+    #需要转发到后端Pod的端口号
+    targetPort: 8001
+    #指定映射到物理机的端口号，也就是外部可以访问
+    nodePort: 30801
+  #当spec.type=NodePort时,同上，除了eureka和zuul，其他服务暂不开放
+  type: NodePort
+  selector:
+    app: alls
+---
+apiVersion: apps/v1
+#一种定义
+kind: Deployment
+#资源对象的定义，元数据
+metadata:
+#名称
+  name: msg-deploy
+  namespace: cloud
+#容器的详细定义
+spec:
+#标签匹配
+  selector:
+    matchLabels:
+      app: msg
+#pods的副本数量
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: msg
+    spec:
+      imagePullSecrets:
+      #拉取镜像秘钥名称
+      - name: myregistrykey
+      containers:
+        #容器名称
+      - name: msg
+        #镜像地址
+        image: 60.204.141.214:6688/cloud/service_msg:latest
+        imagePullPolicy: Always
+        ports:
+        #容器监听端口
+        - containerPort: 8004
+          protocol: TCP
+          name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: msg-service
+  namespace: cloud
+  labels: 
+     name: msg
+spec:
+  ports:
+    #容器暴露的端口
+  - port: 8004
+    #端口协议    支持tcp和udp，默认为tcp
+    protocol: TCP
+    #需要转发到后端Pod的端口号
+    targetPort: 8004
+    #指定映射到物理机的端口号，也就是外部可以访问
+    nodePort: 30804
+  #当spec.type=NodePort时,同上，除了eureka和zuul，其他服务暂不开放
+  type: NodePort
+  selector:
+    app: msg
+---
+apiVersion: apps/v1
+#一种定义
+kind: Deployment
+#资源对象的定义，元数据
+metadata:
+#名称
+  name: exp-deploy
+  namespace: cloud
+#容器的详细定义
+spec:
+#标签匹配
+  selector:
+    matchLabels:
+      app: exp
+#pods的副本数量
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: exp
+    spec:
+      imagePullSecrets:
+      #拉取镜像秘钥名称
+      - name: myregistrykey
+      containers:
+        #容器名称
+      - name: exp
+        #镜像地址
+        image: 60.204.141.214:6688/cloud/service_experiment:latest
+        imagePullPolicy: Always
+        ports:
+        #容器监听端口
+        - containerPort: 8005
+          protocol: TCP
+          name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: exp-service
+  namespace: cloud
+  labels: 
+     name: exp
+spec:
+  ports:
+    #容器暴露的端口
+  - port: 8005
+    #端口协议    支持tcp和udp，默认为tcp
+    protocol: TCP
+    #需要转发到后端Pod的端口号
+    targetPort: 8005
+    #指定映射到物理机的端口号，也就是外部可以访问
+    nodePort: 30805
+  #当spec.type=NodePort时,同上，除了eureka和zuul，其他服务暂不开放
+  type: NodePort
+  selector:
+    app: exp

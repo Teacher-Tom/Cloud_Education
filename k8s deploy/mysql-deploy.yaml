@@ -1,0 +1,83 @@
+# 定义持久卷信息
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  # pv是没有namespace属性的，它是一种跨namespace的共享资源
+  name: mysql-pv
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteMany
+  # 存储类，具有相同存储类名称的pv和pvc才能进行绑定
+  storageClassName: nfs
+  nfs:
+    path: /data/nfs/mysql
+    server: 192.168.0.239
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  # 存储类，具有相同存储类名称的pv和pvc才能进行绑定
+  storageClassName: nfs
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mysql
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql:5.7.41
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-root-password
+              key: password
+          # 如果你不想使用secret对象保存mysql登录密码，可以直接使用下面的方式指定，简单粗暴未尝不可    
+          #value: "123456"
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysqlvolume
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysqlvolume
+        # 使用pvc
+        persistentVolumeClaim:
+          claimName: mysql-pvc
+---
+#定义mysql的Service
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: svc-mysql
+  name: svc-mysql
+spec:
+  selector:
+    app: mysql
+  type: NodePort
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+    nodePort: 30101
