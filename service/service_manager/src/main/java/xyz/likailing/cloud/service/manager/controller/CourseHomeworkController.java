@@ -61,13 +61,42 @@ public class CourseHomeworkController {
 
     /* 教师 */
     @ApiOperation("查询某实验节点的作业基本信息")
-    @GetMapping("/get-hmwk-id/{nodeId}/{studentId}")
-    public R getHomeworkIdByNodeId(@PathVariable String nodeId, @PathVariable String studentId){
+    @GetMapping("/get-hmwk-id/{nodeId}")
+    public R getHomeworkIdByNodeId(@PathVariable String nodeId){
             CourseHomework homework = homeworkService.getByNodeId(nodeId);
             return R.ok().data("homework",homework);
     }
 
-    @ApiOperation("保存作业信息，需要提交作业基本信息与每一小题的题目内容，不包含附件，发送作业通知")
+    @ApiOperation("查询某实验节点所有提交作业信息,返回作业id，学生信息列表，再用作业id和学生id查询某个具体作业")
+    @GetMapping("/get-hmwk-detail/{nodeId}")
+    public R getSubmitHomeworkDetails(@PathVariable String nodeId){
+        CourseHomework homework = homeworkService.getByNodeId(nodeId);
+        String homeworkId = homework.getId();
+        // 列出提交的学生id
+        //学生提交情况
+        QueryWrapper<CourseHomeworkStudent> studentQueryWrapper = new QueryWrapper<>();
+        studentQueryWrapper.eq("homework_id", homeworkId);
+        List<CourseHomeworkStudent> students = homeworkStudentService.list(studentQueryWrapper);
+        List<Student> studentInfos = new ArrayList<>();
+        for (CourseHomeworkStudent student : students) {
+
+            Student studentServiceById = studentService.getById(student.getStudentId());
+            if(!ObjectUtils.isEmpty(studentServiceById)) {
+                studentInfos.add(studentServiceById);
+            }
+        }
+
+        if (!ObjectUtils.isEmpty(homework)) {
+            return R.ok()
+                    .data("homeworkId", homework.getId())
+                    .data("studentNumber", students.size())
+                    .data("markedStudents", studentInfos);
+        }
+        return R.error().message("没有查到作业信息");
+
+    }
+
+    @ApiOperation("保存作业信息，需要提交作业基本信息与每一小题的题目内容，不包含附件，发送作业通知,如果是实验任务需要填入node_id")
     @PostMapping("/save")
     public R saveHomework(@ApiParam("作业基本信息，如果是实验任务需要填入node_id") CourseHomework homework,
                           @ApiParam("作业内容信息") @RequestBody List<CourseHomeworkContext> contexts) {

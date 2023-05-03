@@ -8,4 +8,6 @@ import java.util.List;
 public interface CourseHomeworkSubmitService extends IService<CourseHomeworkSubmit> {
 
     boolean saveBatchSubmits(String homeworkId, String studentId, List<CourseHomeworkSubmit> submits);
+
+    List<CourseHomeworkSubmit> getByHomeworkId(String homeworkId);
 }

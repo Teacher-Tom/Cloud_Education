@@ -38,4 +38,12 @@ public class CourseHomeworkSubmitServiceImpl extends ServiceImpl<CourseHomeworkS
         }
         return save;
     }
+
+    @Override
+    public List<CourseHomeworkSubmit> getByHomeworkId(String homeworkId) {
+        QueryWrapper<CourseHomeworkSubmit> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("homework_id",homeworkId);
+        List<CourseHomeworkSubmit> submits = baseMapper.selectList(queryWrapper);
+        return submits;
+    }
 }
