@@ -183,13 +183,13 @@ public class CourseHomeworkController {
 
     @ApiOperation("提交附件，返回文件信息")
     @PostMapping("/submit/file")
-    public R uploadFile(@ApiParam("上传附件，可选") @RequestParam(value = "file",required = false) @RequestPart MultipartFile file){
+    public R uploadFile(@ApiParam("上传附件，可选") @RequestParam(value = "file") @RequestPart MultipartFile file){
         if(file != null) {
             String memid = "1";
             String catalogue = "/root/homework";
             R upload = allsService.upload(file, catalogue, memid);
             Map<String, Object> data = upload.getData();
-            File file1 = JSON.parseObject(JSON.toJSONString(data.get("userInfo")), File.class);
+            File file1 = JSON.parseObject(JSON.toJSONString(data.get("file")), File.class);
             R r = allsService.addFile(file1);
             file1 = JSON.parseObject(JSON.toJSONString(r.getData().get("file")), File.class);
             return R.ok().data("file",file1);
