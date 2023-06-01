@@ -1,10 +1,10 @@
 aliyun:
   oss:
     file:
-      bucketname: cloud-file-230201-1
-      endpoint: oss-cn-hangzhou.aliyuncs.com
-      keyid: LTAI5t9GrWMJPCUubphnsLm7
-      keysecret: MjwsBRT3mgarKthAGWou2gzJ3a4Xpq
+      bucketname: # 输入oss配置
+      endpoint:
+      keyid:
+      keysecret:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
